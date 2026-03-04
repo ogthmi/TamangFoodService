@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Tamang Food</string>
+    <string name="set_your_fingerprint">Set Your Fingerprint</string>
+    <string name="fingerprint_description">Enable biometric authentication for faster and safer login. Biometric data is stored on the device and is not shared with the app.</string>
+    <string name="skip">Skip</string>
+    <string name="continue_text">Continue</string>
+    <string name="back">Back</string>
+    <string name="setup">Setup</string>
 </resources>
