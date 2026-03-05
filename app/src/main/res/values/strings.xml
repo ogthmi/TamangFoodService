@@ -36,4 +36,23 @@
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
     <string name="change_password">Change Password</string>
+
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_screen_title">Welcome to Tamang Food Services</string>
+    <string name="sign_in_screen_subtitle">
+    Enter your phone number and email address to sign in. Enjoy your food. :)
+    </string>
+
+    <string name="label_email_address">Email Address</string>
+    <string name="label_password">Password</string>
+
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+
+    <string name="forgot_password">Forgot Password</string>
+    <string name="forgot_password_header">Forgot password?</string>
+
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="create_account">Create a new one</string>
+
 </resources>

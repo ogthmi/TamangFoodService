@@ -13,8 +13,8 @@
             <size android:height="1dp" />
             <solid android:color="#CCCCCC" />
             <padding
-                android:bottom="8dp"
-                android:top="8dp" />
+                android:bottom="@dimen/spacing_sm"
+                android:top="@dimen/spacing_sm" />
         </shape>
     </item>
 

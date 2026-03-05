@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/auth_navigation">
 
     <fragment
         android:id="@+id/fingerPrintFragment"
@@ -55,4 +55,6 @@
         android:name="com.example.tamangfood.presentation.ui.settings.password.PasswordSettingFragment"
         android:label="fragment_password_setting"
         tools:layout="@layout/fragment_password_setting" />
+
+    <include  app:graph="@navigation/auth_navigation"/>
 </navigation>
