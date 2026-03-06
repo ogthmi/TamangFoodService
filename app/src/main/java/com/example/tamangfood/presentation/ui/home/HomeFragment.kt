@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
@@ -33,6 +34,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Utils.showBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
         setupFoodBestSellerRecyclerViews()
         setupFoodRecommendRecyclerViews()
         setupDrawer()
@@ -114,7 +116,11 @@ class HomeFragment : Fragment() {
 
         binding.menuPaymentMethods.setOnClickListener {  }
 
-        binding.menuSetting.setOnClickListener {  }
+        binding.menuSetting.setOnClickListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
+            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
+        }
 
         binding.menuLogout.setOnClickListener {  }
     }
