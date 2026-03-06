@@ -14,7 +14,13 @@
         android:id="@+id/homeFragment"
         android:name="com.example.tamangfood.presentation.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.tamangfood.presentation.ui.favorite.FavoriteFragment"
@@ -35,4 +41,18 @@
         android:name="com.example.tamangfood.presentation.ui.order.OrderFragment"
         android:label="fragment_order"
         tools:layout="@layout/fragment_order" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.tamangfood.presentation.ui.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_passwordSettingFragment"
+            app:destination="@id/passwordSettingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordSettingFragment"
+        android:name="com.example.tamangfood.presentation.ui.settings.password.PasswordSettingFragment"
+        android:label="fragment_password_setting"
+        tools:layout="@layout/fragment_password_setting" />
 </navigation>
