@@ -2,6 +2,7 @@ package com.example.tamangfood.presentation.ui.signin
 
 import android.os.Bundle
 import android.text.InputType
+import android.util.Patterns
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -38,10 +39,6 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             handleSignIn()
         }
 
-        binding.icVisible.setOnClickListener {
-            viewModel.togglePassword()
-        }
-
         binding.tvForgotPassword.setOnClickListener {
             findNavController().navigate(R.id.forgotPasswordFragment)
         }
@@ -53,45 +50,31 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     }
 
     private fun observeViewModel() {
-        viewModel.errorEmail.observe(viewLifecycleOwner) { error ->
-            binding.etEmail.error = error
-        }
 
-        viewModel.errorPassword.observe(viewLifecycleOwner) { error ->
-            binding.etPassword.error = error
-        }
-
-        viewModel.passwordVisible.observe(viewLifecycleOwner) { visible ->
-            togglePassword(visible)
-        }
-
-        viewModel.loginSuccess.observe(viewLifecycleOwner) { success ->
-            if (success) {
-                Utils.showToast(requireContext(),"Login successfully")
-            }
-        }
     }
 
     private fun handleSignIn() {
         val email = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
 
+        if (email.isEmpty()){
+            binding.layoutEmail.helperText = "Email is required"
+            binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            binding.layoutEmail.helperText = "Invalid email"
+            binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
+        }
+
+        if (password.isEmpty()){
+            binding.layoutPassword.helperText = "Password is required"
+            binding.etPassword.setBackgroundResource(R.drawable.edittext_error)
+        }
+
         val request = SignInRequest(email, password)
 
         viewModel.signIn(request)
     }
 
-    private fun togglePassword(visible: Boolean) {
-        if (visible) {
-            binding.etPassword.inputType =
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            binding.icVisible.setImageResource(R.drawable.ic_eye)
-        } else {
-            binding.etPassword.inputType =
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            binding.icVisible.setImageResource(R.drawable.ic_eye_off)
-        }
-
-        binding.etPassword.setSelection(binding.etPassword.text?.length ?: 0)
-    }
 }

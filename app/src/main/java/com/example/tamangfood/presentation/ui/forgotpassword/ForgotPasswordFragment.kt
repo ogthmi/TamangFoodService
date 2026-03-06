@@ -41,9 +41,17 @@ class ForgotPasswordFragment: Fragment(R.layout.fragment_forgot_password) {
     }
 
     private fun handleForgotPassword() {
-
         var email = binding.etEmail.text.toString().trim()
 
+        if (email.isEmpty()) {
+            binding.layoutEmail.helperText = "Email is required"
+            binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.layoutEmail.helperText = "Invalid email"
+            binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
+        }
     }
 
 }

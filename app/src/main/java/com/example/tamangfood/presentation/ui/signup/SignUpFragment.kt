@@ -34,17 +34,13 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
     private fun setupClickListeners() {
         binding.ivBack.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            findNavController().popBackStack()
         }
 
         binding.tvSignIn.setOnClickListener {
             findNavController().navigate(
                 R.id.action_signUpFragment_to_signInFragment
             )
-        }
-
-        binding.icVisible.setOnClickListener {
-            togglePassword()
         }
 
         binding.etDob.setOnClickListener {
@@ -73,26 +69,6 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         datePicker.show()
     }
 
-    private var isPasswordVisible = false
-
-    private fun togglePassword() {
-        isPasswordVisible = !isPasswordVisible
-
-        if (isPasswordVisible) {
-            binding.etPassword.inputType =
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-
-            binding.icVisible.setImageResource(R.drawable.ic_eye)
-        } else {
-            binding.etPassword.inputType =
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-
-            binding.icVisible.setImageResource(R.drawable.ic_eye_off)
-        }
-
-        binding.etPassword.setSelection(binding.etPassword.text.length)
-    }
-
     private fun handleSignUp() {
         val fullName = binding.etFullName.text.toString().trim()
         val email = binding.etEmail.text.toString().trim()
@@ -100,13 +76,48 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         val phoneNumber = binding.etPhone.text.toString().trim()
         val dateOfBirth = binding.etDob.text.toString().trim()
 
+        if (fullName.isBlank()) {
+            binding.layoutFullName.helperText = "Full name is required"
+            binding.etFullName.setBackgroundResource(R.drawable.edittext_error)
+        }
+
+        if (email.isEmpty()) {
+            binding.layoutEmail.helperText = "Email is required"
+            binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.layoutEmail.helperText = "Invalid email"
+            binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
+        }
+
+        if (password.isEmpty()) {
+            binding.layoutPassword.helperText = "Password is required"
+            binding.etPassword.setBackgroundResource(R.drawable.edittext_error)
+        }
+
+        if (password.length < 8) {
+            binding.layoutPassword.helperText = "Invalid password"
+            binding.etPassword.setBackgroundResource(R.drawable.edittext_error)
+        }
+
+        if (phoneNumber.isEmpty()) {
+            binding.layoutPassword.helperText = "Phone number is required"
+            binding.etPhone.setBackgroundResource(R.drawable.edittext_error)
+        }
+
+        if (phoneNumber.length < 10) {
+            binding.layoutPassword.helperText = "Invalid phone number"
+            binding.etPhone.setBackgroundResource(R.drawable.edittext_error)
+        }
+
+        if (dateOfBirth.isBlank()) {
+            binding.layoutDob.helperText = "Date of birth is required"
+            binding.etDob.setBackgroundResource(R.drawable.edittext_error)
+        }
+
         val signUpRequest = SignUpRequest(fullName, email, password, phoneNumber, dateOfBirth)
 
-        try {
-            viewModel.signUp(signUpRequest)
-            Utils.showToast(requireContext(), "Create account successfully")
-        } catch (ex: IllegalArgumentException) {
-            Utils.showToast(requireContext(), ex.message.toString())
-        }
+        viewModel.signUp(signUpRequest)
     }
 }
