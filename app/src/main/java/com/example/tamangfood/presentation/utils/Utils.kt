@@ -1,7 +1,10 @@
 package com.example.tamangfood.presentation.utils
 
 import android.content.Context
+import android.view.View
 import android.widget.Toast
+import androidx.cardview.widget.CardView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 object Utils {
     fun showToast(context: Context, message: String){
@@ -10,5 +13,13 @@ object Utils {
             message,
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    fun showBottomNav(bottomNav: CardView){
+        bottomNav.visibility = View.VISIBLE
+    }
+
+    fun hideBottomNav(bottomNav: CardView){
+        bottomNav.visibility = View.GONE
     }
 }
