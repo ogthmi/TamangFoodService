@@ -8,271 +8,278 @@
     android:background="@color/active_color"
     tools:context=".presentation.ui.signup.SignUpFragment">
 
-    <LinearLayout
-        android:id="@+id/layout_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_md"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_md">
-
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="@string/back"
-                android:src="@drawable/ic_back_arrow"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_header_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_up"
-                android:textSize="@dimen/text_sm"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </LinearLayout>
-
     <ScrollView
         android:id="@+id/scroll_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/content_background"
-        android:fillViewport="true"
         android:clipToPadding="false"
         android:descendantFocusability="beforeDescendants"
+        android:fillViewport="true"
         android:overScrollMode="never"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_header">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_content"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_xl"
-            >
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_sign_in_title"
+            <LinearLayout
+                android:id="@+id/layout_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/sign_up_screen_title"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_xl"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_md"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tv_sign_in_subtitle"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_md">
+
+                    <ImageView
+                        android:id="@+id/iv_back"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/back"
+                        android:src="@drawable/ic_back_arrow"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_header_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sign_up"
+                        android:textSize="@dimen/text_sm"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_md"
-                android:text="@string/sign_up_screen_subtitle"
-                android:textColor="@color/body_text"
-                android:textSize="@dimen/text_sm"
-                app:layout_constraintTop_toBottomOf="@id/tv_sign_in_title" />
+                android:background="@drawable/content_background"
+                android:padding="@dimen/spacing_xl">
 
-            <TextView
-                android:id="@+id/tv_have_account"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_md"
-                android:text="@string/already_have_account"
-                android:textColor="@color/body_text"
-                app:layout_constraintEnd_toStartOf="@id/tv_sign_in"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_sign_in_subtitle"
+                <TextView
+                    android:id="@+id/tv_reset_email_sent_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sign_up_screen_title"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_xl"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                />
+                <TextView
+                    android:id="@+id/tv_reset_email_sent_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_md"
+                    android:text="@string/sign_up_screen_subtitle"
+                    android:textColor="@color/body_text"
+                    android:textSize="@dimen/text_sm"
+                    app:layout_constraintTop_toBottomOf="@id/tv_reset_email_sent_title" />
 
-            <TextView
-                android:id="@+id/tv_sign_in"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_xs"
-                android:text="@string/sign_in"
-                android:textColor="@color/active_color"
-                app:layout_constraintBottom_toBottomOf="@id/tv_have_account"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_have_account" />
+                <TextView
+                    android:id="@+id/tv_have_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_md"
+                    android:text="@string/already_have_account"
+                    android:textColor="@color/body_text"
+                    app:layout_constraintEnd_toStartOf="@id/tv_sign_in"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_reset_email_sent_subtitle"
 
-            <TextView
-                android:id="@+id/tv_full_name_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_lg"
-                android:text="@string/label_full_name"
-                android:textAllCaps="true"
-                android:textColor="@color/body_text"
-                android:textSize="@dimen/text_caption"
-                app:layout_constraintTop_toBottomOf="@id/tv_sign_in" />
+                    />
 
-            <EditText
-                android:id="@+id/et_full_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xs"
-                android:background="@drawable/edittext_underline"
-                android:hint="@string/hint_full_name"
-                android:inputType="textPersonName"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_full_name_label">
-                <requestFocus/>
-            </EditText>
+                <TextView
+                    android:id="@+id/tv_sign_in"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_xs"
+                    android:text="@string/sign_in"
+                    android:textColor="@color/active_color"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_have_account"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_have_account" />
 
-            <TextView
-                android:id="@+id/tv_email_label"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/spacing_lg"
-                android:text="@string/label_email_address"
-                android:textAllCaps="true"
-                android:textColor="@color/body_text"
-                android:textSize="@dimen/text_caption"
-                app:layout_constraintTop_toBottomOf="@id/et_full_name" />
+                <TextView
+                    android:id="@+id/tv_full_name_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_lg"
+                    android:text="@string/label_full_name"
+                    android:textAllCaps="true"
+                    android:textColor="@color/body_text"
+                    android:textSize="@dimen/text_caption"
+                    app:layout_constraintTop_toBottomOf="@id/tv_sign_in" />
 
-            <EditText
-                android:id="@+id/et_email"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xs"
-                android:autofillHints="emailAddress"
-                android:background="@drawable/edittext_underline"
-                android:hint="@string/hint_email"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_email_label" />
+                <EditText
+                    android:id="@+id/et_full_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xs"
+                    android:background="@drawable/edittext_underline"
+                    android:hint="@string/hint_full_name"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_full_name_label">
 
-            <TextView
-                android:id="@+id/tv_password_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_lg"
-                android:text="@string/label_password"
-                android:textAllCaps="true"
-                android:textColor="@color/body_text"
-                android:textSize="@dimen/text_caption"
-                app:layout_constraintEnd_toStartOf="@id/ic_visible"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_email" />
+                    <requestFocus />
+                </EditText>
 
-            <ImageView
-                android:id="@+id/ic_visible"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_eye_off"
-                app:layout_constraintBottom_toBottomOf="@id/tv_password_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:tint="@color/body_text" />
+                <TextView
+                    android:id="@+id/tv_email_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/spacing_lg"
+                    android:text="@string/label_email_address"
+                    android:textAllCaps="true"
+                    android:textColor="@color/body_text"
+                    android:textSize="@dimen/text_caption"
+                    app:layout_constraintTop_toBottomOf="@id/et_full_name" />
 
-            <EditText
-                android:id="@+id/et_password"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xs"
-                android:autofillHints="password"
-                android:background="@drawable/edittext_underline"
-                android:hint="@string/hint_password"
-                android:inputType="textPassword"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_password_label" />
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xs"
+                    android:autofillHints="emailAddress"
+                    android:background="@drawable/edittext_underline"
+                    android:hint="@string/hint_email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_email_label" />
 
-            <TextView
-                android:id="@+id/tv_phone_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_lg"
-                android:text="@string/label_phone_number"
-                android:textAllCaps="true"
-                android:textColor="@color/body_text"
-                android:textSize="@dimen/text_caption"
-                app:layout_constraintTop_toBottomOf="@id/et_password" />
+                <TextView
+                    android:id="@+id/tv_password_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_lg"
+                    android:text="@string/label_password"
+                    android:textAllCaps="true"
+                    android:textColor="@color/body_text"
+                    android:textSize="@dimen/text_caption"
+                    app:layout_constraintEnd_toStartOf="@id/ic_visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_email" />
 
-            <EditText
-                android:id="@+id/et_phone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xs"
-                android:autofillHints="phone"
-                android:background="@drawable/edittext_underline"
-                android:hint="@string/hint_phone_number"
-                android:inputType="phone"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_phone_label" />
+                <ImageView
+                    android:id="@+id/ic_visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_eye_off"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_password_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:tint="@color/body_text" />
 
-            <TextView
-                android:id="@+id/tv_dob_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_lg"
-                android:text="DATE OF BIRTH"
-                android:textAllCaps="true"
-                android:textColor="@color/body_text"
-                android:textSize="@dimen/text_caption"
-                app:layout_constraintTop_toBottomOf="@id/et_phone" />
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xs"
+                    android:autofillHints="password"
+                    android:background="@drawable/edittext_underline"
+                    android:hint="@string/hint_password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_password_label" />
 
-            <EditText
-                android:id="@+id/et_dob"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xs"
-                android:background="@drawable/edittext_underline"
-                android:clickable="true"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:hint="DD/MM/YYYY"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_dob_label" />
+                <TextView
+                    android:id="@+id/tv_phone_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_lg"
+                    android:text="@string/label_phone_number"
+                    android:textAllCaps="true"
+                    android:textColor="@color/body_text"
+                    android:textSize="@dimen/text_caption"
+                    app:layout_constraintTop_toBottomOf="@id/et_password" />
 
-            <TextView
-                android:id="@+id/tv_agree_policy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_lg"
-                android:gravity="center"
-                android:text="@string/sign_up_agree_policy"
-                android:textColor="@color/body_text"
-                app:layout_constraintTop_toBottomOf="@id/et_dob" />
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xs"
+                    android:autofillHints="phone"
+                    android:background="@drawable/edittext_underline"
+                    android:hint="@string/hint_phone_number"
+                    android:inputType="phone"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_phone_label" />
 
-            <Button
-                android:id="@+id/btn_sign_up"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_lg"
-                android:background="@drawable/button_orange"
-                android:text="@string/sign_up"
-                android:textAllCaps="true"
-                app:layout_constraintTop_toBottomOf="@id/tv_agree_policy"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tv_dob_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_lg"
+                    android:text="DATE OF BIRTH"
+                    android:textAllCaps="true"
+                    android:textColor="@color/body_text"
+                    android:textSize="@dimen/text_caption"
+                    app:layout_constraintTop_toBottomOf="@id/et_phone" />
+
+                <EditText
+                    android:id="@+id/et_dob"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_xs"
+                    android:background="@drawable/edittext_underline"
+                    android:clickable="true"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:hint="@string/hint_date"
+                    android:inputType="date"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_dob_label" />
+
+                <TextView
+                    android:id="@+id/tv_agree_policy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_lg"
+                    android:gravity="center"
+                    android:text="@string/sign_up_agree_policy"
+                    android:textColor="@color/body_text"
+                    app:layout_constraintTop_toBottomOf="@id/et_dob" />
+
+                <Button
+                    android:id="@+id/btn_sign_up"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_lg"
+                    android:background="@drawable/button_orange"
+                    android:text="@string/sign_up"
+                    android:textAllCaps="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_agree_policy" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

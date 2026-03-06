@@ -42,9 +42,14 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             viewModel.togglePassword()
         }
 
+        binding.tvForgotPassword.setOnClickListener {
+            findNavController().navigate(R.id.forgotPasswordFragment)
+        }
+
         binding.tvCreateAccount.setOnClickListener {
             findNavController().navigate(R.id.signUpFragment)
         }
+
     }
 
     private fun observeViewModel() {

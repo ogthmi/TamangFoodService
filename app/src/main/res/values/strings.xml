@@ -65,9 +65,20 @@
     <string name="hint_phone_number">Phone Number</string>
 
     <string name="label_dob">Date of birth</string>
+    <string name="hint_date">DD/MM/YYYY</string>
 
     <string name="forgot_password">Forgot Password</string>
     <string name="forgot_password_header">Forgot password?</string>
+    <string name="forgot_password_subtitle">
+        Enter your email address and we will send you a reset instructions.
+    </string>
+
+    <string name="reset_password">Reset password</string>
+    <string name="reset_email_title">Reset email sent</string>
+    <string name="reset_email_subtitle">We have sent a instructions email to your email.</string>
+
+    <string name="email_sent">Email sent</string>
+    <string name="re_send">Send again</string>
 
     <string name="no_account">Don\'t have an account?</string>
     <string name="create_account">Create a new one</string>
