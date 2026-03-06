@@ -4,9 +4,12 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.tamangfood.data.model.auth.SignInRequest
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SignInViewModel : ViewModel() {
-
+@HiltViewModel
+class SignInViewModel @Inject constructor() : ViewModel() {
     private val _errorEmail = MutableLiveData<String?>()
     val errorEmail: LiveData<String?> = _errorEmail
 
@@ -24,28 +27,23 @@ class SignInViewModel : ViewModel() {
         _passwordVisible.value = !(_passwordVisible.value ?: false)
     }
 
-
-    fun signIn(email: String, password: String) {
-
-        _errorEmail.value = null
-        _errorPassword.value = null
-
-        if (email.isEmpty()) {
+    fun signIn(request: SignInRequest) {
+        if (request.email.isEmpty()) {
             _errorEmail.value = "Email is required"
             return
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(request.email).matches()) {
             _errorEmail.value = "Invalid email"
             return
         }
 
-        if (password.isEmpty()) {
+        if (request.password.isEmpty()) {
             _errorPassword.value = "Password is required"
             return
         }
 
-        // TODO: call API
+        // TODO: Call API later
 
         _loginSuccess.value = true
     }
