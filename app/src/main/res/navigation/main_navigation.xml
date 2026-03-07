@@ -20,6 +20,11 @@
             app:destination="@id/settingsFragment"
             app:enterAnim="@anim/slide_right"
             app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_updateMyProfileFragment"
+            app:destination="@id/updateMyProfileFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
@@ -41,6 +46,12 @@
         android:name="com.example.tamangfood.presentation.ui.order.OrderFragment"
         android:label="fragment_order"
         tools:layout="@layout/fragment_order" />
+    <fragment
+        android:id="@+id/updateMyProfileFragment"
+        android:name="com.example.tamangfood.presentation.ui.myprofile.UpdateMyProfileFragment"
+        android:label="fragment_update_profile"
+        tools:layout="@layout/fragment_update_my_profile"
+        />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.tamangfood.presentation.ui.settings.SettingsFragment"
