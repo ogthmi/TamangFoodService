@@ -87,4 +87,15 @@
     <string name="create_account">Create a new one</string>
 
     <string name="already_have_account">Already have account?</string>
+    <string name="add_new_address">Add New Address</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="apply">Apply</string>
+    <string name="select_location">Select Location</string>
+    <string name="enter_address_name">Enter address name</string>
+    <string name="location_permission_required">Location permission is required to select address</string>
+    <string name="address_name">Address name</string>
+    <string name="search_location">Search location...</string>
+    <string name="location_not_found">Location not found. Please try another search term.</string>
+    <string name="current_location">Current Location</string>
 </resources>

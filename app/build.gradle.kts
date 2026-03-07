@@ -74,5 +74,9 @@ dependencies {
     implementation("androidx.biometric:biometric:1.2.0-alpha05")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
     implementation("com.github.yalantis:ucrop:2.2.8")
+    implementation("org.osmdroid:osmdroid-android:6.1.20")
+
+    // Google Play Services Location
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
 }
