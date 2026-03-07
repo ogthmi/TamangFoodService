@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.signInFragment,
                 R.id.signUpFragment,
                 R.id.forgotPasswordFragment,
-                R.id.emailSentFragment -> {
+                R.id.emailSentFragment,
+                R.id.onboardingFragment -> {
                     binding.bottomNav.visibility = View.GONE
                 }
 
