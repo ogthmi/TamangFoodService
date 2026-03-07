@@ -22,6 +22,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var foodBestSellerAdapter: FoodBestSellerAdapter
     private lateinit var foodRecommendAdapter: FoodRecommendAdapter
+    private var isNavigatingToFragment = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,7 +100,10 @@ class HomeFragment : Fragment() {
             }
 
             override fun onDrawerClosed(drawerView: View) {
-                Utils.showBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+                if (!isNavigatingToFragment) {
+                    Utils.showBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+                }
+                isNavigatingToFragment = false // Reset flag
             }
 
             override fun onDrawerStateChanged(newState: Int) {
@@ -112,11 +116,17 @@ class HomeFragment : Fragment() {
 
         binding.menuMyOrders.setOnClickListener {  }
 
-        binding.menuDeliveryAddress.setOnClickListener {  }
+        binding.menuDeliveryAddress.setOnClickListener {
+            isNavigatingToFragment = true
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
+            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDeliveryAddressFragment())
+        }
 
         binding.menuPaymentMethods.setOnClickListener {  }
 
         binding.menuSetting.setOnClickListener {
+            isNavigatingToFragment = true
             binding.drawerLayout.closeDrawer(GravityCompat.END)
             Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())

@@ -20,6 +20,11 @@
             app:destination="@id/settingsFragment"
             app:enterAnim="@anim/slide_right"
             app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_deliveryAddressFragment"
+            app:destination="@id/deliveryAddressFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
@@ -55,4 +60,20 @@
         android:name="com.example.tamangfood.presentation.ui.settings.password.PasswordSettingFragment"
         android:label="fragment_password_setting"
         tools:layout="@layout/fragment_password_setting" />
+    <fragment
+        android:id="@+id/deliveryAddressFragment"
+        android:name="com.example.tamangfood.presentation.ui.address.DeliveryAddressFragment"
+        android:label="fragment_delivery_address"
+        tools:layout="@layout/fragment_delivery_address">
+        <action
+            android:id="@+id/action_deliveryAddressFragment_to_addNewAddressFragment"
+            app:destination="@id/addNewAddressFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/addNewAddressFragment"
+        android:name="com.example.tamangfood.presentation.ui.address.addnew.AddNewAddressFragment"
+        android:label="fragment_add_new_address"
+        tools:layout="@layout/fragment_add_new_address" />
 </navigation>

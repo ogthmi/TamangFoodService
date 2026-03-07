@@ -22,4 +22,14 @@ object Utils {
     fun hideBottomNav(bottomNav: CardView){
         bottomNav.visibility = View.GONE
     }
+
+}
+
+enum class DefaultLocation(val value: Double){ //Set HaNoi
+    LAT(21.0278),
+    LNG(105.8342)
+}
+
+enum class Zoom(val value: Double){
+    DEFAULT(15.0),
 }

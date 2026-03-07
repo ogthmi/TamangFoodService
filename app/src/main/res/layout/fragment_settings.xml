@@ -34,7 +34,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:fontFamily="@font/abeezee"
+            android:fontFamily="@font/open_sans_medium"
             android:gravity="center_vertical"
             android:layout_marginStart="16dp" />
     </LinearLayout>
@@ -71,14 +71,14 @@
                 android:textColor="@color/main_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/abeezee"
+                android:fontFamily="@font/open_sans_medium"
                 android:layout_marginStart="16dp" />
 
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_back_arrow_right"
-                android:tint="@color/orange_base" />
+                app:tint="@color/orange_base" />
         </LinearLayout>
 
         <!-- Delete Account -->
@@ -106,14 +106,14 @@
                 android:textColor="@color/main_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/abeezee"
+                android:fontFamily="@font/open_sans_medium"
                 android:layout_marginStart="16dp" />
 
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_back_arrow_right"
-                android:tint="@color/orange_base" />
+                app:tint="@color/orange_base" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
