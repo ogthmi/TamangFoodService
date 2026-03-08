@@ -75,5 +75,9 @@
         android:id="@+id/addNewAddressFragment"
         android:name="com.example.tamangfood.presentation.ui.address.addnew.AddNewAddressFragment"
         android:label="fragment_add_new_address"
-        tools:layout="@layout/fragment_add_new_address" />
+        tools:layout="@layout/fragment_add_new_address" >
+        <argument
+            android:name="detail"
+            app:argType="boolean" />
+    </fragment>
 </navigation>

@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/content_background"
-    android:padding="24dp">
+    android:background="@drawable/content_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@drawable/space_linear_layout"
         android:showDividers="middle"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="24dp">
 
         <ImageView
             android:id="@+id/ivAddressIcon"
@@ -44,10 +44,7 @@
             app:boxStrokeWidthFocused="0dp"
             app:hintEnabled="false"
             app:helperTextTextColor="@color/orange_base"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintTop_toBottomOf="@id/tvNameLabel"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_marginBottom="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etAddressName"
@@ -73,9 +70,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:fontFamily="@font/open_sans_medium"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/address_name_layout"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginBottom="8dp"/>
 
         <EditText
             android:id="@+id/etFullAddress"
@@ -92,28 +87,45 @@
             android:gravity="top"
             android:maxLines="3"
             android:scrollbars="vertical"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintTop_toBottomOf="@id/tvAddressLabel"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_marginBottom="24dp" />
 
-        <!-- Apply Button -->
-        <Button
-            android:id="@+id/btnApply"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/apply"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textAllCaps="false"
-            android:fontFamily="@font/open_sans_medium"
-            android:background="@drawable/button_orange"
-            android:padding="16dp"
-            app:layout_constraintTop_toBottomOf="@id/etFullAddress"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:orientation="horizontal">
+
+            <!-- Delete Button -->
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:textColor="@color/main_color"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:layout_weight="1"
+                android:fontFamily="@font/open_sans_medium"
+                android:background="@drawable/search_input"
+                android:padding="16dp"
+                android:layout_marginEnd="30dp"
+                android:visibility="gone"/>
+
+            <!-- Apply Button -->
+            <Button
+                android:id="@+id/btnApply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/apply"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:layout_weight="1"
+                android:fontFamily="@font/open_sans_medium"
+                android:background="@drawable/button_orange"
+                android:padding="16dp" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
