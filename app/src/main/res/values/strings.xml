@@ -99,4 +99,5 @@
     <string name="location_not_found">Location not found. Please try another search term.</string>
     <string name="current_location">Current Location</string>
     <string name="delete">Delete</string>
+    <string name="or">Or</string>
 </resources>
