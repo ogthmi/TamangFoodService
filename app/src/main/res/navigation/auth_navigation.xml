@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.example.tamangfood.presentation.ui.signin.SignInFragment"
+        android:name="com.example.tamangfood.presentation.ui.authentication.signin.SignInFragment"
         tools:layout="@layout/fragment_sign_in">
 
         <action
@@ -17,23 +17,29 @@
         <action
             android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPasswordFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_mainAppFragment"
+            app:destination="@id/mainAppFragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.tamangfood.presentation.ui.signup.SignUpFragment"
+        android:name="com.example.tamangfood.presentation.ui.authentication.signup.SignUpFragment"
         tools:layout="@layout/fragment_sign_up">
 
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_fingerPrintFragment"
+            app:destination="@id/fingerPrintFragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.example.tamangfood.presentation.ui.forgotpassword.ForgotPasswordFragment"
+        android:name="com.example.tamangfood.presentation.ui.authentication.forgotpassword.ForgotPasswordFragment"
         tools:layout="@layout/fragment_forgot_password">
 
         <action
@@ -43,8 +49,22 @@
 
     <fragment
         android:id="@+id/emailSentFragment"
-        android:name="com.example.tamangfood.presentation.ui.forgotpassword.ResetEmailSentFragment"
+        android:name="com.example.tamangfood.presentation.ui.authentication.forgotpassword.ResetEmailSentFragment"
         tools:layout="@layout/fragment_email_sent" />
+    <fragment
+        android:id="@+id/fingerPrintFragment"
+        android:name="com.example.tamangfood.presentation.ui.authentication.fingerprint.FingerPrintFragment"
+        android:label="fragment_finger_print"
+        tools:layout="@layout/fragment_finger_print" >
+        <action
+            android:id="@+id/action_fingerPrintFragment_to_mainAppFragment"
+            app:destination="@id/mainAppFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainAppFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.MainAppFragment"
+        android:label="fragment_main_app"
+        tools:layout="@layout/fragment_main_app" />
 
 
 </navigation>

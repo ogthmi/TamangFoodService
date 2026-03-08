@@ -3,18 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/welcome_navigation">
+    app:startDestination="@id/homeFragment">
 
-    <include app:graph="@navigation/welcome_navigation"/>
-
-    <fragment
-        android:id="@+id/fingerPrintFragment"
-        android:name="com.example.tamangfood.presentation.ui.fingerprint.FingerPrintFragment"
-        android:label="fragment_finger_print"
-        tools:layout="@layout/fragment_finger_print" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.tamangfood.presentation.ui.home.HomeFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -27,36 +20,41 @@
             app:destination="@id/updateMyProfileFragment"
             app:enterAnim="@anim/slide_right"
             app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_deliveryAddressFragment"
+            app:destination="@id/deliveryAddressFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.example.tamangfood.presentation.ui.favorite.FavoriteFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.favorite.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.example.tamangfood.presentation.ui.menu.MenuFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.menu.MenuFragment"
         android:label="fragment_menu"
         tools:layout="@layout/fragment_menu" />
     <fragment
         android:id="@+id/helpFragment"
-        android:name="com.example.tamangfood.presentation.ui.help.HelpFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.help.HelpFragment"
         android:label="fragment_help"
         tools:layout="@layout/fragment_help" />
     <fragment
         android:id="@+id/orderFragment"
-        android:name="com.example.tamangfood.presentation.ui.order.OrderFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.order.OrderFragment"
         android:label="fragment_order"
         tools:layout="@layout/fragment_order" />
     <fragment
         android:id="@+id/updateMyProfileFragment"
-        android:name="com.example.tamangfood.presentation.ui.myprofile.UpdateMyProfileFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.myprofile.UpdateMyProfileFragment"
         android:label="fragment_update_profile"
         tools:layout="@layout/fragment_update_my_profile"
         />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.tamangfood.presentation.ui.settings.SettingsFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.settings.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings">
         <action
@@ -65,9 +63,28 @@
     </fragment>
     <fragment
         android:id="@+id/passwordSettingFragment"
-        android:name="com.example.tamangfood.presentation.ui.settings.password.PasswordSettingFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.settings.password.PasswordSettingFragment"
         android:label="fragment_password_setting"
         tools:layout="@layout/fragment_password_setting" />
 
-    <include  app:graph="@navigation/auth_navigation"/>
+    <fragment
+        android:id="@+id/deliveryAddressFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.address.DeliveryAddressFragment"
+        android:label="fragment_delivery_address"
+        tools:layout="@layout/fragment_delivery_address">
+        <action
+            android:id="@+id/action_deliveryAddressFragment_to_addNewAddressFragment"
+            app:destination="@id/addNewAddressFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/addNewAddressFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.address.addnew.AddNewAddressFragment"
+        android:label="fragment_add_new_address"
+        tools:layout="@layout/fragment_add_new_address" >
+        <argument
+            android:name="detail"
+            app:argType="boolean" />
+    </fragment>
 </navigation>

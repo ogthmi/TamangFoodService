@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/accent_color"
-    tools:context=".presentation.ui.myprofile.UpdateMyProfileFragment">
+    tools:context=".presentation.ui.mainapp.home.myprofile.UpdateMyProfileFragment">
 
     <ScrollView
         android:id="@+id/scroll_content"
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_xl"
                     android:text="@string/label_full_name"
-                    android:textColor="@color/black"
+                    android:textColor="@color/main_color"
                     android:textSize="@dimen/text_caption"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_md"
                     android:text="@string/label_email_address"
-                    android:textColor="@color/black"
+                    android:textColor="@color/main_color"
                     android:textSize="@dimen/text_caption"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -180,7 +180,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_md"
                     android:text="@string/label_phone_number"
-                    android:textColor="@color/black"
+                    android:textColor="@color/main_color"
                     android:textSize="@dimen/text_caption"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -223,7 +223,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_lg"
                     android:text="@string/label_dob"
-                    android:textColor="@color/black"
+                    android:textColor="@color/main_color"
                     android:textSize="@dimen/text_caption"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"

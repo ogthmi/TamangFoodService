@@ -10,14 +10,15 @@
         android:name="com.example.tamangfood.presentation.ui.onboarding.OnboardingFragment"
         android:label="Onboarding"
         tools:layout="@layout/fragment_onboarding">
-
         <action
-            android:id="@+id/action_onboardingFragment_to_signInFragment"
-            app:destination="@id/auth_navigation"
-            app:enterAnim="@anim/slide_right"
-            app:exitAnim="@anim/slide_left"
-            />
+            android:id="@+id/action_onboardingFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/authenticationFragment"
+        android:name="com.example.tamangfood.presentation.ui.authentication.AuthenticationFragment"
+        android:label="fragment_authentication"
+        tools:layout="@layout/fragment_authentication" />
 
 
 </navigation>

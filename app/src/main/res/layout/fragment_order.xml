@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/orderFragment"
-    tools:context=".presentation.ui.order.OrderFragment">
+    tools:context=".presentation.ui.mainapp.order.OrderFragment">
 
     <TextView
         android:layout_width="match_parent"
