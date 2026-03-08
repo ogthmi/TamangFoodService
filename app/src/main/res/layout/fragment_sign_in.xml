@@ -30,18 +30,13 @@
                 android:orientation="horizontal"
                 android:padding="@dimen/spacing_md">
 
-                <ImageView
-                    android:id="@+id/iv_back"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@string/back"
-                    android:src="@drawable/ic_back_arrow_left" />
 
                 <TextView
                     android:id="@+id/tv_header_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_md"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:text="@string/sign_in"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_sm"

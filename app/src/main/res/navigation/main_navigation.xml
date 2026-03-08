@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/auth_navigation">
+    app:startDestination="@id/welcome_navigation">
+
+    <include app:graph="@navigation/welcome_navigation"/>
 
     <fragment
         android:id="@+id/fingerPrintFragment"
