@@ -62,7 +62,6 @@
                     android:layout_height="110dp"
                     app:cardCornerRadius="15dp"
                     app:cardElevation="2dp"
-
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -76,22 +75,17 @@
 
                 </androidx.cardview.widget.CardView>
 
-
                 <ImageView
                     android:id="@+id/iv_camera"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:elevation="8dp"
                     android:padding="5dp"
-
                     android:src="@drawable/ic_camera"
-
                     android:translationX="10dp"
                     android:translationY="10dp"
-
                     app:layout_constraintBottom_toBottomOf="@id/card_view"
                     app:layout_constraintEnd_toEndOf="@id/card_view" />
-
 
                 <TextView
                     android:id="@+id/tv_full_name_label"
@@ -107,14 +101,14 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_full_name"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_xs"
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
+                    app:endIconMode="custom"
                     app:hintEnabled="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:helperTextTextColor="@color/orange_base"
                     app:layout_constraintTop_toBottomOf="@id/tv_full_name_label">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -124,10 +118,15 @@
                         android:background="@drawable/edittext_underline"
                         android:hint="@string/hint_full_name"
                         android:inputType="textPersonName"
-                        android:padding="@dimen/spacing_sm"
-                        android:textColor="@color/main_color"
                         android:textColorHint="@color/body_text"
-                        android:textSize="@dimen/text_caption" />
+                        android:textColor="@color/main_color"
+                        android:padding="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:includeFontPadding="false"
+                        android:fontFamily="@font/abeezee"
+                        android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -145,14 +144,14 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_email"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_xs"
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
+                    app:endIconMode="custom"
                     app:hintEnabled="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:helperTextTextColor="@color/orange_base"
                     app:layout_constraintTop_toBottomOf="@id/tv_email_label">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -163,10 +162,15 @@
                         android:background="@drawable/edittext_underline"
                         android:hint="@string/hint_email"
                         android:inputType="textEmailAddress"
-                        android:padding="@dimen/spacing_sm"
-                        android:textColor="@color/main_color"
                         android:textColorHint="@color/body_text"
-                        android:textSize="@dimen/text_caption" />
+                        android:textColor="@color/main_color"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:includeFontPadding="false"
+                        android:fontFamily="@font/abeezee"
+                        android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -184,14 +188,14 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_phone"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_xs"
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
+                    app:endIconMode="custom"
                     app:hintEnabled="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:helperTextTextColor="@color/orange_base"
                     app:layout_constraintTop_toBottomOf="@id/tv_phone_label">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -201,10 +205,15 @@
                         android:background="@drawable/edittext_underline"
                         android:hint="@string/hint_phone_number"
                         android:inputType="phone"
-                        android:padding="@dimen/spacing_sm"
-                        android:textColor="@color/main_color"
                         android:textColorHint="@color/body_text"
-                        android:textSize="@dimen/text_caption" />
+                        android:textColor="@color/main_color"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:includeFontPadding="false"
+                        android:fontFamily="@font/abeezee"
+                        android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -222,7 +231,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_dob"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_xs"
                     app:boxStrokeWidth="0dp"
@@ -230,8 +239,7 @@
                     app:endIconMode="custom"
                     app:endIconTint="@color/orange_base"
                     app:hintEnabled="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:helperTextTextColor="@color/orange_base"
                     app:layout_constraintTop_toBottomOf="@id/tv_dob_label">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -240,10 +248,15 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_underline"
                         android:hint="@string/hint_date"
-                        android:padding="@dimen/spacing_sm"
-                        android:textColor="@color/main_color"
                         android:textColorHint="@color/body_text"
-                        android:textSize="@dimen/text_caption" />
+                        android:textColor="@color/main_color"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:includeFontPadding="false"
+                        android:fontFamily="@font/abeezee"
+                        android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

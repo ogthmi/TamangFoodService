@@ -72,5 +72,6 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     implementation("androidx.biometric:biometric:1.2.0-alpha05")
+    implementation("com.github.yalantis:ucrop:2.2.8")
 
 }
