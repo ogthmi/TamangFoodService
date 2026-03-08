@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -45,6 +46,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Overlay
 import java.util.Locale
+import kotlin.math.ln
 
 @AndroidEntryPoint
 class AddNewAddressFragment : Fragment() {
@@ -63,6 +65,9 @@ class AddNewAddressFragment : Fragment() {
     private var locationCallback: LocationCallback? = null
     private var lat: Double = DefaultLocation.LAT.value
     private var lng: Double = DefaultLocation.LNG.value
+    private val args: AddNewAddressFragmentArgs by navArgs()
+    private var isDetails: Boolean = false
+    private var curName: String? = null
 
     private val locationPermissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -82,7 +87,7 @@ class AddNewAddressFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-
+        isDetails = args.detail
         // Initialize FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
@@ -93,6 +98,17 @@ class AddNewAddressFragment : Fragment() {
         )
         Configuration.getInstance().userAgentValue = requireContext().packageName
 
+        if(isDetails){
+            //TODO: get infor address from server
+            // Mock data
+            lat = DefaultLocation.LAT.value
+            lng = DefaultLocation.LNG.value
+            val name = "Home"
+            curName = name
+            val address = "Ha Noi, Viet Nam"
+            showAddressFormBottomSheet(GeoPoint(lat, lng), address, name)
+
+        }
         setupMap()
         setupSearchBar()
         setupRecyclerView()
@@ -197,12 +213,14 @@ class AddNewAddressFragment : Fragment() {
     }
 
     private fun updateMapToLocation(geoPoint: GeoPoint) {
-        mapView?.controller?.setCenter(geoPoint)
+        var curPoint = geoPoint
+        if(isDetails) curPoint = GeoPoint(lat, lng)
+        mapView?.controller?.setCenter(curPoint)
         mapView?.controller?.setZoom(Zoom.DEFAULT.value)
-        selectedLocation = geoPoint
-        updateMarker(geoPoint)
-        lat = geoPoint.latitude
-        lng = geoPoint.longitude
+        selectedLocation = curPoint
+        updateMarker(curPoint)
+        lat = curPoint.latitude
+        lng = curPoint.longitude
     }
 
 
@@ -240,15 +258,15 @@ class AddNewAddressFragment : Fragment() {
                 val addressText = address?.getAddressLine(0) 
                     ?: "${geoPoint.latitude}, ${geoPoint.longitude}"
                 
-                showAddressFormBottomSheet(geoPoint, addressText)
+                showAddressFormBottomSheet(geoPoint, addressText, curName)
             } catch (e: Exception) {
                 val addressText = "${geoPoint.latitude}, ${geoPoint.longitude}"
-                showAddressFormBottomSheet(geoPoint, addressText)
+                showAddressFormBottomSheet(geoPoint, addressText, curName)
             }
         }
     }
     
-    private fun showAddressFormBottomSheet(location: GeoPoint, address: String) {
+    private fun showAddressFormBottomSheet(location: GeoPoint, address: String, name: String? = null) {
         addressFormBottomSheet?.dismiss()
         
         parentFragmentManager.setFragmentResultListener(
@@ -260,7 +278,9 @@ class AddNewAddressFragment : Fragment() {
         
         addressFormBottomSheet = AddressFormBottomSheet.newInstance(
             location = location,
-            address = address
+            address = address,
+            isDetails = isDetails,
+            name = name ?: ""
         )
         addressFormBottomSheet?.show(parentFragmentManager, AddressFormBottomSheet.TAG)
     }
@@ -277,7 +297,7 @@ class AddNewAddressFragment : Fragment() {
             binding.mapView.visibility = View.VISIBLE
             binding.btnBackToCurrentLocation.visibility = View.VISIBLE
             
-            showAddressFormBottomSheet(item.geoPoint, item.fullAddress)
+            showAddressFormBottomSheet(item.geoPoint, item.fullAddress, curName)
         }
         
         binding.rvSearchResults.apply {

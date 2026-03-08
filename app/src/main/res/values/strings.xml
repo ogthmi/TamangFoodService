@@ -98,4 +98,5 @@
     <string name="search_location">Search location...</string>
     <string name="location_not_found">Location not found. Please try another search term.</string>
     <string name="current_location">Current Location</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -18,6 +18,8 @@ class AddressFormBottomSheet : BottomSheetDialogFragment() {
     
     private var selectedLocation: GeoPoint? = null
     private var fullAddress: String? = null
+    private var isDetail: Boolean = false
+    private var name: String? = null
 
     companion object {
         const val TAG = "AddressFormBottomSheet"
@@ -26,16 +28,22 @@ class AddressFormBottomSheet : BottomSheetDialogFragment() {
         private const val ARG_LATITUDE = "latitude"
         private const val ARG_LONGITUDE = "longitude"
         private const val ARG_ADDRESS = "address"
+        private const val ARG_DETAIL = "isDetail"
+        private const val ARG_NAME = "name"
         
         fun newInstance(
             location: GeoPoint,
-            address: String
+            address: String,
+            isDetails: Boolean,
+            name: String
         ): AddressFormBottomSheet {
             return AddressFormBottomSheet().apply {
                 arguments = Bundle().apply {
                     putDouble(ARG_LATITUDE, location.latitude)
                     putDouble(ARG_LONGITUDE, location.longitude)
                     putString(ARG_ADDRESS, address)
+                    putBoolean(ARG_DETAIL, isDetails)
+                    putString(ARG_NAME, name)
                 }
             }
         }
@@ -48,6 +56,8 @@ class AddressFormBottomSheet : BottomSheetDialogFragment() {
             val longitude = it.getDouble(ARG_LONGITUDE)
             selectedLocation = GeoPoint(latitude, longitude)
             fullAddress = it.getString(ARG_ADDRESS)
+            isDetail = it.getBoolean(ARG_DETAIL)
+            name = it.getString(ARG_NAME)
         }
     }
 
@@ -68,6 +78,12 @@ class AddressFormBottomSheet : BottomSheetDialogFragment() {
         }
         
         setupClickListeners()
+
+        if(name != null){
+            binding.btnDelete.visibility = View.VISIBLE
+            binding.btnApply.text = "Update"
+            binding.etAddressName.setText(name)
+        }
     }
 
     private fun setupClickListeners() {
@@ -93,10 +109,11 @@ class AddressFormBottomSheet : BottomSheetDialogFragment() {
                 Toast.makeText(requireContext(), "Please select a location on the map", Toast.LENGTH_SHORT).show()
             }
         }
-    }
 
-    fun updateAddress(address: String) {
-        binding.etFullAddress.setText(address)
+        binding.btnDelete.setOnClickListener {
+
+            // TODO: delete address
+        }
     }
 
     override fun onDestroyView() {

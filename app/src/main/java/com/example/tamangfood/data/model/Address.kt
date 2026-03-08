@@ -6,6 +6,5 @@ data class Address(
     val fullAddress: String,
     val latitude: Double,
     val longitude: Double,
-    val isSelected: Boolean = false
 )
 

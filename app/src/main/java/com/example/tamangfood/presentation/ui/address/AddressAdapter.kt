@@ -9,8 +9,7 @@ import com.example.tamangfood.data.model.Address
 import com.example.tamangfood.databinding.ItemAddressBinding
 
 class AddressAdapter(
-    private val onItemClick: (Address) -> Unit,
-    private val onSelectClick: (Address) -> Unit
+    private val onItemClick: (Address) -> Unit
 ) : ListAdapter<Address, AddressAdapter.AddressViewHolder>(AddressDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressViewHolder {
@@ -34,20 +33,9 @@ class AddressAdapter(
             binding.apply {
                 tvAddressName.text = address.name
                 tvAddressFull.text = address.fullAddress
-                
-                // Show selected state
-                if (address.isSelected) {
-                    ivSelect.setImageResource(android.R.drawable.checkbox_on_background)
-                } else {
-                    ivSelect.setImageResource(android.R.drawable.checkbox_off_background)
-                }
 
                 root.setOnClickListener {
                     onItemClick(address)
-                }
-
-                ivSelect.setOnClickListener {
-                    onSelectClick(address)
                 }
             }
         }
