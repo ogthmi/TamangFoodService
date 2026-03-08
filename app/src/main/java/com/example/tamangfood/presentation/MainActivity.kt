@@ -27,26 +27,6 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
-        binding.bottomNav.setupWithNavController(navController)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.signInFragment,
-                R.id.signUpFragment,
-                R.id.forgotPasswordFragment,
-                R.id.emailSentFragment,
-                R.id.onboardingFragment -> {
-                    binding.bottomNav.visibility = View.GONE
-                }
-
-                else -> {
-                    binding.bottomNav.visibility = View.VISIBLE
-                }
-            }
-        }
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

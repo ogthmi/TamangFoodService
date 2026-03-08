@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/favoriteFragment"
-    tools:context=".presentation.ui.favorite.FavoriteFragment">
+    tools:context=".presentation.ui.mainapp.favorite.FavoriteFragment">
 
     <TextView
         android:layout_width="match_parent"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/accent_color"
-    tools:context=".presentation.ui.signin.SignInFragment">
+    tools:context=".presentation.ui.authentication.signin.SignInFragment">
 
     <ScrollView
         android:id="@+id/scroll_content"
@@ -57,7 +57,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/sign_in_screen_title"
-                    android:textColor="@color/black"
+                    android:textColor="@color/main_color"
                     android:textSize="@dimen/text_xl"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_lg"
                     android:text="@string/label_email_address"
-                    android:textColor="@color/black"
+                    android:textColor="@color/main_color"
                     android:textSize="@dimen/text_caption"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_md"
                     android:text="@string/label_password"
-                    android:textColor="@color/black"
+                    android:textColor="@color/main_color"
                     android:textSize="@dimen/text_caption"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -215,6 +215,31 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_no_account"
                     app:layout_constraintTop_toTopOf="@id/tv_no_account" />
+
+                <TextView
+                    android:id="@+id/tv_or"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/or"
+                    android:textColor="@color/body_text"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/open_sans_medium"
+                    app:layout_constraintTop_toBottomOf="@id/tv_create_account"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/iv_fingerprint"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_finger_print"
+                    app:tint="@color/active_color"
+                    android:layout_marginTop="10dp"
+                    android:contentDescription="@string/set_your_fingerprint"
+                    app:layout_constraintTop_toBottomOf="@id/tv_or"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

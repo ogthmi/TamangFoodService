@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/active_color"
-    tools:context=".presentation.ui.fingerprint.FingerPrintFragment">
+    tools:context=".presentation.ui.authentication.fingerprint.FingerPrintFragment">
 
     <!-- Yellow Header Container -->
     <LinearLayout

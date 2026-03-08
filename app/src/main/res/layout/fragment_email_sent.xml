@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/accent_color"
-    tools:context=".presentation.ui.forgotpassword.ResetEmailSentFragment">
+    tools:context=".presentation.ui.authentication.forgotpassword.ResetEmailSentFragment">
 
     <ScrollView
         android:id="@+id/scroll_content"
@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/reset_email_title"
-                    android:textColor="@color/black"
+                    android:textColor="@color/main_color"
                     android:textSize="@dimen/text_xl"
                     app:layout_constraintTop_toTopOf="parent" />
 
