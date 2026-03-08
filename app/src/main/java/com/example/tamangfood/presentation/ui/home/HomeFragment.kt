@@ -108,7 +108,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupDrawerListener(){
-        binding.menuMyProfile.setOnClickListener {}
+        binding.menuMyProfile.setOnClickListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToUpdateMyProfileFragment())
+        }
 
         binding.menuMyOrders.setOnClickListener {  }
 

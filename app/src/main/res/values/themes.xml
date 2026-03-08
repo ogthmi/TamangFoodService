@@ -1,10 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Base.Theme.TamangFood" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:fontFamily">@font/abeezee</item>
-        <item name="fontFamily">@font/abeezee</item>
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="Theme.TamangFood" parent="Base.Theme.TamangFood" />
+
     <style name="CircleImage">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>

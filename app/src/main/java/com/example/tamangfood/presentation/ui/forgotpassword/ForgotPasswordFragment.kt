@@ -31,8 +31,8 @@ class ForgotPasswordFragment: Fragment(R.layout.fragment_forgot_password) {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         binding.btnResetPassword.setOnClickListener {
-            handleForgotPassword()
-            findNavController().navigate(R.id.emailSentFragment)
+            val hasValidEmail = handleForgotPassword()
+            if (hasValidEmail) findNavController().navigate(R.id.emailSentFragment)
         }
     }
 
@@ -40,18 +40,22 @@ class ForgotPasswordFragment: Fragment(R.layout.fragment_forgot_password) {
 
     }
 
-    private fun handleForgotPassword() {
+    private fun handleForgotPassword(): Boolean {
         var email = binding.etEmail.text.toString().trim()
 
         if (email.isEmpty()) {
             binding.layoutEmail.helperText = "Email is required"
             binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
+            return false
         }
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.layoutEmail.helperText = "Invalid email"
             binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
+            return false
         }
+
+        return true
     }
 
 }
