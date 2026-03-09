@@ -100,4 +100,37 @@
     <string name="current_location">Current Location</string>
     <string name="delete">Delete</string>
     <string name="or">Or</string>
+    
+    <!-- Order related strings -->
+    <string name="active">Active</string>
+    <string name="completed">Completed</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="cancel_order">Cancel Order</string>
+    <string name="track_driver">Track Driver</string>
+    <string name="leave_a_review">Leave a Review</string>
+    <string name="order_again">Order Again</string>
+    <string name="no_orders">You don\'t have any orders at this time</string>
+    
+    <!-- Cancel Order strings -->
+    <string name="cancel_order_description">Please let us know why you want to cancel this order.
+Your feedback helps us improve our service and provide a better experience next time.</string>
+    <string name="cancel_reason_1">I ordered by mistake</string>
+    <string name="cancel_reason_2">The delivery time is too long</string>
+    <string name="cancel_reason_3">I found a better price elsewhere</string>
+    <string name="cancel_reason_4">The restaurant is too far away</string>
+    <string name="cancel_reason_5">I changed my mind</string>
+    <string name="others">Others</string>
+    <string name="others_reason_hint">Others reason…</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    
+    <!-- Order Cancelled Success strings -->
+    <string name="order_cancelled_title">¡Order Cancelled!</string>
+    <string name="order_cancelled_message">Your order has been successfully cancelled</string>
+    <string name="support_message">If you have any question reach directly to our customer support</string>
+    
+    <!-- Leave Review strings -->
+    <string name="review_prompt">We\'d love to know what you think of your dish.</string>
+    <string name="leave_us_your_comment">Leave us your comment!</string>
+    <string name="write_review_hint">Write Review…</string>
 </resources>

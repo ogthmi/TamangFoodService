@@ -13,12 +13,20 @@
         <action
             android:id="@+id/action_onboardingFragment_to_authenticationFragment"
             app:destination="@id/authenticationFragment" />
+        <action
+            android:id="@+id/action_onboardingFragment_to_mainAppFragment2"
+            app:destination="@id/mainAppFragment2" />
     </fragment>
     <fragment
         android:id="@+id/authenticationFragment"
         android:name="com.example.tamangfood.presentation.ui.authentication.AuthenticationFragment"
         android:label="fragment_authentication"
         tools:layout="@layout/fragment_authentication" />
+    <fragment
+        android:id="@+id/mainAppFragment2"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.MainAppFragment"
+        android:label="fragment_main_app"
+        tools:layout="@layout/fragment_main_app" />
 
 
 </navigation>

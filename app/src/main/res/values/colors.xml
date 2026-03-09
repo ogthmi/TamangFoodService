@@ -11,4 +11,5 @@
     <color name="orange_base">#E95322</color>
     <color name="accent_color">#F8B64C</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="unselected">#FFDECF</color>
 </resources>
