@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.data.model.Order
@@ -27,6 +28,7 @@ class OrderFragment : Fragment() {
     private lateinit var orderAdapter: OrderAdapter
     private lateinit var order: List<Order>
     private var selectTab = OrderStatus.ACTIVE
+    private val args: OrderFragmentArgs by navArgs()
 
     companion object {
         private const val STATE_SELECTED_TAB_INDEX = "state_selected_tab_index"
@@ -42,12 +44,13 @@ class OrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Utils.showBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
 
         mockData()
+        setupUI()
         setupRecyclerView()
         setupTabListeners()
         restoreSelectedTabAndList(savedInstanceState)
+        setupClickListeners()
     }
 
     override fun onResume() {
@@ -63,6 +66,24 @@ class OrderFragment : Fragment() {
         }
         outState.putInt(STATE_SELECTED_TAB_INDEX, tabIndex)
         super.onSaveInstanceState(outState)
+    }
+
+    private fun setupUI(){
+        val isFromDrawer = args.isFromDrawer
+        if (isFromDrawer) {
+            binding.ivBack.visibility = View.VISIBLE
+            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+        }
+        else {
+            binding.ivBack.visibility = View.GONE
+            Utils.showBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+        }
+    }
+
+    private fun setupClickListeners(){
+        binding.ivBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun persistSelectedTabToBackStack() {

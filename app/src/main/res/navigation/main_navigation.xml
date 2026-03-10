@@ -32,7 +32,14 @@
             app:exitAnim="@anim/slide_left" />
         <action
             android:id="@+id/action_homeFragment_to_recommendFragment"
-            app:destination="@id/recommendFragment" />
+            app:destination="@id/recommendFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left"/>
+        <action
+            android:id="@+id/action_homeFragment_to_orderFragment"
+            app:destination="@id/orderFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left"/>
     </fragment>
 
     <fragment
@@ -70,6 +77,9 @@
             app:destination="@id/leaveReviewFragment"
             app:enterAnim="@anim/slide_right"
             app:exitAnim="@anim/slide_left" />
+        <argument android:name="isFromDrawer"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/cancelOrderFragment"
