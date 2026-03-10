@@ -1,34 +1,38 @@
-package com.example.tamangfood.presentation.ui.mainapp.home.bestseller
+package com.example.tamangfood.presentation.ui.mainapp.home.recommend
 
+import androidx.fragment.app.viewModels
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.data.model.Food
-import com.example.tamangfood.databinding.FragmentBestSellerBinding
+import com.example.tamangfood.data.model.Order
+import com.example.tamangfood.databinding.FragmentOrderBinding
+import com.example.tamangfood.databinding.FragmentRecommendBinding
 import com.example.tamangfood.presentation.ui.mainapp.FoodAdapter
+import com.example.tamangfood.presentation.ui.mainapp.order.OrderAdapter
 import com.example.tamangfood.presentation.utils.FoodType
 import com.example.tamangfood.presentation.utils.GridSpacingItem
+import com.example.tamangfood.presentation.utils.OrderStatus
+import com.example.tamangfood.presentation.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BestSellerFragment : Fragment() {
-    private var _binding: FragmentBestSellerBinding? = null
+class RecommendFragment : Fragment() {
+    private var _binding: FragmentRecommendBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var adapter: FoodAdapter
-    private lateinit var bestSellerList: List<Food>
+    private lateinit var recommendList: List<Food>
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBestSellerBinding.inflate(inflater, container, false)
+        _binding = FragmentRecommendBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -36,8 +40,8 @@ class BestSellerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mockData()
-        setUpClickListeners()
         setUpRecyclerView()
+        setUpClickListeners()
     }
 
     private fun setUpClickListeners() {
@@ -53,18 +57,18 @@ class BestSellerFragment : Fragment() {
             onAddToCartClick = { }
         )
 
-        binding.rvBestSellerGrid.apply {
+        binding.rvRecommendGrid.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = this@BestSellerFragment.adapter
+            adapter = this@RecommendFragment.adapter
             val space = resources.getDimensionPixelSize(R.dimen.space)
             addItemDecoration(GridSpacingItem(2, space))
         }
 
-        adapter.submitList(bestSellerList)
+        adapter.submitList(recommendList)
     }
 
     private fun mockData(){
-        bestSellerList = listOf(
+        recommendList = listOf(
             Food(
                 id = 1,
                 name = "Sunny Bruschetta",
@@ -127,10 +131,9 @@ class BestSellerFragment : Fragment() {
             ),
         )
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-}
 
+}

@@ -30,6 +30,9 @@
             app:destination="@id/bestSellerFragment"
             app:enterAnim="@anim/slide_right"
             app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_recommendFragment"
+            app:destination="@id/recommendFragment" />
     </fragment>
 
     <fragment
@@ -137,4 +140,9 @@
             android:name="detail"
             app:argType="boolean" />
     </fragment>
+    <fragment
+        android:id="@+id/recommendFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.recommend.RecommendFragment"
+        android:label="fragment_recommend"
+        tools:layout="@layout/fragment_recommend" />
 </navigation>

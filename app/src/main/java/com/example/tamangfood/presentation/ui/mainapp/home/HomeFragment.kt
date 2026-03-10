@@ -147,6 +147,12 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToBestSellerFragment())
         }
+
+        binding.btnViewAllRecommend.setOnClickListener {
+            isNavigatingToFragment = true
+            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToRecommendFragment())
+        }
     }
 
     override fun onDestroyView() {
