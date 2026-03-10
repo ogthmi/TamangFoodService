@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -120,7 +119,14 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToUpdateMyProfileFragment())
         }
 
-        binding.menuMyOrders.setOnClickListener {  }
+        binding.menuMyOrders.setOnClickListener {
+            isNavigatingToFragment = true
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
+            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+            val action = HomeFragmentDirections.actionHomeFragmentToOrderFragment()
+            action.isFromDrawer = true
+            findNavController().navigate(action)
+        }
 
         binding.menuDeliveryAddress.setOnClickListener {
             isNavigatingToFragment = true
