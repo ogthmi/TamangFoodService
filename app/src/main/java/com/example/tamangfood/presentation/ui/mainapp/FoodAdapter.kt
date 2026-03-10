@@ -1,25 +1,22 @@
-package com.example.tamangfood.presentation.ui.mainapp.home.bestseller
+package com.example.tamangfood.presentation.ui.mainapp
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tamangfood.R
 import com.example.tamangfood.data.model.Food
-import com.example.tamangfood.databinding.ItemBestSellerGridBinding
-import com.example.tamangfood.presentation.utils.FoodType
+import com.example.tamangfood.databinding.ItemFoodBinding
 import com.example.tamangfood.presentation.utils.ImageFoodType
-import com.example.tamangfood.presentation.utils.Utils
 
-class BestSellerAdapter(
+class FoodAdapter(
     private val onItemClick: (Food) -> Unit,
     private val onFavoriteClick: (Food) -> Unit,
     private val onAddToCartClick: (Food) -> Unit,
-) : ListAdapter<Food, BestSellerAdapter.BestSellerViewHolder>(BestSellerDiffUtil()) {
+) : ListAdapter<Food, FoodAdapter.BestSellerViewHolder>(BestSellerDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BestSellerViewHolder {
-        val binding = ItemBestSellerGridBinding.inflate(
+        val binding = ItemFoodBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -32,7 +29,7 @@ class BestSellerAdapter(
     }
 
     class BestSellerViewHolder(
-        private val binding: ItemBestSellerGridBinding,
+        private val binding: ItemFoodBinding,
         private val onItemClick: (Food) -> Unit,
         private val onFavoriteClick: (Food) -> Unit,
         private val onAddToCartClick: (Food) -> Unit,
@@ -59,4 +56,3 @@ class BestSellerAdapter(
             oldItem == newItem
     }
 }
-

@@ -134,4 +134,6 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="review_prompt">We\'d love to know what you think of your dish.</string>
     <string name="leave_us_your_comment">Leave us your comment!</string>
     <string name="write_review_hint">Write Review…</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="recommend_subtitle">Discover the dishes recommended by the chef.</string>
 </resources>
