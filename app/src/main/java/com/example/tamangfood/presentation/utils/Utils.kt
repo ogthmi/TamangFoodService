@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import com.example.tamangfood.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 object Utils {
@@ -46,5 +47,13 @@ enum class FoodType {
     VEGAN,
     DESSERT,
     DRINK
+}
+
+enum class ImageFoodType(val imageRes: Int){
+    SNACK(R.drawable.ic_snack),
+    MEAL(R.drawable.ic_meal),
+    VEGAN(R.drawable.ic_vegan),
+    DESSERT(R.drawable.ic_dessert),
+    DRINK(R.drawable.ic_drink)
 }
 

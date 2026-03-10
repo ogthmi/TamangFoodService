@@ -216,14 +216,14 @@ class OrderFragment : Fragment() {
                         1,
                         4.5,
                         FoodType.DESSERT,
-                        R.drawable.ic_launcher_background),
+                        imageRes = R.drawable.ic_launcher_background),
                     Food(2,
                         "Chocolate Cake",
                         "$10.00",
                         1,
                         5.0,
                         FoodType.DRINK,
-                        R.drawable.ic_launcher_background)
+                        imageRes = R.drawable.ic_launcher_background)
                 )
             ),
             // Completed orders
@@ -242,14 +242,14 @@ class OrderFragment : Fragment() {
                         1,
                         3.5,
                         FoodType.MEAL,
-                        R.drawable.ic_launcher_background),
+                        imageRes = R.drawable.ic_launcher_background),
                     Food(4,
                         "Rice Bowl",
                         "$25.00",
                         1,
                         3.0,
                         FoodType.SNACK,
-                        R.drawable.ic_launcher_background)
+                        imageRes = R.drawable.ic_launcher_background)
                 )
             ),
             Order(
@@ -267,7 +267,7 @@ class OrderFragment : Fragment() {
                         1,
                         4.0,
                         FoodType.VEGAN,
-                        R.drawable.ic_launcher_background),
+                        imageRes = R.drawable.ic_launcher_background),
                     Food(
                         6,
                         "French Fries",
@@ -275,7 +275,7 @@ class OrderFragment : Fragment() {
                         1,
                         4.2,
                         FoodType.SNACK,
-                        R.drawable.ic_launcher_background
+                        imageRes = R.drawable.ic_launcher_background
                     )
                 )
             ),
@@ -295,7 +295,7 @@ class OrderFragment : Fragment() {
                         1,
                         4.6,
                         FoodType.DRINK,
-                        R.drawable.ic_launcher_background
+                        imageRes = R.drawable.ic_launcher_background
                     )
                 )
             ),
@@ -314,14 +314,14 @@ class OrderFragment : Fragment() {
                         1,
                         5.0,
                         FoodType.DESSERT,
-                        R.drawable.ic_launcher_background),
+                        imageRes = R.drawable.ic_launcher_background),
                     Food(9,
                         "Ice Cream",
                         "$10.00",
                         1,
                         4.5,
                         FoodType.DESSERT,
-                        R.drawable.ic_launcher_background)
+                        imageRes = R.drawable.ic_launcher_background)
                 )
             ),
             // Cancelled orders
@@ -341,7 +341,7 @@ class OrderFragment : Fragment() {
                         2,
                         4.4,
                         FoodType.MEAL,
-                        R.drawable.ic_launcher_background
+                        imageRes = R.drawable.ic_launcher_background
                     ),
                     Food(
                         11,
@@ -350,7 +350,7 @@ class OrderFragment : Fragment() {
                         1,
                         4.1,
                         FoodType.MEAL,
-                        R.drawable.ic_launcher_background
+                        imageRes = R.drawable.ic_launcher_background
                     ),
                     Food(
                         12,
@@ -359,7 +359,7 @@ class OrderFragment : Fragment() {
                         1,
                         4.7,
                         FoodType.MEAL,
-                        R.drawable.ic_launcher_background
+                        imageRes = R.drawable.ic_launcher_background
                     )
                 )
             ),
@@ -379,7 +379,7 @@ class OrderFragment : Fragment() {
                         1,
                         4.3,
                         FoodType.DRINK,
-                        R.drawable.ic_launcher_background
+                        imageRes = R.drawable.ic_launcher_background
                     ),
                     Food(
                         14,
@@ -388,7 +388,7 @@ class OrderFragment : Fragment() {
                         1,
                         4.0,
                         FoodType.DRINK,
-                        R.drawable.ic_launcher_background
+                        imageRes = R.drawable.ic_launcher_background
                     )
                 )
             )
