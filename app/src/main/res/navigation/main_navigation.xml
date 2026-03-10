@@ -25,7 +25,18 @@
             app:destination="@id/deliveryAddressFragment"
             app:enterAnim="@anim/slide_right"
             app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_bestSellerFragment"
+            app:destination="@id/bestSellerFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
     </fragment>
+
+    <fragment
+        android:id="@+id/bestSellerFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.bestseller.BestSellerFragment"
+        android:label="fragment_best_seller"
+        tools:layout="@layout/fragment_best_seller" />
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.favorite.FavoriteFragment"

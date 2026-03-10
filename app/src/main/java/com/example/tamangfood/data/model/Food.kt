@@ -10,5 +10,6 @@ data class Food(
     val quantity: Int,
     val rating: Double,
     val type: FoodType,
+    val description: String? = null,
     @DrawableRes val imageRes: Int
 )

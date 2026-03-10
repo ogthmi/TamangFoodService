@@ -40,6 +40,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         setupFoodRecommendRecyclerViews()
         setupDrawer()
         setupDrawerListener()
+        setupClickListeners()
     }
 
     private fun setupFoodBestSellerRecyclerViews() {
@@ -103,7 +104,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                 if (!isNavigatingToFragment) {
                     Utils.showBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
                 }
-                isNavigatingToFragment = false // Reset flag
+                isNavigatingToFragment = false
             }
 
             override fun onDrawerStateChanged(newState: Int) {
@@ -138,6 +139,14 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         }
 
         binding.menuLogout.setOnClickListener {  }
+    }
+
+    private fun setupClickListeners() {
+        binding.btnViewAllBestSeller.setOnClickListener {
+            isNavigatingToFragment = true
+            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToBestSellerFragment())
+        }
     }
 
     override fun onDestroyView() {
