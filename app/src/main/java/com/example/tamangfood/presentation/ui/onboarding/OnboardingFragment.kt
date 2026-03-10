@@ -83,7 +83,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
     private fun setupClick() {
         binding.btnGetStarted.setOnClickListener {
             findNavController().navigate(
-                OnboardingFragmentDirections.actionOnboardingFragmentToAuthenticationFragment(),
+                OnboardingFragmentDirections.actionOnboardingFragmentToMainAppFragment2(),
                 navOptions = NavOptions.Builder()
                     .setPopUpTo(R.id.onboardingFragment, true)
                     .build()

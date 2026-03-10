@@ -33,3 +33,18 @@ enum class DefaultLocation(val value: Double){ //Set HaNoi
 enum class Zoom(val value: Double){
     DEFAULT(15.0),
 }
+
+enum class OrderStatus {
+    ACTIVE,
+    COMPLETED,
+    CANCELLED
+}
+
+enum class FoodType {
+    SNACK,
+    MEAL,
+    VEGAN,
+    DESSERT,
+    DRINK
+}
+
