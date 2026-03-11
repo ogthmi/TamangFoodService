@@ -1,4 +1,4 @@
-package com.example.tamangfood.presentation.ui.mainapp.home.settings
+package com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater

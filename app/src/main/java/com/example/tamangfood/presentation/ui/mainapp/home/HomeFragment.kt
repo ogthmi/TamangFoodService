@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.databinding.FragmentHomeBinding
+import com.example.tamangfood.presentation.ui.mainapp.home.cart.CartFragment
+import com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.ProfileFragment
 import com.example.tamangfood.presentation.utils.SpacingItem
 import com.example.tamangfood.presentation.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +24,11 @@ class HomeFragment : androidx.fragment.app.Fragment() {
     private val binding get() = _binding!!
     private lateinit var foodBestSellerAdapter: FoodBestSellerAdapter
     private lateinit var foodRecommendAdapter: FoodRecommendAdapter
-    private var isNavigatingToFragment = false
+//    private lateinit var drawerCartAdapter: CartAdapter
+//    private val cartViewModel: CartViewModel by viewModels()
+    var isNavigatingToFragment = false
+//    private var isCartDrawerVisible = false
+//    private val currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +45,6 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         setupFoodBestSellerRecyclerViews()
         setupFoodRecommendRecyclerViews()
         setupDrawer()
-        setupDrawerListener()
         setupClickListeners()
     }
 
@@ -86,12 +92,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun setupDrawer() {
-        binding.ivProfileMenu.setOnClickListener {
-            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-            binding.drawerLayout.openDrawer(GravityCompat.END)
-        }
-
-        binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+        binding.fragmentHome.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
             }
 
@@ -111,40 +112,12 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         })
     }
 
-    private fun setupDrawerListener(){
-        binding.menuMyProfile.setOnClickListener {
-            isNavigatingToFragment = true
-            binding.drawerLayout.closeDrawer(GravityCompat.END)
-            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToUpdateMyProfileFragment())
-        }
+    private fun openDrawerFragment(fragment: Fragment) {
+        childFragmentManager.beginTransaction()
+            .replace(R.id.drawer_container, fragment)
+            .commit()
 
-        binding.menuMyOrders.setOnClickListener {
-            isNavigatingToFragment = true
-            binding.drawerLayout.closeDrawer(GravityCompat.END)
-            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-            val action = HomeFragmentDirections.actionHomeFragmentToOrderFragment()
-            action.isFromDrawer = true
-            findNavController().navigate(action)
-        }
-
-        binding.menuDeliveryAddress.setOnClickListener {
-            isNavigatingToFragment = true
-            binding.drawerLayout.closeDrawer(GravityCompat.END)
-            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDeliveryAddressFragment())
-        }
-
-        binding.menuPaymentMethods.setOnClickListener {  }
-
-        binding.menuSetting.setOnClickListener {
-            isNavigatingToFragment = true
-            binding.drawerLayout.closeDrawer(GravityCompat.END)
-            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
-        }
-
-        binding.menuLogout.setOnClickListener {  }
+        binding.fragmentHome.openDrawer(GravityCompat.END)
     }
 
     private fun setupClickListeners() {
@@ -158,6 +131,15 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             isNavigatingToFragment = true
             Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToRecommendFragment())
+        }
+
+        binding.ivProfileMenu.setOnClickListener {
+            openDrawerFragment(ProfileFragment())
+        }
+
+        binding.ivCart.setOnClickListener {
+            openDrawerFragment(CartFragment())
+            binding.fragmentHome.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
         }
     }
 

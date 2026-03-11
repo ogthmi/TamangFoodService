@@ -136,4 +136,15 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="write_review_hint">Write Review…</string>
     <string name="recommendations">Recommendations</string>
     <string name="recommend_subtitle">Discover the dishes recommended by the chef.</string>
+    
+    <!-- Cart strings -->
+    <string name="cart">Cart</string>
+    <string name="your_cart_is_empty">Your cart is empty</string>
+    <string name="want_to_add_something">Want To Add Something?</string>
+    <string name="you_have_items_in_cart">You have %d items in the cart</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="tax_and_fees">Tax and Fees</string>
+    <string name="delivery">Delivery</string>
+    <string name="total">Total</string>
+    <string name="checkout">Checkout</string>
 </resources>
