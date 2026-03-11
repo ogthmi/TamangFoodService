@@ -40,6 +40,9 @@
             app:destination="@id/orderFragment"
             app:enterAnim="@anim/slide_right"
             app:exitAnim="@anim/slide_left"/>
+        <action
+            android:id="@+id/action_homeFragment_to_confirmOrderFragment"
+            app:destination="@id/confirmOrderFragment" />
     </fragment>
 
     <fragment
@@ -108,7 +111,14 @@
         android:id="@+id/orderCancelledSuccessFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.order.cancel.OrderCancelledSuccessFragment"
         android:label="fragment_order_cancelled_success"
-        tools:layout="@layout/fragment_order_cancelled_success" />
+        tools:layout="@layout/fragment_order_cancelled_success" >
+        <argument
+            android:name="isFromCancelOrder"
+            app:argType="boolean" />
+        <argument
+            android:name="isFromPlaceOrder"
+            app:argType="boolean" />
+    </fragment>
     <fragment
         android:id="@+id/updateMyProfileFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.updateprofile.UpdateMyProfileFragment"
@@ -155,4 +165,12 @@
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.recommend.RecommendFragment"
         android:label="fragment_recommend"
         tools:layout="@layout/fragment_recommend" />
+    <fragment
+        android:id="@+id/confirmOrderFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder.ConfirmOrderFragment"
+        android:label="ConfirmOrderFragment" >
+        <action
+            android:id="@+id/action_confirmOrderFragment_to_orderCancelledSuccessFragment"
+            app:destination="@id/orderCancelledSuccessFragment" />
+    </fragment>
 </navigation>

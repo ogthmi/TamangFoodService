@@ -36,17 +36,14 @@
                 android:text="John Smith"
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/open_sans_medium"/>
-
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/tv_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="loremipsum@email.com"
                 android:textColor="@color/white"
-                android:textSize="12sp"
-                android:fontFamily="@font/open_sans_medium"/>
+                android:textSize="12sp"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -77,14 +74,14 @@
                 android:layout_marginStart="16dp"
                 android:text="@string/my_orders"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                android:fontFamily="@font/open_sans_medium"/>
+                android:textSize="14sp"/>
         </LinearLayout>
 
         <!-- Line -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+            android:layout_height="1dp"
+            android:alpha="0.3"
             android:background="@color/white"/>
 
         <LinearLayout
@@ -106,14 +103,14 @@
                 android:layout_marginStart="16dp"
                 android:text="@string/my_profile"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                android:fontFamily="@font/open_sans_medium"/>
+                android:textSize="14sp"/>
         </LinearLayout>
 
         <!-- Line -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+            android:layout_height="1dp"
+            android:alpha="0.3"
             android:background="@color/white"/>
 
         <LinearLayout
@@ -135,14 +132,14 @@
                 android:layout_marginStart="16dp"
                 android:text="@string/delivery_address"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                android:fontFamily="@font/open_sans_medium"/>
+                android:textSize="14sp"/>
         </LinearLayout>
 
         <!-- Line -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+            android:layout_height="1dp"
+            android:alpha="0.3"
             android:background="@color/white"/>
 
         <LinearLayout
@@ -164,14 +161,14 @@
                 android:layout_marginStart="16dp"
                 android:text="@string/payment_methods"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                android:fontFamily="@font/open_sans_medium"/>
+                android:textSize="14sp"/>
         </LinearLayout>
 
         <!-- Line -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+            android:layout_height="1dp"
+            android:alpha="0.3"
             android:background="@color/white"/>
 
         <LinearLayout
@@ -199,7 +196,8 @@
         <!-- Line -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+            android:layout_height="1dp"
+            android:alpha="0.3"
             android:background="@color/white"/>
 
         <!-- Log out -->
@@ -223,8 +221,7 @@
                 android:layout_marginStart="16dp"
                 android:text="@string/log_out"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                android:fontFamily="@font/open_sans_medium"/>
+                android:textSize="14sp"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

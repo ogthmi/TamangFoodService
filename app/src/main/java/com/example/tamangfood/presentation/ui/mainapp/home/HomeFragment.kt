@@ -42,6 +42,8 @@ class HomeFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Utils.showBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+
+        setupDrawerWidth()
         setupFoodBestSellerRecyclerViews()
         setupFoodRecommendRecyclerViews()
         setupDrawer()
@@ -141,6 +143,15 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             openDrawerFragment(CartFragment())
             binding.fragmentHome.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
         }
+    }
+
+    private fun setupDrawerWidth() {
+        val drawer = binding.drawerContainer
+
+        val screenWidth = resources.displayMetrics.widthPixels
+        val drawerWidth = (screenWidth * 4) / 5
+
+        drawer.layoutParams.width = drawerWidth
     }
 
     override fun onDestroyView() {

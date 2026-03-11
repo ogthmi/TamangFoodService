@@ -187,6 +187,7 @@
                     android:background="@drawable/button_orange"
                     android:minHeight="48dp"
                     android:text="@string/sign_in"
+                    android:textSize="14sp"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -222,9 +223,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/or"
                     android:textColor="@color/body_text"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/open_sans_medium"
                     app:layout_constraintTop_toBottomOf="@id/tv_create_account"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>

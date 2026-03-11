@@ -40,7 +40,6 @@
                     android:layout_weight="1"
                     android:background="@drawable/search_input"
                     android:hint="@string/search"
-                    android:fontFamily="@font/open_sans_medium"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="6dp"
                     android:textColor="@color/main_color"
@@ -76,7 +75,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/good_day"
-                android:fontFamily="@font/open_sans_medium"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -85,7 +83,6 @@
                 android:id="@+id/tv_greeting_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans_medium"
                 android:text="@string/rise_and_shine_it_s_breakfast_time"
                 android:textColor="@color/orange_base"
                 android:textSize="12sp" />
@@ -133,7 +130,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/snacks"
-                            android:fontFamily="@font/open_sans_medium"
                             android:textColor="@color/main_color"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -156,7 +152,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/meal"
-                            android:fontFamily="@font/open_sans_medium"
                             android:textColor="@color/main_color"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -179,7 +174,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/vegan"
-                            android:fontFamily="@font/open_sans_medium"
                             android:textColor="@color/main_color"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -202,7 +196,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/dessert"
-                            android:fontFamily="@font/open_sans_medium"
                             android:textColor="@color/main_color"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -225,7 +218,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/drinks"
-                            android:fontFamily="@font/open_sans_medium"
                             android:textColor="@color/main_color"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -246,7 +238,6 @@
                         android:text="@string/best_seller"
                         android:textColor="@color/main_color"
                         android:textSize="16sp"
-                        android:fontFamily="@font/open_sans_medium"
                         android:textStyle="bold" />
 
                     <View
@@ -260,9 +251,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/view_all"
                         android:textColor="@color/active_color"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
-                        android:fontFamily="@font/open_sans_medium"
                         android:layout_marginEnd="10dp"/>
 
                     <ImageView
@@ -295,7 +285,6 @@
                         android:text="@string/recommend"
                         android:textColor="@color/main_color"
                         android:textSize="16sp"
-                        android:fontFamily="@font/open_sans_medium"
                         android:textStyle="bold" />
 
                     <View
@@ -309,9 +298,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/view_all"
                         android:textColor="@color/active_color"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
-                        android:fontFamily="@font/open_sans_medium"
                         android:layout_marginEnd="10dp"/>
 
                     <ImageView

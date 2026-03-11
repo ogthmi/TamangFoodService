@@ -32,9 +32,8 @@
             android:layout_weight="1"
             android:text="@string/settings"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:fontFamily="@font/open_sans_medium"
             android:gravity="center_vertical"
             android:layout_marginStart="16dp" />
     </LinearLayout>
@@ -61,7 +60,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_password_setting"
-                android:tint="@color/orange_base" />
+                app:tint="@color/orange_base" />
 
             <TextView
                 android:layout_width="0dp"
@@ -69,9 +68,8 @@
                 android:layout_weight="1"
                 android:text="@string/password_setting"
                 android:textColor="@color/main_color"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/open_sans_medium"
                 android:layout_marginStart="16dp" />
 
             <ImageView
@@ -104,9 +102,8 @@
                 android:layout_weight="1"
                 android:text="@string/delete_account"
                 android:textColor="@color/main_color"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/open_sans_medium"
                 android:layout_marginStart="16dp" />
 
             <ImageView

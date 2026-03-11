@@ -36,9 +36,8 @@
             android:layout_marginStart="16dp"
             android:text="@string/cancel_order"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:fontFamily="@font/open_sans_medium"
             android:gravity="center_vertical" />
     </LinearLayout>
 
@@ -72,7 +71,6 @@
                     android:text="@string/cancel_order_description"
                     android:textColor="@color/main_color"
                     android:textSize="14sp"
-                    android:fontFamily="@font/open_sans_medium"
                     android:lineSpacingExtra="4dp"
                     android:layout_marginBottom="24dp" />
 
@@ -93,9 +91,7 @@
             android:text="@string/submit"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/open_sans_medium"
+            android:textSize="14sp"
             android:background="@drawable/button_orange"
             android:padding="16dp"
             app:layout_constraintBottom_toBottomOf="parent"

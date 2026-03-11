@@ -64,7 +64,10 @@ class CancelOrderFragment : Fragment() {
 
         binding.btnSubmit.setOnClickListener {
             val selectedReason = cancelReasonAdapter.getSelectedReason()
-            findNavController().navigate(CancelOrderFragmentDirections.actionCancelOrderFragmentToOrderCancelledSuccessFragment())
+            findNavController().navigate(CancelOrderFragmentDirections.actionCancelOrderFragmentToOrderCancelledSuccessFragment(
+                true,
+                false
+            ))
         }
 
     }

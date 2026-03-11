@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/main_color"
         android:textSize="14sp"
-        android:fontFamily="@font/open_sans_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/ivSelected"
         app:layout_constraintTop_toTopOf="parent"

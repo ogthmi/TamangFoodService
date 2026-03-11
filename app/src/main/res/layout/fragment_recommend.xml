@@ -32,9 +32,8 @@
             android:layout_weight="1"
             android:text="@string/recommendations"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:fontFamily="@font/open_sans_medium"
             android:gravity="center_vertical"
             android:layout_marginStart="16dp" />
     </LinearLayout>
@@ -60,7 +59,6 @@
             android:textColor="@color/active_color"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:fontFamily="@font/open_sans_medium"
             android:gravity="center" />
 
         <androidx.recyclerview.widget.RecyclerView

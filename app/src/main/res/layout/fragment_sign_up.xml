@@ -337,6 +337,7 @@
                     android:background="@drawable/button_orange"
                     android:minHeight="48dp"
                     android:text="@string/sign_up"
+                    android:textSize="14sp"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
