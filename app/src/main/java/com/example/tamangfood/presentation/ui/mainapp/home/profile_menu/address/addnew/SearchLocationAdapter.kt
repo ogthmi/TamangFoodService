@@ -1,11 +1,10 @@
-package com.example.tamangfood.presentation.ui.mainapp.home.address.addnew
+package com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.address.addnew
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tamangfood.data.model.Address
 import com.example.tamangfood.data.model.SearchLocationItem
 import com.example.tamangfood.databinding.ItemSearchLocationBinding
 

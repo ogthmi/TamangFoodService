@@ -111,13 +111,13 @@
         tools:layout="@layout/fragment_order_cancelled_success" />
     <fragment
         android:id="@+id/updateMyProfileFragment"
-        android:name="com.example.tamangfood.presentation.ui.mainapp.home.myprofile.UpdateMyProfileFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.updateprofile.UpdateMyProfileFragment"
         android:label="fragment_update_profile"
         tools:layout="@layout/fragment_update_my_profile"
         />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.tamangfood.presentation.ui.mainapp.home.settings.SettingsFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.settings.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings">
         <action
@@ -126,13 +126,13 @@
     </fragment>
     <fragment
         android:id="@+id/passwordSettingFragment"
-        android:name="com.example.tamangfood.presentation.ui.mainapp.home.settings.password.PasswordSettingFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.settings.password.PasswordSettingFragment"
         android:label="fragment_password_setting"
         tools:layout="@layout/fragment_password_setting" />
 
     <fragment
         android:id="@+id/deliveryAddressFragment"
-        android:name="com.example.tamangfood.presentation.ui.mainapp.home.address.DeliveryAddressFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.address.DeliveryAddressFragment"
         android:label="fragment_delivery_address"
         tools:layout="@layout/fragment_delivery_address">
         <action
@@ -143,7 +143,7 @@
     </fragment>
     <fragment
         android:id="@+id/addNewAddressFragment"
-        android:name="com.example.tamangfood.presentation.ui.mainapp.home.address.addnew.AddNewAddressFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.address.addnew.AddNewAddressFragment"
         android:label="fragment_add_new_address"
         tools:layout="@layout/fragment_add_new_address" >
         <argument

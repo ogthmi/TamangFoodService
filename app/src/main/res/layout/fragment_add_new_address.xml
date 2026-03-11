@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/accent_color"
-    tools:context=".presentation.ui.mainapp.home.address.addnew.AddNewAddressFragment">
+    tools:context=".presentation.ui.mainapp.home.profile_menu.address.addnew.AddNewAddressFragment">
 
     <LinearLayout
         android:id="@+id/header_container"
