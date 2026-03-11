@@ -33,9 +33,8 @@
             android:layout_weight="1"
             android:text="@string/my_orders"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:fontFamily="@font/open_sans_medium"
             android:gravity="center_vertical" />
     </LinearLayout>
 
@@ -99,9 +98,8 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/no_orders"
                 android:textColor="@color/active_color"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                android:fontFamily="@font/open_sans_medium"
                 android:gravity="center" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,7 +29,6 @@
             android:paddingVertical="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="$10.0"
-            android:fontFamily="@font/open_sans_medium"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"

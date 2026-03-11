@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,8 @@ import com.example.tamangfood.data.model.CartItem
 import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.FragmentCartBinding
 import com.example.tamangfood.presentation.ui.mainapp.cart.CartAdapter
+import com.example.tamangfood.presentation.ui.mainapp.home.HomeFragment
+import com.example.tamangfood.presentation.ui.mainapp.home.HomeFragmentDirections
 import com.example.tamangfood.presentation.utils.FoodType
 import com.example.tamangfood.presentation.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
@@ -126,7 +129,7 @@ class CartFragment : Fragment() {
                 c.drawRect(background, backgroundPaint)
 
                 deleteIcon?.let { icon ->
-                    val scale = 4f
+                    val scale = 2f
                     val iconWidth = (icon.intrinsicWidth * scale).toInt()
                     val iconHeight = (icon.intrinsicHeight * scale).toInt()
 
@@ -208,12 +211,23 @@ class CartFragment : Fragment() {
             // TODO: confirm to close (don't save this changes)
             closeDrawer()
         }
+
+        binding.btnCheckout.setOnClickListener {
+            checkBottomNav()
+            closeDrawer()
+            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+            parentFragment?.findNavController()?.navigate(HomeFragmentDirections.actionHomeFragmentToConfirmOrderFragment())
+        }
     }
 
     private fun closeDrawer() {
         val drawerLayout = requireActivity().findViewById<DrawerLayout>(R.id.fragment_home)
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         drawerLayout.closeDrawer(GravityCompat.END)
+    }
+
+    private fun checkBottomNav(){
+        (parentFragment as? HomeFragment)?.isNavigatingToFragment = true
     }
 
     private fun calculateCount() {

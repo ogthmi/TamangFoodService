@@ -78,10 +78,13 @@ class AddressFormBottomSheet : BottomSheetDialogFragment() {
         
         setupClickListeners()
 
-        if(name != null){
+        if(isDetail){
             binding.btnDelete.visibility = View.VISIBLE
             binding.btnApply.text = "Update"
             binding.etAddressName.setText(name)
+        }
+        else{
+            binding.btnDelete.visibility = View.GONE
         }
     }
 

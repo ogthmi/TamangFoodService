@@ -70,6 +70,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/button_orange"
         android:text="@string/get_started"
+        android:textSize="14sp"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -32,7 +32,6 @@
             android:textColor="@color/main_color"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:fontFamily="@font/open_sans_medium"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"/>
 
@@ -56,7 +55,6 @@
                 android:textColor="@color/main_color"
                 android:background="@drawable/edittext_underline"
                 android:padding="10dp"
-                android:fontFamily="@font/open_sans_medium"
                 android:textSize="14sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -69,7 +67,6 @@
             android:textColor="@color/main_color"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:fontFamily="@font/open_sans_medium"
             android:layout_marginBottom="8dp"/>
 
         <EditText
@@ -81,7 +78,6 @@
             android:background="@drawable/input_background"
             android:textColor="@color/main_color"
             android:textSize="14sp"
-            android:fontFamily="@font/open_sans_medium"
             android:hint="@string/address"
             android:inputType="textMultiLine"
             android:gravity="top"
@@ -101,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/delete"
                 android:textColor="@color/main_color"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textAllCaps="false"
                 android:layout_weight="1"
@@ -109,7 +105,7 @@
                 android:background="@drawable/search_input"
                 android:padding="16dp"
                 android:layout_marginEnd="30dp"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <!-- Apply Button -->
             <Button
@@ -118,11 +114,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/apply"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:textSize="14sp"
                 android:textAllCaps="false"
                 android:layout_weight="1"
-                android:fontFamily="@font/open_sans_medium"
                 android:background="@drawable/button_orange"
                 android:padding="16dp" />
         </LinearLayout>

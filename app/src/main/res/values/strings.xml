@@ -128,7 +128,10 @@ Your feedback helps us improve our service and provide a better experience next 
     <!-- Order Cancelled Success strings -->
     <string name="order_cancelled_title">¡Order Cancelled!</string>
     <string name="order_cancelled_message">Your order has been successfully cancelled</string>
+    <string name="place_order_title">¡Order Confirmed!</string>
+    <string name="place_order_message">Your order has been placed succesfully</string>
     <string name="support_message">If you have any question reach directly to our customer support</string>
+    <string name="track_my_order">Track my order</string>
     
     <!-- Leave Review strings -->
     <string name="review_prompt">We\'d love to know what you think of your dish.</string>
@@ -147,4 +150,12 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="delivery">Delivery</string>
     <string name="total">Total</string>
     <string name="checkout">Checkout</string>
+    <string name="confirm_order">Confirm Order</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="edit">Edit</string>
+    <string name="place_order">Place Order</string>
+    <string name="select_address">Select Address</string>
+    <string name="estimated_distance">Estimated Distance</string>
+    <string name="estimated_time">Estimated Time</string>
 </resources>

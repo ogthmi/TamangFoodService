@@ -32,9 +32,8 @@
             android:layout_weight="1"
             android:text="@string/delivery_address"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:fontFamily="@font/open_sans_medium"
             android:gravity="center_vertical"
             android:layout_marginStart="16dp" />
     </LinearLayout>
@@ -63,9 +62,7 @@
             android:text="@string/add_new_address"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/open_sans_medium"
+            android:textSize="14sp"
             android:background="@drawable/button_orange"
             android:padding="16dp" />
     </LinearLayout>
