@@ -48,6 +48,8 @@
         Enter your phone number and email address to sign in. Enjoy your food. :)
     </string>
 
+    <string name="confirm_log_out">Are you sure you want to log out?</string>
+
     <string name="sign_up">Sign Up</string>
     <string name="sign_up_screen_title">Create new account</string>
     <string name="sign_up_screen_subtitle">
