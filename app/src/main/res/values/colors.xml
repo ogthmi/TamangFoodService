@@ -12,4 +12,5 @@
     <color name="accent_color">#F8B64C</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="unselected">#FFDECF</color>
+    <color name="tab_unselected">#F3E9B5</color>
 </resources>

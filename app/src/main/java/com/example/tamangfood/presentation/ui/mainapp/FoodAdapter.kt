@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.ItemFoodBinding
-import com.example.tamangfood.presentation.utils.ImageFoodType
+import com.example.tamangfood.presentation.utils.FoodType
 
 class FoodAdapter(
     private val onItemClick: (Food) -> Unit,
@@ -40,7 +40,7 @@ class FoodAdapter(
             binding.tvPrice.text = item.price
             binding.tvRating.text = item.rating.toString()
             binding.ivFood.setImageResource(item.imageRes)
-            binding.ivCategory.setImageResource(ImageFoodType.valueOf(item.type.name).imageRes)
+            binding.ivCategory.setImageResource(FoodType.valueOf(item.type.name).imageRes)
 
             binding.root.setOnClickListener { onItemClick(item) }
             binding.ivFavorite.setOnClickListener { onFavoriteClick(item) }

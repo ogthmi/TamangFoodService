@@ -41,19 +41,10 @@ enum class OrderStatus {
     CANCELLED
 }
 
-enum class FoodType {
-    SNACK,
-    MEAL,
-    VEGAN,
-    DESSERT,
-    DRINK
+enum class FoodType(val imageRes: Int, val title: Int, val tabSelector: Int){
+    SNACK(R.drawable.ic_snack, R.string.snacks, R.drawable.tab_snacks_selector),
+    MEAL(R.drawable.ic_meal, R.string.meal, R.drawable.tab_meal_selector),
+    VEGAN(R.drawable.ic_vegan, R.string.vegan, R.drawable.tab_vegan_selector),
+    DESSERT(R.drawable.ic_dessert, R.string.dessert, R.drawable.tab_dessert_selector),
+    DRINK(R.drawable.ic_drink, R.string.drinks, R.drawable.tab_drinks_selector);
 }
-
-enum class ImageFoodType(val imageRes: Int){
-    SNACK(R.drawable.ic_snack),
-    MEAL(R.drawable.ic_meal),
-    VEGAN(R.drawable.ic_vegan),
-    DESSERT(R.drawable.ic_dessert),
-    DRINK(R.drawable.ic_drink)
-}
-
