@@ -12,6 +12,7 @@ import com.example.tamangfood.R
 import com.example.tamangfood.databinding.FragmentProfileBinding
 import com.example.tamangfood.presentation.ui.mainapp.home.HomeFragment
 import com.example.tamangfood.presentation.ui.mainapp.home.HomeFragmentDirections
+import com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.logout.LogOutBottomSheet
 import com.example.tamangfood.presentation.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -75,7 +76,9 @@ class ProfileFragment : Fragment() {
 
         binding.menuLogout.setOnClickListener {
             checkBottomNav()
-            closeDrawer()
+            val bottomSheet = LogOutBottomSheet()
+            bottomSheet.show(parentFragmentManager, LogOutBottomSheet.TAG)
+//            closeDrawer()
         }
     }
 
