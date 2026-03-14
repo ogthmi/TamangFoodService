@@ -28,45 +28,68 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:divider="@drawable/space_linear_layout"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:divider="@drawable/space_linear_layout"
                 android:showDividers="middle">
 
-                <EditText
-                    android:id="@+id/et_search"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/search_input"
-                    android:hint="@string/search"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="6dp"
-                    android:textColor="@color/main_color"
-                    android:textColorHint="@color/body_text"
-                    android:textSize="14sp"
-                    android:drawableEnd="@drawable/ic_filter"/>
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/et_search"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/search_input"
+                        android:hint="@string/search"
+                        android:paddingVertical="6dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="40dp"
+                        android:textColor="@color/main_color"
+                        android:textColorHint="@color/body_text"
+                        android:textSize="14sp"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/iv_filter"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/ic_filter"
+
+                        app:layout_constraintBottom_toBottomOf="@id/et_search"
+                        app:layout_constraintEnd_toEndOf="@id/et_search"
+                        app:layout_constraintTop_toTopOf="@id/et_search" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- Cart button -->
                 <ImageView
                     android:id="@+id/iv_cart"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/ic_cart"/>
+                    android:background="@drawable/ic_cart" />
 
                 <!-- Notification button -->
                 <ImageView
                     android:id="@+id/iv_notification"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/ic_notification"/>
+                    android:background="@drawable/ic_notification" />
 
                 <!-- Profile menu button -->
                 <ImageView
                     android:id="@+id/iv_profile_menu"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/ic_profile"/>
+                    android:background="@drawable/ic_profile" />
             </LinearLayout>
 
             <TextView
@@ -92,10 +115,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fillViewport="true"
-            app:layout_constraintTop_toBottomOf="@id/header_container"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/header_container">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -108,8 +131,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:divider="@drawable/space_linear_layout"
+                    android:orientation="horizontal"
                     android:showDividers="middle">
 
                     <!-- Type Snack-->
@@ -123,7 +146,7 @@
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:background="@drawable/ic_snack"/>
+                            android:background="@drawable/ic_snack" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -138,9 +161,9 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                        android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="48dp"
@@ -160,9 +183,9 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                        android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="48dp"
@@ -182,14 +205,14 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                        android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:background="@drawable/ic_dessert"/>
+                            android:background="@drawable/ic_dessert" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -204,14 +227,14 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                        android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:background="@drawable/ic_drink"/>
+                            android:background="@drawable/ic_drink" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -249,17 +272,17 @@
                         android:id="@+id/btn_view_all_best_seller"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:text="@string/view_all"
                         android:textColor="@color/active_color"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="10dp"/>
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ic_back_arrow_right"
-                        android:backgroundTint="@color/active_color"/>
+                        android:backgroundTint="@color/active_color" />
                 </LinearLayout>
 
                 <!-- Best seller horizontal list -->
@@ -268,9 +291,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:layout_marginTop="12dp"
-                    tools:listitem="@layout/item_food_best_seller_card"
+                    android:orientation="horizontal"
                     tools:itemCount="5"
-                    android:orientation="horizontal"/>
+                    tools:listitem="@layout/item_food_best_seller_card" />
                 <!-- Best Seller header -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -296,17 +319,17 @@
                         android:id="@+id/btn_view_all_recommend"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
                         android:text="@string/view_all"
                         android:textColor="@color/active_color"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="10dp"/>
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ic_back_arrow_right"
-                        android:backgroundTint="@color/active_color"/>
+                        android:backgroundTint="@color/active_color" />
                 </LinearLayout>
 
                 <!-- Recommend vertical list -->
@@ -327,5 +350,5 @@
         android:id="@+id/drawer_container"
         android:layout_width="350dp"
         android:layout_height="match_parent"
-        android:layout_gravity="end"/>
+        android:layout_gravity="end" />
 </androidx.drawerlayout.widget.DrawerLayout>

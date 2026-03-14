@@ -141,7 +141,7 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="write_review_hint">Write Review…</string>
     <string name="recommendations">Recommendations</string>
     <string name="recommend_subtitle">Discover the dishes recommended by the chef.</string>
-    
+
     <!-- Cart strings -->
     <string name="cart">Cart</string>
     <string name="your_cart_is_empty">Your cart is empty</string>
@@ -160,4 +160,9 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="select_address">Select Address</string>
     <string name="estimated_distance">Estimated Distance</string>
     <string name="estimated_time">Estimated Time</string>
+
+    <string name="filter">Filter</string>
+    <string name="categories">Categories</string>
+    <string name="sort_by">Sort by</string>
+    <string name="top_rated">Top Rated</string>
 </resources>
