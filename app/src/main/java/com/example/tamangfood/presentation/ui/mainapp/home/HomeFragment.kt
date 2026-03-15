@@ -148,6 +148,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         }
 
         binding.ivFilter.setOnClickListener {
+            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
             findNavController().navigate(R.id.action_homeFragment_to_filterFragment)
         }
     }

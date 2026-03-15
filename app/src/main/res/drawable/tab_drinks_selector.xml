@@ -5,6 +5,6 @@
         android:drawable="@drawable/ic_drink_selected"/>
 
     <item
-        android:drawable="@drawable/ic_dessert_unselected"/>
+        android:drawable="@drawable/ic_drink_unselected"/>
 
 </selector>

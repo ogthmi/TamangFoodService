@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import com.example.tamangfood.R
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 object Utils {
     fun showToast(context: Context, message: String){
@@ -47,4 +46,18 @@ enum class FoodType(val imageRes: Int, val title: Int, val tabSelector: Int){
     VEGAN(R.drawable.ic_vegan, R.string.vegan, R.drawable.tab_vegan_selector),
     DESSERT(R.drawable.ic_dessert, R.string.dessert, R.drawable.tab_dessert_selector),
     DRINK(R.drawable.ic_drink, R.string.drinks, R.drawable.tab_drinks_selector);
+}
+
+class FoodCategoryProvider {
+    private val categoryMap = mapOf(
+        FoodType.SNACK to listOf("Bruschetta","Spring Rolls","Crepes","Wings","Skewers","Salmon","Mexican","Baked","Appetizer"),
+        FoodType.MEAL to listOf("Sushi","Pizza","Chicken","Curry","Burger","Cheese","Fresh Prawn","Ceviche","Pad Thai"),
+        FoodType.VEGAN to listOf("Bean Burger","Risotto","Broccoli","Lasagna","Pizza","Mushroom","Hummus","Quinoa","Salad"),
+        FoodType.DESSERT to listOf("Crepes","Macarons","Cupcakes","Ice Cream","Flan","Cheesecake","Chocolate","Cakes","Brownie"),
+        FoodType.DRINK to listOf("Coffee","Cocktail","Juice","Milkshake","Wine","Pina Colada","Mojito","Craft Beer","Ice Tea")
+    )
+
+    fun getCategories(foodType: FoodType): List<String> {
+        return categoryMap[foodType] ?: emptyList()
+    }
 }

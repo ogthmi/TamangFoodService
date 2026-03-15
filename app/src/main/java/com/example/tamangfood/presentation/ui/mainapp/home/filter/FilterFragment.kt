@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.databinding.FragmentFilterBinding
+import com.example.tamangfood.presentation.utils.FoodCategoryProvider
+import com.example.tamangfood.presentation.utils.FoodType
+import com.example.tamangfood.presentation.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,12 +20,14 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     private var _binding: FragmentFilterBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var subCategoryAdapter: SubCategoryAdapter
+    private lateinit var foodTypeAdapter: FoodTypeAdapter
+    private lateinit var categoryAdapter: CategoryAdapter
+
+    private val foodTypes = FoodType.entries
+    private val categoryProvider = FoodCategoryProvider()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFilterBinding.inflate(inflater, container, false)
         return binding.root
@@ -30,10 +35,10 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupClickListeners()
         setupRecyclerView()
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -46,40 +51,35 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
         }
     }
 
-    private val categories = listOf(
-        Category(R.drawable.ic_snack, "Snacks"),
-        Category(R.drawable.ic_meal, "Meal"),
-        Category(R.drawable.ic_vegan, "Vegan"),
-        Category(R.drawable.ic_dessert, "Dessert"),
-        Category(R.drawable.ic_drink, "Drinks"),
-    )
-
-    private val subCategoryMap = mapOf(
-        "Snacks" to listOf("Bruschetta", "Spring Rolls", "Crepes", "Wings", "Skewers", "Salmon", "Mexican", "Baked", "Appetizer"),
-        "Meal" to listOf("Sushi", "Pizza", "Chicken", "Curry", "Burger", "Cheese", "Fresh Prawn", "Ceviche", "Pad Thai"),
-        "Vegan" to listOf("Bean Burger", "Risotto", "Broccoli", "Lasagna", "Pizza", "Mushroom", "Hummus", "Quinoa", "Salad"),
-        "Dessert" to listOf("Crepes", "Macarons", "Cupcakes", "Ice Cream", "Flan", "Cheesecake", "Chocolate", "Cakes", "Brownie"),
-        "Drinks" to listOf("Coffee", "Cocktail", "Juice", "Milkshake", "Wine", "Pina Colada","Mojito", "Craft Beer", "Ice Tea")
-    )
-
     private fun setupRecyclerView() {
-        subCategoryAdapter = SubCategoryAdapter(
-            subCategoryMap[categories.first().name] ?: emptyList()
-        ) { subCategory -> // TODO: handle on click subcategory
-
-        }
-        binding.rvSubCategories.adapter = subCategoryAdapter
-        binding.rvSubCategories.layoutManager = GridLayoutManager(requireContext(), 3)
-
-        val adapter = CategoryAdapter(categories) { category ->
-            val subCategories = subCategoryMap[category.name] ?: emptyList()
-            subCategoryAdapter.updateData(subCategories)
-
+        categoryAdapter = CategoryAdapter { category ->
+            // TODO: handle category click
         }
 
-        binding.rvCategories.adapter = adapter
-        binding.rvCategories.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvCategories.apply {
+            adapter = categoryAdapter
+            layoutManager = GridLayoutManager(requireContext(), 3)
+            itemAnimator = null
+        }
+
+        foodTypeAdapter = FoodTypeAdapter { foodType ->
+            val categories = categoryProvider.getCategories(foodType)
+            categoryAdapter.clearSelection()
+            categoryAdapter.submitList(categories)
+        }
+
+        binding.rvFoodTypes.apply {
+            adapter = foodTypeAdapter
+
+            layoutManager = LinearLayoutManager(
+                requireContext(), LinearLayoutManager.HORIZONTAL, false
+            )
+        }
+
+        foodTypeAdapter.submitList(foodTypes.toList())
+
+        val firstCategoryList = categoryProvider.getCategories(foodTypes.first())
+        categoryAdapter.submitList(firstCategoryList)
     }
 
 }
