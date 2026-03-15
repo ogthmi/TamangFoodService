@@ -9,7 +9,12 @@
         android:id="@+id/homeFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_filterFragment"
+            app:destination="@id/filterFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
@@ -34,16 +39,22 @@
             android:id="@+id/action_homeFragment_to_recommendFragment"
             app:destination="@id/recommendFragment"
             app:enterAnim="@anim/slide_right"
-            app:exitAnim="@anim/slide_left"/>
+            app:exitAnim="@anim/slide_left" />
         <action
             android:id="@+id/action_homeFragment_to_orderFragment"
             app:destination="@id/orderFragment"
             app:enterAnim="@anim/slide_right"
-            app:exitAnim="@anim/slide_left"/>
+            app:exitAnim="@anim/slide_left" />
         <action
             android:id="@+id/action_homeFragment_to_confirmOrderFragment"
             app:destination="@id/confirmOrderFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.filter.FilterFragment"
+        android:label="fragment_filter"
+        tools:layout="@layout/fragment_filter" />
 
     <fragment
         android:id="@+id/bestSellerFragment"
@@ -80,9 +91,10 @@
             app:destination="@id/leaveReviewFragment"
             app:enterAnim="@anim/slide_right"
             app:exitAnim="@anim/slide_left" />
-        <argument android:name="isFromDrawer"
-            app:argType="boolean"
-            android:defaultValue="false" />
+        <argument
+            android:name="isFromDrawer"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/cancelOrderFragment"
@@ -111,7 +123,7 @@
         android:id="@+id/orderCancelledSuccessFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.order.cancel.OrderCancelledSuccessFragment"
         android:label="fragment_order_cancelled_success"
-        tools:layout="@layout/fragment_order_cancelled_success" >
+        tools:layout="@layout/fragment_order_cancelled_success">
         <argument
             android:name="isFromCancelOrder"
             app:argType="boolean" />
@@ -123,8 +135,7 @@
         android:id="@+id/updateMyProfileFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.updateprofile.UpdateMyProfileFragment"
         android:label="fragment_update_profile"
-        tools:layout="@layout/fragment_update_my_profile"
-        />
+        tools:layout="@layout/fragment_update_my_profile" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.settings.SettingsFragment"
@@ -155,7 +166,7 @@
         android:id="@+id/addNewAddressFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.address.addnew.AddNewAddressFragment"
         android:label="fragment_add_new_address"
-        tools:layout="@layout/fragment_add_new_address" >
+        tools:layout="@layout/fragment_add_new_address">
         <argument
             android:name="detail"
             app:argType="boolean" />
@@ -168,7 +179,7 @@
     <fragment
         android:id="@+id/confirmOrderFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder.ConfirmOrderFragment"
-        android:label="ConfirmOrderFragment" >
+        android:label="ConfirmOrderFragment">
         <action
             android:id="@+id/action_confirmOrderFragment_to_orderCancelledSuccessFragment"
             app:destination="@id/orderCancelledSuccessFragment" />

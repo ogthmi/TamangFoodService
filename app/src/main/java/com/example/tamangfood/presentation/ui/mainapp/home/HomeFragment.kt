@@ -24,7 +24,8 @@ class HomeFragment : androidx.fragment.app.Fragment() {
     private val binding get() = _binding!!
     private lateinit var foodBestSellerAdapter: FoodBestSellerAdapter
     private lateinit var foodRecommendAdapter: FoodRecommendAdapter
-//    private lateinit var drawerCartAdapter: CartAdapter
+
+    //    private lateinit var drawerCartAdapter: CartAdapter
 //    private val cartViewModel: CartViewModel by viewModels()
     var isNavigatingToFragment = false
 //    private var isCartDrawerVisible = false
@@ -73,9 +74,11 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             addItemDecoration(SpacingItem(space))
         }
         foodBestSellerAdapter.submitList(bestSellerItems)
+
+
     }
 
-    private fun setupFoodRecommendRecyclerViews(){
+    private fun setupFoodRecommendRecyclerViews() {
         val recommendItems = listOf(
             FoodItem(4, "Big Burger", "$10.0", R.drawable.ic_launcher_background),
             FoodItem(5, "Spring Rolls", "$9.5", R.drawable.ic_launcher_background)
@@ -142,6 +145,11 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         binding.ivCart.setOnClickListener {
             openDrawerFragment(CartFragment())
             binding.fragmentHome.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN)
+        }
+
+        binding.ivFilter.setOnClickListener {
+            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+            findNavController().navigate(R.id.action_homeFragment_to_filterFragment)
         }
     }
 
