@@ -1,4 +1,4 @@
-package com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder
+package com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder.address
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,11 +12,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class AddressSelectionBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetAddressSelectionBinding? = null
     private val binding get() = _binding!!
-    
+
     private lateinit var addressAdapter: AddressSelectionAdapter
     private var selectedAddressId: Int = -1
     private val addresses = mutableListOf<Address>()
-    
+
     var onAddressSelected: ((Address) -> Unit)? = null
 
     companion object {
@@ -50,7 +50,7 @@ class AddressSelectionBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         loadMockAddresses()
         setupRecyclerView()
     }
@@ -105,4 +105,3 @@ class AddressSelectionBottomSheet : BottomSheetDialogFragment() {
         _binding = null
     }
 }
-

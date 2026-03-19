@@ -19,4 +19,9 @@
     <style name="MyTabText" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
     </style>
+
+    <!-- res/values/themes.xml -->
+    <style name="StripeMaterialOverlay" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- có thể customize màu nếu cần -->
+    </style>
 </resources>

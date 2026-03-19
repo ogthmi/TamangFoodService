@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/active_color"
+    android:background="@color/accent_color"
     tools:context=".presentation.ui.authentication.fingerprint.FingerPrintFragment">
 
     <!-- Yellow Header Container -->
@@ -12,7 +12,7 @@
         android:id="@+id/header_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/active_color"
+        android:background="@color/accent_color"
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_constraintTop_toTopOf="parent"

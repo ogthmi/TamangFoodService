@@ -28,6 +28,7 @@
     <string name="my_profile">My Profile</string>
     <string name="delivery_address">Delivery Address</string>
     <string name="payment_methods">Payment Methods</string>
+    <string name="cvc">CVC</string>
     <string name="settings">Settings</string>
     <string name="log_out">Log Out</string>
     <string name="notification_setting">Notification Setting</string>
@@ -165,4 +166,18 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="categories">Categories</string>
     <string name="sort_by">Sort by</string>
     <string name="top_rated">Top Rated</string>
+    <string name="add_new_card">Add New Card</string>
+    <string name="add_card">Add Card</string>
+
+    <!-- Payment -->
+    <string name="payment_method">Payment Method</string>
+    <string name="cash">Cash</string>
+    <string name="credit_card">Credit Card</string>
+    <string name="choose_card">Choose card</string>
+    <string name="pay_now">Pay Now</string>
+    <string name="payment">Payment</string>
+    <string name="delivery_time">Delivery Time</string>
+    <string name="estimated_delivery">Estimated Delivery</string>
+    <string name="mins_format">%d mins</string>
+
 </resources>

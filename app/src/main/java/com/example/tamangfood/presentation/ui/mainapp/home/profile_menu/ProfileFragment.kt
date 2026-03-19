@@ -63,6 +63,10 @@ class ProfileFragment : Fragment() {
         binding.menuPaymentMethods.setOnClickListener {
             checkBottomNav()
             closeDrawer()
+            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+            parentFragment?.findNavController()?.navigate(
+                HomeFragmentDirections.actionHomeFragmentToPaymentMethodsFragment()
+            )
         }
 
         binding.menuSetting.setOnClickListener {

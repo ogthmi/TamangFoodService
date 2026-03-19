@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/accent_color"
-    tools:context=".presentation.ui.mainapp.home.profile_menu.address.DeliveryAddressFragment">
+    tools:context=".presentation.ui.mainapp.home.profile_menu.payment.add.AddCardFragment">
 
     <LinearLayout
         android:id="@+id/header_container"
@@ -26,10 +26,11 @@
             android:contentDescription="@string/back" />
 
         <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/delivery_address"
+            android:text="@string/add_card"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -37,33 +38,47 @@
             android:layout_marginStart="16dp" />
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:padding="16dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/header_container"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/content_background">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvAddresses"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            tools:listitem="@layout/item_address" />
-
-        <Button
-            android:id="@+id/btnAddNewAddress"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/add_new_address"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:background="@drawable/button_orange"
-            android:padding="16dp" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <com.stripe.android.view.CardFormView
+                android:id="@+id/cardFormView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+                android:layout_marginBottom="12dp" />
+
+            <ProgressBar
+                android:id="@+id/pbAddCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnAddCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/add_card"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:background="@drawable/button_orange"
+                android:paddingVertical="16dp" />
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

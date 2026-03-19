@@ -2,15 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/paymentMethodsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/accent_color"
-    tools:context=".presentation.ui.mainapp.home.profile_menu.address.DeliveryAddressFragment">
+    tools:context=".presentation.ui.mainapp.home.profile_menu.payment.PaymentMethodsFragment">
 
     <LinearLayout
         android:id="@+id/header_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/accent_color"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:padding="16dp"
@@ -26,10 +28,11 @@
             android:contentDescription="@string/back" />
 
         <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/delivery_address"
+            android:text="@string/payment_methods"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -38,32 +41,45 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/content_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:padding="16dp"
+        android:background="@drawable/content_background"
         app:layout_constraintTop_toBottomOf="@id/header_container"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@drawable/content_background">
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/tvEmptyState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your card is empty"
+            android:textColor="@color/body_text"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvAddresses"
+            android:id="@+id/rvCard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            tools:listitem="@layout/item_address" />
+            tools:listitem="@layout/item_card" />
 
         <Button
-            android:id="@+id/btnAddNewAddress"
+            android:id="@+id/btnAddNewCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/add_new_address"
+            android:text="@string/add_new_card"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:background="@drawable/button_orange"
             android:padding="16dp" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
