@@ -1,23 +1,18 @@
 package com.example.tamangfood.presentation.ui.mainapp.home.recommend
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.data.model.Food
-import com.example.tamangfood.data.model.Order
-import com.example.tamangfood.databinding.FragmentOrderBinding
 import com.example.tamangfood.databinding.FragmentRecommendBinding
 import com.example.tamangfood.presentation.ui.mainapp.FoodAdapter
-import com.example.tamangfood.presentation.ui.mainapp.order.OrderAdapter
 import com.example.tamangfood.presentation.utils.FoodType
 import com.example.tamangfood.presentation.utils.GridSpacingItem
-import com.example.tamangfood.presentation.utils.OrderStatus
 import com.example.tamangfood.presentation.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,9 +45,15 @@ class RecommendFragment : Fragment() {
         }
     }
 
-    private fun setUpRecyclerView(){
+    private fun setUpRecyclerView() {
         adapter = FoodAdapter(
-            onItemClick = { },
+            onItemClick = { selectedFood ->
+                val action =
+                    RecommendFragmentDirections.actionRecommendFragmentToFoodDetailFragment(
+                        selectedFood
+                    )
+                findNavController().navigate(action)
+            },
             onFavoriteClick = { },
             onAddToCartClick = { }
         )
@@ -67,7 +68,7 @@ class RecommendFragment : Fragment() {
         adapter.submitList(recommendList)
     }
 
-    private fun mockData(){
+    private fun mockData() {
         recommendList = listOf(
             Food(
                 id = 1,
@@ -131,6 +132,7 @@ class RecommendFragment : Fragment() {
             ),
         )
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

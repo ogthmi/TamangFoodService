@@ -53,6 +53,11 @@
         <action
             android:id="@+id/action_homeFragment_to_confirmOrderFragment"
             app:destination="@id/confirmOrderFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_foodDetailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left"/>
     </fragment>
 
     <fragment
@@ -62,10 +67,29 @@
         tools:layout="@layout/fragment_filter" />
 
     <fragment
+        android:id="@+id/foodDetailFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.fooddetail.FoodDetailFragment"
+        android:label="fragment_food_detail"
+        tools:layout="@layout/fragment_food_detail">
+        <argument
+            android:name="foodObj"
+            app:argType="com.example.tamangfood.data.model.Food"
+            app:nullable="false" />
+    </fragment>
+
+    <fragment
         android:id="@+id/bestSellerFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.bestseller.BestSellerFragment"
         android:label="fragment_best_seller"
-        tools:layout="@layout/fragment_best_seller" />
+        tools:layout="@layout/fragment_best_seller" >
+        <action
+            android:id="@+id/action_bestSellerFragment_to_food_Detail_Fragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left"
+            />
+
+    </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.favorite.FavoriteFragment"
@@ -75,7 +99,15 @@
         android:id="@+id/menuFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.menu.MenuFragment"
         android:label="fragment_menu"
-        tools:layout="@layout/fragment_menu" />
+        tools:layout="@layout/fragment_menu" >
+
+        <action
+            android:id="@+id/action_menuFragment_to_foodDetailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left"
+            />
+    </fragment>
     <fragment
         android:id="@+id/helpFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.help.HelpFragment"
@@ -198,7 +230,14 @@
         android:id="@+id/recommendFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.recommend.RecommendFragment"
         android:label="fragment_recommend"
-        tools:layout="@layout/fragment_recommend" />
+        tools:layout="@layout/fragment_recommend" >
+        <action
+            android:id="@+id/action_recommendFragment_to_foodDetailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left"
+            />
+    </fragment>
     <fragment
         android:id="@+id/confirmOrderFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder.ConfirmOrderFragment"

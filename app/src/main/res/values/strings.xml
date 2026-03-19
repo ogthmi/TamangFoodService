@@ -40,8 +40,12 @@
     <string name="confirm_new_password">Confirm New Password</string>
     <string name="change_password">Change Password</string>
     <string name="get_started">Get Started</string>
+    <string name="food_name">Food Name</string>
+    <string name="available_quantity">Available quantity: %d</string>
 
     <string name="update_profile">Update Profile</string>
+
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</string>
 
     <string name="sign_in">Sign In</string>
     <string name="sign_in_screen_title">Welcome to Tamang Food Services</string>
@@ -137,6 +141,7 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="track_my_order">Track my order</string>
     
     <!-- Leave Review strings -->
+    <string name="review_from_customer">Review from customer</string>
     <string name="review_prompt">We\'d love to know what you think of your dish.</string>
     <string name="leave_us_your_comment">Leave us your comment!</string>
     <string name="write_review_hint">Write Review…</string>
@@ -145,6 +150,7 @@ Your feedback helps us improve our service and provide a better experience next 
 
     <!-- Cart strings -->
     <string name="cart">Cart</string>
+    <string name="add_to_cart">Add to Cart</string>
     <string name="your_cart_is_empty">Your cart is empty</string>
     <string name="want_to_add_something">Want To Add Something?</string>
     <string name="you_have_items_in_cart">You have %d items in the cart</string>
@@ -166,6 +172,8 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="categories">Categories</string>
     <string name="sort_by">Sort by</string>
     <string name="top_rated">Top Rated</string>
+
+    <string name="add_ingredients">Add on ingredients</string>
     <string name="add_new_card">Add New Card</string>
     <string name="add_card">Add Card</string>
 

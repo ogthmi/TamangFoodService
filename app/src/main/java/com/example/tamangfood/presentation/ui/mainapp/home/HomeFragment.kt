@@ -11,9 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
+import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.FragmentHomeBinding
 import com.example.tamangfood.presentation.ui.mainapp.home.cart.CartFragment
 import com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.ProfileFragment
+import com.example.tamangfood.presentation.utils.FoodType
 import com.example.tamangfood.presentation.utils.SpacingItem
 import com.example.tamangfood.presentation.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,19 +53,69 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         setupClickListeners()
     }
 
+    private val bestSellerItems = listOf(
+        Food(
+            1,
+            "Strawberry Cake",
+            "$10.3",
+            1,
+            4.5,
+            FoodType.DESSERT,
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+            R.drawable.ic_launcher_background
+        ),
+        Food(
+            2,
+            "Cheesy Pizza",
+            "$12.9",
+            1,
+            5.0,
+            FoodType.MEAL,
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+            R.drawable.ic_launcher_background
+        ),
+        Food(
+            3,
+            "Ice Cream",
+            "$8.2",
+            1,
+            3.0,
+            FoodType.DESSERT,
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+            R.drawable.ic_launcher_background
+        )
+    )
+    private val recommendItems = listOf(
+        Food(
+            4,
+            "Big Burger",
+            "10.0",
+            1,
+            3.5,
+            FoodType.MEAL,
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+            R.drawable.ic_launcher_background
+        ),
+        Food(
+            5,
+            "Spring Rolls",
+            "9.5",
+            1,
+            5.0,
+            FoodType.MEAL,
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+            R.drawable.ic_launcher_background
+        )
+    )
+
     private fun setupFoodBestSellerRecyclerViews() {
         val context = requireContext()
 
-        // Dummy data; replace with real data later
-        val bestSellerItems = listOf(
-            FoodItem(1, "Strawberry Cake", "$10.3", R.drawable.ic_launcher_background),
-            FoodItem(2, "Cheesy Pizza", "$12.9", R.drawable.ic_launcher_background),
-            FoodItem(3, "Ice Cream", "$8.2", R.drawable.ic_launcher_background)
-        )
-
         foodBestSellerAdapter = FoodBestSellerAdapter(
-            onItemClick = {
-
+            onItemClick = { selectedFood ->
+                val action = HomeFragmentDirections
+                    .actionHomeFragmentToFoodDetailFragment(selectedFood)
+                findNavController().navigate(action)
             }
         )
         binding.rvBestSeller.apply {
@@ -79,13 +131,13 @@ class HomeFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun setupFoodRecommendRecyclerViews() {
-        val recommendItems = listOf(
-            FoodItem(4, "Big Burger", "$10.0", R.drawable.ic_launcher_background),
-            FoodItem(5, "Spring Rolls", "$9.5", R.drawable.ic_launcher_background)
-        )
 
         foodRecommendAdapter = FoodRecommendAdapter(
-            onItemClick = {}
+            onItemClick = { selectedFood ->
+                val action = HomeFragmentDirections
+                    .actionHomeFragmentToFoodDetailFragment(selectedFood)
+                findNavController().navigate(action)
+            }
         )
         binding.rvRecommend.apply {
             layoutManager = GridLayoutManager(context, 2)
