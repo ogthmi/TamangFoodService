@@ -169,4 +169,15 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="add_new_card">Add New Card</string>
     <string name="add_card">Add Card</string>
 
+    <!-- Payment -->
+    <string name="payment_method">Payment Method</string>
+    <string name="cash">Cash</string>
+    <string name="credit_card">Credit Card</string>
+    <string name="choose_card">Choose card</string>
+    <string name="pay_now">Pay Now</string>
+    <string name="payment">Payment</string>
+    <string name="delivery_time">Delivery Time</string>
+    <string name="estimated_delivery">Estimated Delivery</string>
+    <string name="mins_format">%d mins</string>
+
 </resources>

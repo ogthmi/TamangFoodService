@@ -12,7 +12,10 @@ import com.example.tamangfood.R
 import com.example.tamangfood.data.model.Address
 import com.example.tamangfood.data.model.CartItem
 import com.example.tamangfood.data.model.Food
+import com.example.tamangfood.data.model.payment.Card
 import com.example.tamangfood.databinding.FragmentConfirmOrderBinding
+import com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder.address.AddressSelectionBottomSheet
+import com.example.tamangfood.presentation.ui.mainapp.home.cart.payment.CardSelectionBottomSheet
 import com.example.tamangfood.presentation.utils.FoodType
 import com.example.tamangfood.presentation.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +29,9 @@ class ConfirmOrderFragment : Fragment() {
     private lateinit var orderAdapter: ConfirmOrderAdapter
     private var selectedAddress: Address? = null
     private val orderItems = mutableListOf<Food>()
+    private var isCreditCardSelected = true
+
+    private var selectedCard: Card? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,9 +45,10 @@ class ConfirmOrderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-        
+
         loadMockData()
         setupRecyclerView()
+        setupPaymentMethodSelector()
         setupClickListeners()
         calculateTotals()
     }
@@ -83,6 +90,15 @@ class ConfirmOrderFragment : Fragment() {
             latitude = 37.7749,
             longitude = -122.4194
         )
+
+        selectedCard = Card(
+            paymentMethodId = "pm_mock_1",
+            brand = "Visa",
+            last4 = "4242",
+            expMonth = 12,
+            expYear = 2029
+        )
+        updatePaymentDisplay()
         updateAddressDisplay()
         calculateEstimatedDistanceAndTime()
     }
@@ -108,12 +124,39 @@ class ConfirmOrderFragment : Fragment() {
         }
 
         binding.btnPlaceOrder.setOnClickListener {
-            // TODO: Place order
-            findNavController().navigate(ConfirmOrderFragmentDirections.actionConfirmOrderFragmentToOrderCancelledSuccessFragment(
-                false,
-                true
-            ))
+            findNavController().navigate(
+                ConfirmOrderFragmentDirections.actionConfirmOrderFragmentToOrderCancelledSuccessFragment(
+                    false, true
+                )
+            )
         }
+
+        binding.ivSelectCreditCard.setOnClickListener {
+            val bottomSheet = CardSelectionBottomSheet.newInstance(selectedCard?.paymentMethodId)
+            bottomSheet.onCardSelected = { card ->
+                selectedCard = card
+                updatePaymentDisplay()
+            }
+            bottomSheet.show(parentFragmentManager, CardSelectionBottomSheet.TAG)
+        }
+    }
+
+    private fun setupPaymentMethodSelector() {
+        // Default selected method: credit card.
+        updatePaymentMethodSelection(isCreditCard = true)
+
+        binding.radioBtnCash.setOnClickListener {
+            updatePaymentMethodSelection(isCreditCard = false)
+        }
+        binding.radioBtnCreditCard.setOnClickListener {
+            updatePaymentMethodSelection(isCreditCard = true)
+        }
+    }
+
+    private fun updatePaymentMethodSelection(isCreditCard: Boolean) {
+        isCreditCardSelected = isCreditCard
+        binding.radioBtnCreditCard.isChecked = isCreditCard
+        binding.radioBtnCash.isChecked = !isCreditCard
     }
 
     private fun showAddressSelectionBottomSheet() {
@@ -126,6 +169,12 @@ class ConfirmOrderFragment : Fragment() {
             calculateEstimatedDistanceAndTime()
         }
         bottomSheet.show(parentFragmentManager, AddressSelectionBottomSheet.TAG)
+    }
+
+    private fun updatePaymentDisplay(){
+        binding.apply {
+            tvCardMasked.text = "*** *** *** ${selectedCard?.last4}"
+        }
     }
 
     private fun updateAddressDisplay() {

@@ -1,4 +1,4 @@
-package com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder
+package com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder.address
 
 import android.view.LayoutInflater
 import android.view.View
@@ -42,7 +42,7 @@ class AddressSelectionAdapter(
             binding.apply {
                 tvAddressName.text = address.name
                 tvAddressFull.text = address.fullAddress
-                
+
                 // Show/hide selection indicator
                 ivSelected.visibility = if (isSelected) View.VISIBLE else View.GONE
 
@@ -64,4 +64,3 @@ class AddressSelectionAdapter(
         }
     }
 }
-
