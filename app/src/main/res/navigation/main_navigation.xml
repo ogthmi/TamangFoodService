@@ -31,6 +31,11 @@
             app:enterAnim="@anim/slide_right"
             app:exitAnim="@anim/slide_left" />
         <action
+            android:id="@+id/action_homeFragment_to_paymentMethodsFragment"
+            app:destination="@id/paymentMethodsFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <action
             android:id="@+id/action_homeFragment_to_bestSellerFragment"
             app:destination="@id/bestSellerFragment"
             app:enterAnim="@anim/slide_right"
@@ -162,6 +167,24 @@
             app:enterAnim="@anim/slide_right"
             app:exitAnim="@anim/slide_left" />
     </fragment>
+
+    <fragment
+        android:id="@+id/paymentMethodsFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.payment.PaymentMethodsFragment"
+        android:label="fragment_payment_methods"
+        tools:layout="@layout/fragment_payment_methods">
+        <action
+            android:id="@+id/action_paymentMethodsFragment_to_addCardFragment"
+            app:destination="@id/addCardFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addCardFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.payment.add.AddCardFragment"
+        android:label="fragment_add_card"
+        tools:layout="@layout/fragment_add_card" />
     <fragment
         android:id="@+id/addNewAddressFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.address.addnew.AddNewAddressFragment"

@@ -1,9 +1,19 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("androidx.navigation.safeargs")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+}
+
+val stripePublishableKey: String = run {
+    val propsFile = rootProject.file("local.properties")
+    if (!propsFile.exists()) return@run ""
+    val props = Properties()
+    propsFile.inputStream().use { props.load(it) }
+    props.getProperty("stripe.publishableKey").orEmpty()
 }
 
 android {
@@ -18,6 +28,13 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Keep the key out of git (read from local.properties which is ignored).
+        buildConfigField(
+            "String",
+            "STRIPE_PUBLISHABLE_KEY",
+            "\"$stripePublishableKey\""
+        )
     }
 
     buildTypes {
@@ -32,6 +49,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -78,5 +96,8 @@ dependencies {
 
     // Google Play Services Location
     implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    // Stripe
+    implementation("com.stripe:stripe-android:20.48.0")
 
 }

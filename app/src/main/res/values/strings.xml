@@ -28,6 +28,7 @@
     <string name="my_profile">My Profile</string>
     <string name="delivery_address">Delivery Address</string>
     <string name="payment_methods">Payment Methods</string>
+    <string name="cvc">CVC</string>
     <string name="settings">Settings</string>
     <string name="log_out">Log Out</string>
     <string name="notification_setting">Notification Setting</string>
@@ -165,4 +166,7 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="categories">Categories</string>
     <string name="sort_by">Sort by</string>
     <string name="top_rated">Top Rated</string>
+    <string name="add_new_card">Add New Card</string>
+    <string name="add_card">Add Card</string>
+
 </resources>
