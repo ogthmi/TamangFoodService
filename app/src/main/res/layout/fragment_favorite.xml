@@ -1,15 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/favoriteFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/favoriteFragment"
+    android:background="@color/accent_color"
     tools:context=".presentation.ui.mainapp.favorite.FavoriteFragment">
 
     <TextView
+        android:id="@+id/tv_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_md"
+        android:text="@string/favorite"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_sm"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_search"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Favorite"
-        android:gravity="center"/>
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_md"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/search_input"
+        android:drawableStart="@drawable/ic_search"
+        android:hint="@string/search"
+        android:paddingHorizontal="@dimen/spacing_md"
+        android:paddingVertical="6dp"
+        android:textColor="@color/main_color"
+        android:textColorHint="@color/body_text"
+        android:textSize="@dimen/text_caption"
+        app:layout_constraintTop_toBottomOf="@id/tv_menu" />
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:background="@drawable/content_background"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_md"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_search">
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:gravity="center"
+            android:text="@string/favorite_subtitle"
+            android:textColor="@color/active_color"
+            android:textSize="@dimen/text_caption"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recommend_grid"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/spacing_sm"
+            tools:itemCount="6"
+            tools:listitem="@layout/item_food" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

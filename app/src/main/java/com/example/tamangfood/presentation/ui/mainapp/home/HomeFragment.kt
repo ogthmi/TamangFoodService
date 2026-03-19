@@ -113,6 +113,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
 
         foodBestSellerAdapter = FoodBestSellerAdapter(
             onItemClick = { selectedFood ->
+                Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
                 val action = HomeFragmentDirections
                     .actionHomeFragmentToFoodDetailFragment(selectedFood)
                 findNavController().navigate(action)
@@ -134,6 +135,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
 
         foodRecommendAdapter = FoodRecommendAdapter(
             onItemClick = { selectedFood ->
+                Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
                 val action = HomeFragmentDirections
                     .actionHomeFragmentToFoodDetailFragment(selectedFood)
                 findNavController().navigate(action)
