@@ -24,6 +24,7 @@
     <string name="favorite">Favorite</string>
     <string name="favorite_subtitle">It\'s time to buy your favorite dish.</string>
 
+    <string name="note_for_restaurant">Note for restaurant</string>
     <string name="order">Order</string>
     <string name="help">Help</string>
     <string name="my_orders">My Orders</string>

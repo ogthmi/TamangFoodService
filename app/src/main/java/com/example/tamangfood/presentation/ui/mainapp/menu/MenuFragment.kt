@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.FragmentMenuBinding
+import com.example.tamangfood.presentation.ui.mainapp.home.cart.addtocart.AddToCartBottomSheet
 import com.example.tamangfood.presentation.utils.FoodType
 import com.example.tamangfood.presentation.utils.Utils
 import com.google.android.material.tabs.TabLayout
@@ -82,11 +83,18 @@ class MenuFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        menuFoodAdapter = MenuFoodAdapter { selectedFood ->
-            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-            val action = MenuFragmentDirections.actionMenuFragmentToFoodDetailFragment(selectedFood)
-            findNavController().navigate(action)
-        }
+        menuFoodAdapter = MenuFoodAdapter(
+            onItemClick = { selectedFood ->
+                Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+                val action =
+                    MenuFragmentDirections.actionMenuFragmentToFoodDetailFragment(selectedFood)
+                findNavController().navigate(action)
+            },
+            onAddToCartClick = { selectedFood ->
+                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
+                bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
+            }
+        )
 
         binding.rvMenuFood.apply {
             layoutManager = LinearLayoutManager(requireContext())
