@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tamangfood.databinding.ItemFoodBestSellerCardBinding
+import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.ItemFoodRecommendCardBinding
 
 
 class FoodRecommendAdapter(
-    private val onItemClick: (FoodItem) -> Unit,
-) : androidx.recyclerview.widget.ListAdapter<FoodItem, FoodRecommendAdapter.FoodRecommendViewHolder>(FoodRecommendDiffCallback()) {
+    private val onItemClick: (Food) -> Unit,
+) : ListAdapter<Food, FoodRecommendAdapter.FoodRecommendViewHolder>(FoodRecommendDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodRecommendViewHolder {
         val binding = ItemFoodRecommendCardBinding.inflate(
@@ -28,21 +28,23 @@ class FoodRecommendAdapter(
 
     class FoodRecommendViewHolder(
         private val binding: ItemFoodRecommendCardBinding,
-        private val onItemClick: (FoodItem) -> Unit
+        private val onItemClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(food: FoodItem) {
+        fun bind(food: Food) {
             binding.tvPrice.text = food.price
             binding.ivFood.setImageResource(food.imageRes)
+
+            binding.ivFood.setOnClickListener { onItemClick(food) }
         }
     }
 
-    class FoodRecommendDiffCallback : DiffUtil.ItemCallback<FoodItem>() {
-        override fun areItemsTheSame(oldItem: FoodItem, newItem: FoodItem): Boolean {
+    class FoodRecommendDiffCallback : DiffUtil.ItemCallback<Food>() {
+        override fun areItemsTheSame(oldItem: Food, newItem: Food): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: FoodItem, newItem: FoodItem): Boolean {
+        override fun areContentsTheSame(oldItem: Food, newItem: Food): Boolean {
             return oldItem == newItem
         }
     }

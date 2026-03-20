@@ -9,6 +9,7 @@ import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.ItemOrderProductBinding
 
 class ConfirmOrderAdapter(
+    private val onItemClick: (Food) -> Unit,
 ) : ListAdapter<Food, ConfirmOrderAdapter.OrderViewHolder>(OrderItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
@@ -17,7 +18,7 @@ class ConfirmOrderAdapter(
             parent,
             false
         )
-        return OrderViewHolder(binding)
+        return OrderViewHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
@@ -25,7 +26,8 @@ class ConfirmOrderAdapter(
     }
 
     inner class OrderViewHolder(
-        private val binding: ItemOrderProductBinding
+        private val binding: ItemOrderProductBinding,
+        onItemClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Food) {
@@ -34,6 +36,8 @@ class ConfirmOrderAdapter(
                 tvProductName.text = item.name
                 tvProductPrice.text = item.price
                 tvProductQuantity.text = "${item.quantity} items"
+
+                root.setOnClickListener { onItemClick(item) }
             }
         }
     }

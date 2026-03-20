@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -105,6 +106,17 @@ class ConfirmOrderFragment : Fragment() {
 
     private fun setupRecyclerView() {
         orderAdapter = ConfirmOrderAdapter(
+            onItemClick = {food ->
+                val bundle = bundleOf(
+                    "foodObj" to food,
+                    "foodOrderQuantity" to 1 //TODO: fix 1 to orderItem.quantity (not food.quantity)
+                )
+                findNavController().navigate(
+                    R.id.action_confirmOrderFragment_to_foodDetailFragment,
+                    bundle
+                )
+
+            }
         )
 
         binding.rvOrderItems.apply {

@@ -1,22 +1,19 @@
 package com.example.tamangfood.presentation.ui.mainapp.menu
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.FragmentMenuBinding
 import com.example.tamangfood.presentation.utils.FoodType
-import com.example.tamangfood.presentation.utils.OrderStatus
 import com.example.tamangfood.presentation.utils.Utils
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,6 +59,7 @@ class MenuFragment : Fragment() {
                 tab ?: return
                 observeViewModel(FoodType.values()[tab.position])
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
@@ -84,7 +82,11 @@ class MenuFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        menuFoodAdapter = MenuFoodAdapter(onItemClick = { })
+        menuFoodAdapter = MenuFoodAdapter { selectedFood ->
+            val action = MenuFragmentDirections.actionMenuFragmentToFoodDetailFragment(selectedFood)
+            findNavController().navigate(action)
+        }
+
         binding.rvMenuFood.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = menuFoodAdapter
@@ -100,7 +102,7 @@ class MenuFragment : Fragment() {
         }
     }
 
-    private fun mockMenuFood(){
+    private fun mockMenuFood() {
         menuFoods = listOf(
             // Snacks
             Food(1, "Mexican Appetizer", "$15.00", 1, 5.0, FoodType.SNACK, "Tortilla Chips with Topping", R.drawable.ic_launcher_background),
@@ -119,6 +121,7 @@ class MenuFragment : Fragment() {
             Food(10, "Fresh Lemonade", "$12.99", 1, 4.5, FoodType.DRINK, "Freshly squeezed lemons with mint and a touch of honey.", R.drawable.ic_launcher_background),
         )
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

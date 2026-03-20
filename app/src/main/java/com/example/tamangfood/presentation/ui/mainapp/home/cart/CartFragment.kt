@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -69,8 +70,15 @@ class CartFragment : Fragment() {
             onQuantityChange = { item, newQuantity ->
                 updateQuantity(item, newQuantity)
             },
-            onItemClick = {
-                // TODO: navigate to detail item
+            onItemClick = { selectedOrder ->
+                val bundle = bundleOf(
+                    "foodObj" to selectedOrder.food,
+                    "foodOrderQuantity" to selectedOrder.quantity
+                )
+                parentFragment
+                    ?.findNavController()
+                    ?.navigate(R.id.action_homeFragment_to_foodDetailFragment, bundle)
+
             }
         )
 

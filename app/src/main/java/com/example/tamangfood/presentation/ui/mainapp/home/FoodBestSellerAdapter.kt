@@ -5,12 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.ItemFoodBestSellerCardBinding
 
 
 class FoodBestSellerAdapter(
-    private val onItemClick: (FoodItem) -> Unit,
-) : androidx.recyclerview.widget.ListAdapter<FoodItem, FoodBestSellerAdapter.FoodBestSellerViewHolder>(FoodBestSellerDiffCallback()) {
+    private val onItemClick: (Food) -> Unit,
+) : ListAdapter<Food, FoodBestSellerAdapter.FoodBestSellerViewHolder>(FoodBestSellerDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodBestSellerViewHolder {
         val binding = ItemFoodBestSellerCardBinding.inflate(
@@ -27,21 +28,23 @@ class FoodBestSellerAdapter(
 
     class FoodBestSellerViewHolder(
         private val binding: ItemFoodBestSellerCardBinding,
-        private val onItemClick: (FoodItem) -> Unit
+        private val onItemClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(food: FoodItem) {
+        fun bind(food: Food) {
             binding.tvPrice.text = food.price
             binding.ivFood.setImageResource(food.imageRes)
+
+            binding.ivFood.setOnClickListener { onItemClick(food) }
         }
     }
 
-    class FoodBestSellerDiffCallback : DiffUtil.ItemCallback<FoodItem>() {
-        override fun areItemsTheSame(oldItem: FoodItem, newItem: FoodItem): Boolean {
+    class FoodBestSellerDiffCallback : DiffUtil.ItemCallback<Food>() {
+        override fun areItemsTheSame(oldItem: Food, newItem: Food): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: FoodItem, newItem: FoodItem): Boolean {
+        override fun areContentsTheSame(oldItem: Food, newItem: Food): Boolean {
             return oldItem == newItem
         }
     }
