@@ -57,7 +57,7 @@
             android:id="@+id/action_homeFragment_to_foodDetailFragment"
             app:destination="@id/foodDetailFragment"
             app:enterAnim="@anim/slide_right"
-            app:exitAnim="@anim/slide_left"/>
+            app:exitAnim="@anim/slide_left" />
     </fragment>
 
     <fragment
@@ -75,19 +75,22 @@
             android:name="foodObj"
             app:argType="com.example.tamangfood.data.model.Food"
             app:nullable="false" />
+        <argument
+            android:name="foodOrderQuantity"
+            android:defaultValue="1"
+            app:argType="integer" />
     </fragment>
 
     <fragment
         android:id="@+id/bestSellerFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.bestseller.BestSellerFragment"
         android:label="fragment_best_seller"
-        tools:layout="@layout/fragment_best_seller" >
+        tools:layout="@layout/fragment_best_seller">
         <action
             android:id="@+id/action_bestSellerFragment_to_food_Detail_Fragment"
             app:destination="@id/foodDetailFragment"
             app:enterAnim="@anim/slide_right"
-            app:exitAnim="@anim/slide_left"
-            />
+            app:exitAnim="@anim/slide_left" />
 
     </fragment>
     <fragment
@@ -99,14 +102,13 @@
         android:id="@+id/menuFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.menu.MenuFragment"
         android:label="fragment_menu"
-        tools:layout="@layout/fragment_menu" >
+        tools:layout="@layout/fragment_menu">
 
         <action
             android:id="@+id/action_menuFragment_to_foodDetailFragment"
             app:destination="@id/foodDetailFragment"
             app:enterAnim="@anim/slide_right"
-            app:exitAnim="@anim/slide_left"
-            />
+            app:exitAnim="@anim/slide_left" />
     </fragment>
     <fragment
         android:id="@+id/helpFragment"
@@ -118,6 +120,11 @@
         android:name="com.example.tamangfood.presentation.ui.mainapp.order.OrderFragment"
         android:label="fragment_order"
         tools:layout="@layout/fragment_order">
+        <action
+            android:id="@+id/action_orderFragment_to_foodDetailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
         <action
             android:id="@+id/action_orderFragment_to_cancelOrderFragment"
             app:destination="@id/cancelOrderFragment"
@@ -230,18 +237,23 @@
         android:id="@+id/recommendFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.recommend.RecommendFragment"
         android:label="fragment_recommend"
-        tools:layout="@layout/fragment_recommend" >
+        tools:layout="@layout/fragment_recommend">
         <action
             android:id="@+id/action_recommendFragment_to_foodDetailFragment"
             app:destination="@id/foodDetailFragment"
             app:enterAnim="@anim/slide_right"
-            app:exitAnim="@anim/slide_left"
-            />
+            app:exitAnim="@anim/slide_left" />
     </fragment>
     <fragment
         android:id="@+id/confirmOrderFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder.ConfirmOrderFragment"
         android:label="ConfirmOrderFragment">
+        <action
+            android:id="@+id/action_confirmOrderFragment_to_foodDetailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+
         <action
             android:id="@+id/action_confirmOrderFragment_to_orderCancelledSuccessFragment"
             app:destination="@id/orderCancelledSuccessFragment" />

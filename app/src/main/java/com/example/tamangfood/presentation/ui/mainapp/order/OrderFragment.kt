@@ -134,6 +134,10 @@ class OrderFragment : Fragment() {
             onItemClick = { order ->
                 persistSelectedTabToBackStack()
                 // TODO: View detail order
+            },
+            onFoodClick = {food ->
+                val action = OrderFragmentDirections.actionOrderFragmentToFoodDetailFragment(food)
+                findNavController().navigate(action)
             }
         )
 
@@ -241,7 +245,7 @@ class OrderFragment : Fragment() {
                     Food(2,
                         "Chocolate Cake",
                         "$10.00",
-                        1,
+                        10,
                         5.0,
                         FoodType.DRINK,
                         imageRes = R.drawable.ic_launcher_background)

@@ -48,7 +48,13 @@ class BestSellerFragment : Fragment() {
 
     private fun setUpRecyclerView(){
         adapter = FoodAdapter(
-            onItemClick = { },
+            onItemClick = { selectedFood ->
+                val action =
+                    BestSellerFragmentDirections.actionBestSellerFragmentToFoodDetailFragment(
+                        selectedFood
+                    )
+                findNavController().navigate(action)
+            },
             onFavoriteClick = { },
             onAddToCartClick = { }
         )

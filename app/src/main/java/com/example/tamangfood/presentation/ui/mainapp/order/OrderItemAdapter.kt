@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.ItemOrderProductBinding
 
-class OrderItemAdapter : ListAdapter<Food, OrderItemAdapter.OrderItemViewHolder>(
+class OrderItemAdapter(
+    private val onItemClick: (Food) -> Unit
+) : ListAdapter<Food, OrderItemAdapter.OrderItemViewHolder>(
     OrderItemDiffCallback()
 ) {
 
@@ -18,7 +20,7 @@ class OrderItemAdapter : ListAdapter<Food, OrderItemAdapter.OrderItemViewHolder>
             parent,
             false
         )
-        return OrderItemViewHolder(binding)
+        return OrderItemViewHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: OrderItemViewHolder, position: Int) {
@@ -26,7 +28,8 @@ class OrderItemAdapter : ListAdapter<Food, OrderItemAdapter.OrderItemViewHolder>
     }
 
     class OrderItemViewHolder(
-        private val binding: ItemOrderProductBinding
+        private val binding: ItemOrderProductBinding,
+        private val onItemClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Food) {
             binding.apply {
@@ -34,6 +37,8 @@ class OrderItemAdapter : ListAdapter<Food, OrderItemAdapter.OrderItemViewHolder>
                 tvProductPrice.text = item.price
                 tvProductQuantity.text = "x${item.quantity}"
                 ivProductImage.setImageResource(item.imageRes)
+
+                root.setOnClickListener { onItemClick(item) }
             }
         }
     }

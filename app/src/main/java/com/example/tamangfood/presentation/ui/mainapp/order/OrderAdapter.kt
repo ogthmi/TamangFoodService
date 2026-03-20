@@ -2,14 +2,17 @@ package com.example.tamangfood.presentation.ui.mainapp.order
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.data.model.Order
 import com.example.tamangfood.databinding.ItemOrderActiveBinding
-import com.example.tamangfood.databinding.ItemOrderCompletedBinding
 import com.example.tamangfood.databinding.ItemOrderCancelledBinding
+import com.example.tamangfood.databinding.ItemOrderCompletedBinding
 import com.example.tamangfood.presentation.utils.OrderStatus
 
 class OrderAdapter(
@@ -17,7 +20,8 @@ class OrderAdapter(
     private val onTrackClick: (Order) -> Unit,
     private val onReviewClick: (Order) -> Unit,
     private val onOrderAgainClick: (Order) -> Unit,
-    private val onItemClick: (Order) -> Unit
+    private val onItemClick: (Order) -> Unit,
+    private val onFoodClick: (Food) -> Unit
 ) : ListAdapter<Order, RecyclerView.ViewHolder>(OrderDiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
@@ -36,24 +40,27 @@ class OrderAdapter(
                     parent,
                     false
                 )
-                ActiveOrderViewHolder(binding, onCancelClick, onTrackClick, onItemClick)
+                ActiveOrderViewHolder(binding, onCancelClick, onTrackClick, onItemClick, onFoodClick)
             }
+
             VIEW_TYPE_COMPLETED -> {
                 val binding = ItemOrderCompletedBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
-                CompletedOrderViewHolder(binding, onReviewClick, onOrderAgainClick, onItemClick)
+                CompletedOrderViewHolder(binding, onReviewClick, onOrderAgainClick, onItemClick, onFoodClick)
             }
+
             VIEW_TYPE_CANCELLED -> {
                 val binding = ItemOrderCancelledBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
-                CancelledOrderViewHolder(binding, onItemClick)
+                CancelledOrderViewHolder(binding, onItemClick, onFoodClick)
             }
+
             else -> throw IllegalArgumentException("Unknown view type")
         }
     }
@@ -74,9 +81,10 @@ class OrderAdapter(
         private val binding: ItemOrderActiveBinding,
         private val onCancelClick: (Order) -> Unit,
         private val onTrackClick: (Order) -> Unit,
-        private val onItemClick: (Order) -> Unit
+        private val onItemClick: (Order) -> Unit,
+        private val onFoodClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val orderItemAdapter = OrderItemAdapter()
+        private val orderItemAdapter = OrderItemAdapter(onFoodClick)
 
         init {
             binding.rvOrderItems.apply {
@@ -91,7 +99,7 @@ class OrderAdapter(
                 tvOrderPrice.text = order.price
                 tvOrderDate.text = order.dateTime
                 tvItemCount.text = "${order.itemCount} items"
-                
+
                 // Bind order items
                 orderItemAdapter.submitList(order.items)
                 btnCancelOrder.setOnClickListener { onCancelClick(order) }
@@ -105,9 +113,10 @@ class OrderAdapter(
         private val binding: ItemOrderCompletedBinding,
         private val onReviewClick: (Order) -> Unit,
         private val onOrderAgainClick: (Order) -> Unit,
-        private val onItemClick: (Order) -> Unit
+        private val onItemClick: (Order) -> Unit,
+        private val onFoodClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val orderItemAdapter = OrderItemAdapter()
+        private val orderItemAdapter = OrderItemAdapter(onFoodClick)
 
         init {
             binding.rvOrderItems.apply {
@@ -122,7 +131,7 @@ class OrderAdapter(
                 tvOrderPrice.text = order.price
                 tvOrderDate.text = order.dateTime
                 tvItemCount.text = "${order.itemCount} items"
-                
+
                 // Bind order items
                 orderItemAdapter.submitList(order.items)
                 btnLeaveReview.setOnClickListener { onReviewClick(order) }
@@ -134,9 +143,10 @@ class OrderAdapter(
 
     class CancelledOrderViewHolder(
         private val binding: ItemOrderCancelledBinding,
-        private val onItemClick: (Order) -> Unit
+        private val onItemClick: (Order) -> Unit,
+        private val onFoodClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val orderItemAdapter = OrderItemAdapter()
+        private val orderItemAdapter = OrderItemAdapter(onFoodClick)
 
         init {
             binding.rvOrderItems.apply {
@@ -152,7 +162,7 @@ class OrderAdapter(
                 tvOrderDate.text = order.dateTime
                 tvItemCount.text = "${order.itemCount} items"
                 tvOrderStatus.text = order.statusText
-                
+
                 // Bind order items
                 orderItemAdapter.submitList(order.items)
                 itemView.setOnClickListener { onItemClick(order) }

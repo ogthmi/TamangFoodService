@@ -20,7 +20,7 @@ class FoodDetailFragment : Fragment(R.layout.fragment_food_detail) {
     private val binding get() = _binding!!
 
     private val args: FoodDetailFragmentArgs by navArgs()
-    private var orderQuantity = 1
+    private var orderQuantity: Int = 1
     private var isFavorite = false
 
     private lateinit var foodIngredientAdapter: FoodIngredientAdapter
@@ -33,7 +33,9 @@ class FoodDetailFragment : Fragment(R.layout.fragment_food_detail) {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentFoodDetailBinding.inflate(inflater, container, false)
+
         food = args.foodObj
+        orderQuantity = args.foodOrderQuantity
 
         return binding.root
     }
