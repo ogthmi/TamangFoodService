@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -59,6 +60,7 @@ class AddNewAddressFragment : Fragment() {
     private var addressFormBottomSheet: AddressFormBottomSheet? = null
     private var currentLocation: GeoPoint? = null
     private var searchLocationAdapter: SearchLocationAdapter? = null
+    private val TAG = "ADD_NEW_ADDRESS"
     
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var locationCallback: LocationCallback? = null
@@ -159,6 +161,7 @@ class AddNewAddressFragment : Fragment() {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 location?.let {
                     val geoPoint = GeoPoint(it.latitude, it.longitude)
+                    Log.d(TAG, "Current address: ${it.latitude}, ${it.longitude}")
                     currentLocation = GeoPoint(it.latitude, it.longitude)
                     updateMapToLocation(geoPoint)
                     if (showBottomSheet) {

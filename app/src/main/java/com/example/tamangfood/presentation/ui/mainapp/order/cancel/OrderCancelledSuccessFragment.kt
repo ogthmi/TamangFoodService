@@ -55,7 +55,8 @@ class OrderCancelledSuccessFragment : Fragment() {
                 binding.tvTrackOrder.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
             binding.tvTrackOrder.setOnClickListener {
-                // TODO: Track driver
+                // MOCK DATA: order_id
+                findNavController().navigate(OrderCancelledSuccessFragmentDirections.actionOrderCancelledSuccessFragmentToDeliveryTrackingFragment(122))
             }
 
             binding.btnClose.setOnClickListener {

@@ -141,10 +141,24 @@
             app:destination="@id/leaveReviewFragment"
             app:enterAnim="@anim/slide_right"
             app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_orderFragment_to_deliveryTrackingFragment"
+            app:destination="@id/deliveryTrackingFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
         <argument
             android:name="isFromDrawer"
             android:defaultValue="false"
             app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/deliveryTrackingFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.order.tracking.DeliveryTrackingFragment"
+        android:label="fragment_delivery_tracking"
+        tools:layout="@layout/fragment_delivery_tracking">
+        <argument
+            android:name="orderId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/cancelOrderFragment"
@@ -180,6 +194,9 @@
         <argument
             android:name="isFromPlaceOrder"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_orderCancelledSuccessFragment_to_deliveryTrackingFragment"
+            app:destination="@id/deliveryTrackingFragment" />
     </fragment>
     <fragment
         android:id="@+id/updateMyProfileFragment"
@@ -264,4 +281,8 @@
             android:id="@+id/action_confirmOrderFragment_to_orderCancelledSuccessFragment"
             app:destination="@id/orderCancelledSuccessFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/addressSelectionBottomSheet"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder.address.AddressSelectionBottomSheet"
+        android:label="AddressSelectionBottomSheet" />
 </navigation>
