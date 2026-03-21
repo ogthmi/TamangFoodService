@@ -97,7 +97,13 @@
         android:id="@+id/favoriteFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.favorite.FavoriteFragment"
         android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_foodDeailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.menu.MenuFragment"

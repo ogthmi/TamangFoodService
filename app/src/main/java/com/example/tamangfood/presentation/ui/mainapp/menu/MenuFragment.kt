@@ -83,6 +83,7 @@ class MenuFragment : Fragment() {
 
     private fun setupRecyclerView() {
         menuFoodAdapter = MenuFoodAdapter { selectedFood ->
+            Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
             val action = MenuFragmentDirections.actionMenuFragmentToFoodDetailFragment(selectedFood)
             findNavController().navigate(action)
         }
