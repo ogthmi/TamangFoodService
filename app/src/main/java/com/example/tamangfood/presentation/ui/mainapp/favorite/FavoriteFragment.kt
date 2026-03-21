@@ -12,6 +12,7 @@ import com.example.tamangfood.R
 import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.FragmentFavoriteBinding
 import com.example.tamangfood.presentation.ui.mainapp.FoodAdapter
+import com.example.tamangfood.presentation.ui.mainapp.home.cart.addtocart.AddToCartBottomSheet
 import com.example.tamangfood.presentation.utils.FoodType
 import com.example.tamangfood.presentation.utils.GridSpacingItem
 import com.example.tamangfood.presentation.utils.Utils
@@ -51,7 +52,10 @@ class FavoriteFragment : Fragment() {
                 findNavController().navigate(action)
             },
             onFavoriteClick = {},
-            onAddToCartClick = {},
+            onAddToCartClick = { selectedFood ->
+                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
+                bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
+            },
         )
 
         binding.rvRecommendGrid.apply {

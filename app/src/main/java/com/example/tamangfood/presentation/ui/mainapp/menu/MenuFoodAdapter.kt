@@ -9,7 +9,8 @@ import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.ItemMenuFoodCardBinding
 
 class MenuFoodAdapter(
-    private val onItemClick: (Food) -> Unit
+    private val onItemClick: (Food) -> Unit,
+    private val onAddToCartClick: (Food) -> Unit
 ) : ListAdapter<Food, MenuFoodAdapter.MenuFoodViewHolder>(Diff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuFoodViewHolder {
@@ -18,7 +19,7 @@ class MenuFoodAdapter(
             parent,
             false
         )
-        return MenuFoodViewHolder(binding, onItemClick)
+        return MenuFoodViewHolder(binding, onItemClick, onAddToCartClick)
     }
 
     override fun onBindViewHolder(holder: MenuFoodViewHolder, position: Int) {
@@ -27,7 +28,8 @@ class MenuFoodAdapter(
 
     class MenuFoodViewHolder(
         private val binding: ItemMenuFoodCardBinding,
-        private val onItemClick: (Food) -> Unit
+        private val onItemClick: (Food) -> Unit,
+        private val onAddToCartClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Food) {
             binding.tvTitle.text = item.name
@@ -36,6 +38,7 @@ class MenuFoodAdapter(
             binding.tvDescription.text = item.description ?: ""
             binding.ivFood.setImageResource(item.imageRes)
             binding.root.setOnClickListener { onItemClick(item) }
+            binding.btnAddToCart.setOnClickListener { onAddToCartClick(item) }
         }
     }
 

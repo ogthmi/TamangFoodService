@@ -117,7 +117,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                 val action = HomeFragmentDirections
                     .actionHomeFragmentToFoodDetailFragment(selectedFood)
                 findNavController().navigate(action)
-            }
+            },
         )
         binding.rvBestSeller.apply {
             layoutManager =
