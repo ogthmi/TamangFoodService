@@ -190,5 +190,22 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="delivery_time">Delivery Time</string>
     <string name="estimated_delivery">Estimated Delivery</string>
     <string name="mins_format">%d mins</string>
+    <string name="sample_tracking_address">778 Locust View Drive Oakland, CA</string>
+    <string name="remaining_distance">Remaining distance</string>
+    <string name="distance_km_format">%.1f km</string>
+    <string name="order_status">Order status</string>
+    <string name="timeline_accepted">Your order has been accepted</string>
+    <string name="timeline_preparing">The restaurant is preparing your order</string>
+    <string name="timeline_on_way">The delivery is on his way</string>
+    <string name="timeline_delivered">Your order has been delivered</string>
+    <string name="timeline_min_2">2 min</string>
+    <string name="timeline_min_5">5 min</string>
+    <string name="timeline_min_10">10 min</string>
+    <string name="timeline_min_8">8 min</string>
+    <string name="return_home">Return Home</string>
+    <string name="track_order">Track Order</string>
+    <string name="map_point_pickup">Pickup</string>
+    <string name="map_point_dropoff">Drop-off</string>
+    <string name="map_driver">Driver</string>
 
 </resources>

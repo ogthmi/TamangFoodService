@@ -119,7 +119,9 @@ class OrderFragment : Fragment() {
             },
             onTrackClick = { order ->
                 persistSelectedTabToBackStack()
-                // TODO: Navigate to track driver screen
+                findNavController().navigate(
+                    OrderFragmentDirections.actionOrderFragmentToDeliveryTrackingFragment(order.id)
+                )
             },
             onReviewClick = { order ->
                 persistSelectedTabToBackStack()

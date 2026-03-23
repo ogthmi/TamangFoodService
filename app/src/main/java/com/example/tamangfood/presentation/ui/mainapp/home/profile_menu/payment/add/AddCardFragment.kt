@@ -7,27 +7,13 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.tamangfood.BuildConfig
 import com.example.tamangfood.R
 import com.example.tamangfood.databinding.FragmentAddCardBinding
 import com.example.tamangfood.presentation.utils.Utils
-import com.stripe.android.PaymentConfiguration
-import com.stripe.android.Stripe
-import com.stripe.android.model.PaymentMethodCreateParams
 
 class AddCardFragment : Fragment() {
     private var _binding: FragmentAddCardBinding? = null
     private val binding get() = _binding!!
-
-    private var publishableKey: String = ""
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        publishableKey = BuildConfig.STRIPE_PUBLISHABLE_KEY
-        if (publishableKey.isNotBlank()) {
-            PaymentConfiguration.Companion.init(requireContext(), publishableKey)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
