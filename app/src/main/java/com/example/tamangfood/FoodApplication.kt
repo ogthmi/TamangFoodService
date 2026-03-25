@@ -1,6 +1,7 @@
 package com.example.tamangfood
 
 import android.app.Application
+import com.example.tamangfood.presentation.utils.AppPreferences
 import com.stripe.android.PaymentConfiguration
 import dagger.hilt.android.HiltAndroidApp
 
@@ -11,5 +12,6 @@ class FoodApplication : Application() {
         super.onCreate()
         val key = BuildConfig.STRIPE_PUBLISHABLE_KEY
         PaymentConfiguration.init(this, key)
+        AppPreferences.init(context = this)
     }
 }
