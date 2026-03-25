@@ -61,3 +61,7 @@ class FoodCategoryProvider {
         return categoryMap[foodType] ?: emptyList()
     }
 }
+
+enum class HTTP(val status: Int){
+    SUCCESS(200)
+}
