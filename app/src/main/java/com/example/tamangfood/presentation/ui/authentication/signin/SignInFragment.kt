@@ -12,15 +12,19 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.tamangfood.R
-import com.example.tamangfood.data.model.auth.SignInRequest
+import com.example.tamangfood.data.model.auth.signin.SignInRequest
 import com.example.tamangfood.databinding.FragmentSignInBinding
+import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SignInFragment : Fragment(R.layout.fragment_sign_in) {
@@ -44,7 +48,16 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         super.onViewCreated(view, savedInstanceState)
 
         setupClickListeners()
-        observeViewModel()
+        val inputs = listOf(
+            binding.etEmail,
+            binding.etPassword
+        )
+
+        inputs.forEach {editText ->
+            editText.addTextChangedListener {
+                handleSignIn()
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -54,7 +67,11 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     private fun setupClickListeners() {
         binding.btnSignIn.setOnClickListener {
-            handleSignIn()
+            if(handleSignIn()) {
+                val email = binding.etEmail.text.toString().trim()
+                val password = binding.etPassword.text.toString().trim()
+                signIn(email, password)
+            }
         }
 
         binding.tvForgotPassword.setOnClickListener {
@@ -71,33 +88,63 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     }
 
-    private fun observeViewModel() {
+    private fun signIn(email: String, password: String) {
+        viewModel.signIn(email, password)
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.signInState.collect { state ->
+                when (state) {
+                    is NetworkState.Init -> Unit
+                    is NetworkState.Loading -> {
+                        binding.btnSignIn.isEnabled = false
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                    is NetworkState.Success<*> -> {
+                        binding.progressBar.visibility = View.GONE
+                        navigateToHome()
+                    }
+                    is NetworkState.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.btnSignIn.isEnabled = true
+                        Utils.showToast(requireContext(), state.message)
+                    }
+                }
+            }
+        }
     }
 
-    private fun handleSignIn() {
-        val email = binding.etEmail.text.toString()
-        val password = binding.etPassword.text.toString()
+    private fun handleSignIn(): Boolean {
+        val email = binding.etEmail.text.toString().trim()
+        val password = binding.etPassword.text.toString().trim()
+        var isValid = true
+        clearValidationErrors()
 
-        if (email.isEmpty()){
+        if (email.isEmpty()) {
             binding.layoutEmail.helperText = "Email is required"
             binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
+            isValid = false
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (email.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.layoutEmail.helperText = "Invalid email"
             binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
+            isValid = false
         }
 
-        if (password.isEmpty()){
+        if (password.isEmpty()) {
             binding.layoutPassword.helperText = "Password is required"
             binding.etPassword.setBackgroundResource(R.drawable.edittext_error)
+            isValid = false
         }
 
-        val request = SignInRequest(email, password)
+        return isValid
+    }
 
-        viewModel.signIn(request)
-        navigateToHome()
+    private fun clearValidationErrors() {
+        binding.layoutEmail.helperText = null
+        binding.layoutPassword.helperText = null
+        binding.etEmail.setBackgroundResource(R.drawable.edittext_underline)
+        binding.etPassword.setBackgroundResource(R.drawable.edittext_underline)
     }
 
     private fun setupFingerPrint(){

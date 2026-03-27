@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.tamangfood.R
 import com.example.tamangfood.databinding.BottomSheetLogOutBinding
+import com.example.tamangfood.presentation.utils.AppPreferences
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class LogOutBottomSheet : BottomSheetDialogFragment() {
@@ -46,7 +46,7 @@ class LogOutBottomSheet : BottomSheetDialogFragment() {
         binding.btnCancel.setOnClickListener { dismiss() }
 
         binding.btnLogOut.setOnClickListener {
-
+            AppPreferences.clearSession()
             dismiss()
 
             val navController = findNavController()
