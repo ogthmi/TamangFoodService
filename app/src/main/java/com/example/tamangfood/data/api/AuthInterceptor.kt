@@ -29,10 +29,10 @@ class AuthInterceptor @Inject constructor(
 
         var response = chain.proceed(request)
 
-        if (response.code != HTTP_UNAUTHORIZED && response.code != HTTP_FORBIDDEN) {
+        if (response.code == HTTP_UNAUTHORIZED && response.code == HTTP_FORBIDDEN) {
             return response
         }
-        response.close()
+        else response.close()
 
         synchronized(lock) {
             val current = AppPreferences.getToken()
@@ -64,8 +64,8 @@ class AuthInterceptor @Inject constructor(
     // Skip auth: apply some api
     private fun shouldSkipAuth(request: okhttp3.Request): Boolean {
         val path = request.url.encodedPath
-        return path.contains("/auth/login", ignoreCase = true) ||
-            path.contains("/auth/signup", ignoreCase = true) ||
+        return path.contains("/auth/log-in", ignoreCase = true) ||
+            path.contains("/auth/sign-up", ignoreCase = true) ||
             path.contains("/auth/refresh", ignoreCase = true) ||
             path.contains("/auth/forgot", ignoreCase = true)
     }

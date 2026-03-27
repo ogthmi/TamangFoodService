@@ -344,6 +344,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_agree_policy" />
 
+                <ProgressBar
+                    android:id="@id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/btn_sign_up"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="10dp"
+                    android:indeterminateTint="@color/active_color"
+                    android:visibility="gone"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>

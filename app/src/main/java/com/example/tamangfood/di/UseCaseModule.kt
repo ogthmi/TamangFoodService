@@ -2,7 +2,11 @@ package com.example.tamangfood.di
 
 import com.example.tamangfood.data.repository.SampleRepositoryImpl
 import com.example.tamangfood.domain.repository.SampleRepository
+import com.example.tamangfood.domain.repository.SignInRepository
+import com.example.tamangfood.domain.repository.SignUpRepository
 import com.example.tamangfood.domain.usecase.SampleUseCase
+import com.example.tamangfood.domain.usecase.SignInUseCase
+import com.example.tamangfood.domain.usecase.SignUpUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -17,5 +21,17 @@ object UseCaseModule {
     @Singleton
     fun bindSampleUseCase(repo: SampleRepository): SampleUseCase{
         return SampleUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindSignInUseCase(repo: SignInRepository): SignInUseCase{
+        return SignInUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindSignUpUseCase(repo: SignUpRepository): SignUpUseCase{
+        return SignUpUseCase(repo)
     }
 }
