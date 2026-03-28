@@ -209,6 +209,9 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings">
         <action
+            android:id="@+id/action_settingFragment_to_homeFragment"
+            app:destination="@id/homeFragment"/>
+        <action
             android:id="@+id/action_settingsFragment_to_passwordSettingFragment"
             app:destination="@id/passwordSettingFragment" />
     </fragment>
@@ -216,7 +219,42 @@
         android:id="@+id/passwordSettingFragment"
         android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.settings.password.PasswordSettingFragment"
         android:label="fragment_password_setting"
-        tools:layout="@layout/fragment_password_setting" />
+        tools:layout="@layout/fragment_password_setting" >
+        <action
+            android:id="@+id/action_passwordSettingFragment_to_ForgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.example.tamangfood.presentation.ui.authentication.forgotpassword.ForgotPasswordFragment"
+        tools:layout="@layout/fragment_forgot_password">
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_resetEmailSentFragment"
+            app:destination="@id/resetEmailSentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resetEmailSentFragment"
+        android:name="com.example.tamangfood.presentation.ui.authentication.forgotpassword.ResetEmailSentFragment"
+        tools:layout="@layout/fragment_email_sent" >
+        <action
+            android:id="@+id/action_resetEmailSentFrament_to_resetEmailSuccessFragment"
+            app:destination="@id/resetPasswordSuccessFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/resetPasswordSuccessFragment"
+        android:name="com.example.tamangfood.presentation.ui.authentication.forgotpassword.ResetPasswordSuccessFragment"
+        tools:layout="@layout/fragment_reset_password_success">
+        <argument
+            android:name="isFromMainApp"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_resetPasswordSuccessFragment_to_settingFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/deliveryAddressFragment"

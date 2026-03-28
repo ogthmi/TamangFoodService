@@ -69,7 +69,7 @@ class SettingsFragment : Fragment() {
 
     private fun setupClickListeners() {
         binding.ivBack.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_settingFragment_to_homeFragment)
         }
 
         binding.passwordSettingLayout.setOnClickListener {
