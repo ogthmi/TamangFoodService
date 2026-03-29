@@ -15,11 +15,16 @@ import com.example.tamangfood.data.model.sample.SampleRequest
 import com.example.tamangfood.data.model.sample.SampleResponse
 import com.example.tamangfood.data.model.user.changepassword.ChangePasswordRequest
 import com.example.tamangfood.data.model.user.changepassword.ChangePasswordResponse
+import com.example.tamangfood.data.model.user.profile.UserProfileResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.PUT
 
@@ -57,11 +62,23 @@ interface ApiService {
         @Body body: ChangePasswordRequest
     ): Response<ChangePasswordResponse>
 
-    // Delete user account
+    @GET("api/v1/users/{userId}")
+    suspend fun getUser(@Path("userId") userId: Int): Response<UserProfileResponse>
+
     @DELETE("api/v1/users/{id}")
     suspend fun deleteUser(
         @Path("id") userId: Int
     ): Response<Void>
+
+    @Multipart
+    @POST("api/v1/users/{userId}")
+    suspend fun updateUserProfile(
+        @Path("userId") userId: Int,
+        @Part("fullName") fullName: RequestBody,
+        @Part("phoneNumber") phoneNumber: RequestBody,
+        @Part("dateOfBirth") dateOfBirth: RequestBody,
+        @Part image: MultipartBody.Part? = null
+    ): Response<UserProfileResponse>
 
     // Lấy danh sách address theo user
     @GET("api/v1/addresses/user")

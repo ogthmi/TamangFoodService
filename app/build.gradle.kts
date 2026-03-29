@@ -20,8 +20,10 @@ val stripePublishableKey: String = run {
 val baseUrl: String = run {
     val propsFile = rootProject.file("local.properties")
     if (!propsFile.exists()) return@run ""
+
     val props = Properties()
     propsFile.inputStream().use { props.load(it) }
+
     props.getProperty("baseUrl").orEmpty()
 }
 
@@ -45,13 +47,7 @@ android {
             "\"$stripePublishableKey\""
         )
 
-        buildConfigField(
-            "String",
-            "BASE_URL",
-            "\"$baseUrl\""
-        )
-
-
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
     buildTypes {
@@ -116,5 +112,9 @@ dependencies {
 
     // Stripe
     implementation("com.stripe:stripe-android:20.48.0")
+
+    // Fetch Image by URL
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
+    kapt ("com.github.bumptech.glide:compiler:4.15.1")
 
 }

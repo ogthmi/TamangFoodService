@@ -71,7 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_launcher_background" />
+                        android:src="@drawable/ic_default_avatar" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -107,8 +107,8 @@
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
                     app:endIconMode="custom"
-                    app:hintEnabled="false"
                     app:helperTextTextColor="@color/orange_base"
+                    app:hintEnabled="false"
                     app:layout_constraintTop_toBottomOf="@id/tv_full_name_label">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -116,16 +116,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_underline"
+                        android:fontFamily="@font/abeezee"
                         android:hint="@string/hint_full_name"
+                        android:includeFontPadding="false"
                         android:inputType="textPersonName"
-                        android:textColorHint="@color/body_text"
-                        android:textColor="@color/main_color"
                         android:padding="10dp"
-                        android:paddingBottom="10dp"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
-                        android:includeFontPadding="false"
-                        android:fontFamily="@font/abeezee"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/main_color"
+                        android:textColorHint="@color/body_text"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -150,8 +150,8 @@
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
                     app:endIconMode="custom"
-                    app:hintEnabled="false"
                     app:helperTextTextColor="@color/orange_base"
+                    app:hintEnabled="false"
                     app:layout_constraintTop_toBottomOf="@id/tv_email_label">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -160,16 +160,16 @@
                         android:layout_height="wrap_content"
                         android:autofillHints="emailAddress"
                         android:background="@drawable/edittext_underline"
-                        android:hint="@string/hint_email"
-                        android:inputType="textEmailAddress"
-                        android:textColorHint="@color/body_text"
-                        android:textColor="@color/main_color"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:includeFontPadding="false"
                         android:fontFamily="@font/abeezee"
+                        android:hint="@string/hint_email"
+                        android:includeFontPadding="false"
+                        android:inputType="textEmailAddress"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/main_color"
+                        android:textColorHint="@color/body_text"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -194,8 +194,8 @@
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
                     app:endIconMode="custom"
-                    app:hintEnabled="false"
                     app:helperTextTextColor="@color/orange_base"
+                    app:hintEnabled="false"
                     app:layout_constraintTop_toBottomOf="@id/tv_phone_label">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -203,16 +203,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_underline"
-                        android:hint="@string/hint_phone_number"
-                        android:inputType="phone"
-                        android:textColorHint="@color/body_text"
-                        android:textColor="@color/main_color"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:includeFontPadding="false"
                         android:fontFamily="@font/abeezee"
+                        android:hint="@string/hint_phone_number"
+                        android:includeFontPadding="false"
+                        android:inputType="phone"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/main_color"
+                        android:textColorHint="@color/body_text"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -238,8 +238,8 @@
                     app:boxStrokeWidthFocused="0dp"
                     app:endIconMode="custom"
                     app:endIconTint="@color/orange_base"
-                    app:hintEnabled="false"
                     app:helperTextTextColor="@color/orange_base"
+                    app:hintEnabled="false"
                     app:layout_constraintTop_toBottomOf="@id/tv_dob_label">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -247,21 +247,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_underline"
-                        android:hint="@string/hint_date"
-                        android:textColorHint="@color/body_text"
-                        android:textColor="@color/main_color"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:includeFontPadding="false"
                         android:fontFamily="@font/abeezee"
+                        android:hint="@string/hint_date"
+                        android:includeFontPadding="false"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/main_color"
+                        android:textColorHint="@color/body_text"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <ProgressBar
+                    android:id="@id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:indeterminateTint="@color/active_color"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_dob" />
+
                 <Button
-                    android:id="@+id/btn_sign_up"
+                    android:id="@+id/btn_update_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_lg"
@@ -271,11 +282,11 @@
                     android:paddingEnd="@dimen/spacing_md"
                     android:text="@string/update_profile"
                     android:textAllCaps="false"
-                    android:textSize="14sp"
                     android:textColor="@color/white"
+                    android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/layout_dob" />
+                    app:layout_constraintTop_toBottomOf="@id/progress_bar" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
