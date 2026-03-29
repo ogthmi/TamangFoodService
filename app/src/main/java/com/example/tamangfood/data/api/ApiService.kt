@@ -8,7 +8,9 @@ import com.example.tamangfood.data.model.sample.SampleRequest
 import com.example.tamangfood.data.model.sample.SampleResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
     // Sample
@@ -29,5 +31,8 @@ interface ApiService {
         @Body request: SignInRequest
     ): Response<SignInResponse>
 
-
+    @DELETE("api/v1/users/{id}")
+    suspend fun deleteUser(
+        @Path("id") userId: Int
+    ): Response<Void>
 }

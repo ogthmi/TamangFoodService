@@ -17,6 +17,14 @@ val stripePublishableKey: String = run {
     props.getProperty("stripe.publishableKey").orEmpty()
 }
 
+val baseUrl: String = run {
+    val propsFile = rootProject.file("local.properties")
+    if (!propsFile.exists()) return@run ""
+    val props = Properties()
+    propsFile.inputStream().use { props.load(it) }
+    props.getProperty("baseUrl").orEmpty()
+}
+
 android {
     namespace = "com.example.tamangfood"
     compileSdk = 36
@@ -35,6 +43,12 @@ android {
             "String",
             "STRIPE_PUBLISHABLE_KEY",
             "\"$stripePublishableKey\""
+        )
+
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            "\"$baseUrl\""
         )
     }
 

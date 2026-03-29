@@ -29,7 +29,7 @@ class AuthInterceptor @Inject constructor(
 
         var response = chain.proceed(request)
 
-        if (response.code == HTTP_UNAUTHORIZED && response.code == HTTP_FORBIDDEN) {
+        if (response.code != HTTP_UNAUTHORIZED && response.code != HTTP_FORBIDDEN) {
             return response
         }
         else response.close()

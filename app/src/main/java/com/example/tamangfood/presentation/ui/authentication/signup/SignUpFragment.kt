@@ -47,7 +47,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
         inputs.forEach {editText ->
             editText.addTextChangedListener {
-                handleSignUp()
+                handleSignUp(false)
             }
         }
     }
@@ -73,7 +73,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         }
 
         binding.btnSignUp.setOnClickListener {
-            if(handleSignUp()){
+            if(handleSignUp(true)){
                 val fullName = binding.etFullName.text.toString().trim()
                 val email = binding.etEmail.text.toString().trim()
                 val password = binding.etPassword.text.toString().trim()
@@ -101,7 +101,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         datePicker.show()
     }
 
-    private fun handleSignUp(): Boolean {
+    private fun handleSignUp(isSubmit: Boolean): Boolean {
         val fullName = binding.etFullName.text.toString().trim()
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
@@ -110,49 +110,49 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         var isValid = true
         clearValidationErrors()
 
-        if (fullName.isBlank()) {
+        if (fullName.isBlank() && isSubmit) {
             binding.layoutFullName.helperText = "Full name is required"
             binding.etFullName.setBackgroundResource(R.drawable.edittext_error)
             isValid = false
         }
 
-        if (email.isEmpty()) {
+        if (email.isEmpty() && isSubmit) {
             binding.layoutEmail.helperText = "Email is required"
             binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
             isValid = false
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (email.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.layoutEmail.helperText = "Invalid email"
             binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
             isValid = false
         }
 
-        if (password.isEmpty()) {
+        if (password.isEmpty() && isSubmit) {
             binding.layoutPassword.helperText = "Password is required"
             binding.etPassword.setBackgroundResource(R.drawable.edittext_error)
             isValid = false
         }
 
-        if (password.length < 6) {
+        if (password.isNotEmpty() && password.length < 6) {
             binding.layoutPassword.helperText = "Invalid password. Min length is 6."
             binding.etPassword.setBackgroundResource(R.drawable.edittext_error)
             isValid = false
         }
 
-        if (phoneNumber.isEmpty()) {
+        if (phoneNumber.isEmpty() && isSubmit) {
             binding.layoutPhone.helperText = "Phone number is required"
             binding.etPhone.setBackgroundResource(R.drawable.edittext_error)
             isValid = false
         }
 
-        if (phoneNumber.length < 10) {
+        if (phoneNumber.isNotEmpty() && phoneNumber.length < 10) {
             binding.layoutPhone.helperText = "Invalid phone number"
             binding.etPhone.setBackgroundResource(R.drawable.edittext_error)
             isValid = false
         }
 
-        if (dateOfBirth.isBlank()) {
+        if (dateOfBirth.isBlank() && isSubmit) {
             binding.layoutDob.helperText = "Date of birth is required"
             binding.etDob.setBackgroundResource(R.drawable.edittext_error)
             isValid = false
@@ -200,7 +200,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                     is NetworkState.Success<*> -> {
                         binding.btnSignUp.isEnabled = true
                         binding.progressBar.visibility = View.GONE
-                        navigateToBiometric()
+                        navigateToHome()
                     }
                     is NetworkState.Error -> {
                         binding.progressBar.visibility = View.GONE
@@ -218,5 +218,22 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                 .setPopUpTo(R.id.signUpFragment, true)
                 .setPopUpTo(R.id.signInFragment, true)
                 .build())
+    }
+
+    private fun navigateToHome(){
+        findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToMainAppFragment(),
+            navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.signUpFragment, true)
+                .setPopUpTo(R.id.signInFragment, true)
+                .build())
+    }
+
+    private fun androidx.appcompat.widget.AppCompatEditText.clearErrorOnTyping(
+        textInputLayout: com.google.android.material.textfield.TextInputLayout
+    ) {
+        this.addTextChangedListener {
+            textInputLayout.helperText = null
+            this.setBackgroundResource(R.drawable.edittext_underline)
+        }
     }
 }

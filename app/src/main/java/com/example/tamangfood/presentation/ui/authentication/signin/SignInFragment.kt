@@ -55,7 +55,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
         inputs.forEach {editText ->
             editText.addTextChangedListener {
-                handleSignIn()
+                handleSignIn(false)
             }
         }
     }
@@ -67,7 +67,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     private fun setupClickListeners() {
         binding.btnSignIn.setOnClickListener {
-            if(handleSignIn()) {
+            if(handleSignIn(true)) {
                 val email = binding.etEmail.text.toString().trim()
                 val password = binding.etPassword.text.toString().trim()
                 signIn(email, password)
@@ -113,13 +113,13 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         }
     }
 
-    private fun handleSignIn(): Boolean {
+    private fun handleSignIn(isSubmit: Boolean): Boolean {
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
         var isValid = true
         clearValidationErrors()
 
-        if (email.isEmpty()) {
+        if (email.isEmpty() && isSubmit) {
             binding.layoutEmail.helperText = "Email is required"
             binding.etEmail.setBackgroundResource(R.drawable.edittext_error)
             isValid = false
@@ -131,7 +131,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             isValid = false
         }
 
-        if (password.isEmpty()) {
+        if (password.isEmpty() && isSubmit) {
             binding.layoutPassword.helperText = "Password is required"
             binding.etPassword.setBackgroundResource(R.drawable.edittext_error)
             isValid = false
@@ -216,9 +216,11 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         enrollLauncher.launch(enrollIntent)
     }
 
-    private fun navigateToHome(){
-        findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToMainAppFragment(),
-            navOptions = NavOptions.Builder()
+    private fun navigateToHome() {
+        findNavController().navigate(
+            R.id.action_signInFragment_to_mainAppFragment,
+            null,
+            NavOptions.Builder()
                 .setPopUpTo(R.id.signInFragment, true)
                 .build()
         )

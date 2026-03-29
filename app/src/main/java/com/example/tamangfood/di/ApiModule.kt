@@ -1,5 +1,6 @@
 package com.example.tamangfood.di
 
+import com.example.tamangfood.BuildConfig
 import com.example.tamangfood.data.api.ApiService
 import com.example.tamangfood.data.api.AuthInterceptor
 import com.google.gson.Gson
@@ -19,7 +20,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
-    private const val BASE_URL = "http://26.218.222.38:8888/"
+    private const val BASE_URL = BuildConfig.BASE_URL
 
     @Provides
     @Singleton

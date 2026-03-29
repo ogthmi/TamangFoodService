@@ -4,10 +4,11 @@ import com.example.tamangfood.data.repository.SampleRepositoryImpl
 import com.example.tamangfood.domain.repository.SampleRepository
 import com.example.tamangfood.domain.repository.SignInRepository
 import com.example.tamangfood.domain.repository.SignUpRepository
+import com.example.tamangfood.domain.repository.UserRepository
+import com.example.tamangfood.domain.usecase.DeleteAccountUseCase
 import com.example.tamangfood.domain.usecase.SampleUseCase
 import com.example.tamangfood.domain.usecase.SignInUseCase
 import com.example.tamangfood.domain.usecase.SignUpUseCase
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,5 +34,11 @@ object UseCaseModule {
     @Singleton
     fun bindSignUpUseCase(repo: SignUpRepository): SignUpUseCase{
         return SignUpUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindDeleteAccountUseCase(repo: UserRepository): DeleteAccountUseCase {
+        return DeleteAccountUseCase(repo)
     }
 }
