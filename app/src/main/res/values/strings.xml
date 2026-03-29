@@ -37,6 +37,12 @@
     <string name="notification_setting">Notification Setting</string>
     <string name="password_setting">Password Setting</string>
     <string name="delete_account">Delete Account</string>
+    <string name="delete_account_dialog_title">Delete account?</string>
+    <string name="delete_account_dialog_message">This will permanently remove your account and data on the server. You cannot undo this action.</string>
+    <string name="delete_account_confirm">Delete</string>
+    <string name="delete_account_cancel">Cancel</string>
+    <string name="delete_account_success">Account deleted</string>
+    <string name="delete_account_invalid_user">Could not determine your user id. Please sign in again.</string>
     <string name="current_password">Current Password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="new_password">New Password</string>

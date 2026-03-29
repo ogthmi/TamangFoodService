@@ -51,7 +51,7 @@ class LogOutBottomSheet : BottomSheetDialogFragment() {
 
             val navController = findNavController()
 
-            navController.setGraph(R.navigation.welcome_navigation)
+            navController.setGraph(R.navigation.auth_navigation)
         }
     }
 

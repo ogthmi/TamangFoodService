@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_signUpFragment_to_fingerPrintFragment"
             app:destination="@id/fingerPrintFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_mainAppFragment"
+            app:destination="@id/mainAppFragment" />
 
     </fragment>
 
