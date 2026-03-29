@@ -33,6 +33,30 @@ object ApiModule {
 
     @Provides
     @Singleton
+    @Named("plain")
+    fun providePlainOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRefreshApi(
+        @Named("plain") plainClient: OkHttpClient,
+        gson: Gson
+    ): RefreshApi {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(plainClient)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(RefreshApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideOkHttpClient(
         authInterceptor: AuthInterceptor
     ): OkHttpClient {
@@ -61,30 +85,6 @@ object ApiModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    @Named("plain")
-    fun providePlainOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideRefreshApi(
-        @Named("plain") plainClient: OkHttpClient,
-        gson: Gson
-    ): RefreshApi {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(plainClient)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-            .create(RefreshApi::class.java)
     }
 
 }

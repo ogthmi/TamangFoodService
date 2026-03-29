@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.tamangfood.data.model.Address
+import com.example.tamangfood.domain.model.Address
 import com.example.tamangfood.databinding.BottomSheetAddressSelectionBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 

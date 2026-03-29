@@ -1,5 +1,9 @@
 package com.example.tamangfood.data.api
 
+import com.example.tamangfood.data.model.address.AddAddressRequest
+import com.example.tamangfood.data.model.address.AddAddressResponse
+import com.example.tamangfood.data.model.address.AddressDetailResponse
+import com.example.tamangfood.data.model.address.UserAddressesResponse
 import com.example.tamangfood.data.model.auth.forgotpassword.RequestOtpResponse
 import com.example.tamangfood.data.model.auth.forgotpassword.ResetPasswordRequest
 import com.example.tamangfood.data.model.auth.forgotpassword.ResetPasswordResponse
@@ -14,8 +18,10 @@ import com.example.tamangfood.data.model.user.changepassword.ChangePasswordRespo
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.PUT
 
 interface ApiService {
     // Sample
@@ -51,8 +57,38 @@ interface ApiService {
         @Body body: ChangePasswordRequest
     ): Response<ChangePasswordResponse>
 
+    // Delete user account
     @DELETE("api/v1/users/{id}")
     suspend fun deleteUser(
         @Path("id") userId: Int
     ): Response<Void>
+
+    // Lấy danh sách address theo user
+    @GET("api/v1/addresses/user")
+    suspend fun getUserAddresses(): Response<UserAddressesResponse>
+
+    // Lấy một địa chỉ theo id
+    @GET("api/v1/addresses/{addressId}")
+    suspend fun getAddressById(
+        @Path("addressId") addressId: Int
+    ): Response<AddressDetailResponse>
+
+    // Thêm address
+    @POST("api/v1/addresses")
+    suspend fun addAddress(
+        @Body body: AddAddressRequest
+    ): Response<AddAddressResponse>
+
+    // Cập nhật address
+    @PUT("api/v1/addresses/{addressId}")
+    suspend fun updateAddress(
+        @Path("addressId") addressId: Int,
+        @Body body: AddAddressRequest
+    ): Response<AddAddressResponse>
+
+    // Xóa address
+    @DELETE("api/v1/addresses/{addressId}")
+    suspend fun deleteAddress(
+        @Path("addressId") addressId: Int
+    ): Response<AddAddressResponse>
 }

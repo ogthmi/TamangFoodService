@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
-import com.example.tamangfood.data.model.Address
+import com.example.tamangfood.domain.model.Address
 import com.example.tamangfood.data.model.CartItem
 import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.data.model.payment.Card
