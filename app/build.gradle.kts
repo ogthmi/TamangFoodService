@@ -50,6 +50,8 @@ android {
             "BASE_URL",
             "\"$baseUrl\""
         )
+
+
     }
 
     buildTypes {

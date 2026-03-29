@@ -1,11 +1,16 @@
 package com.example.tamangfood.data.api
 
+import com.example.tamangfood.data.model.auth.forgotpassword.RequestOtpResponse
+import com.example.tamangfood.data.model.auth.forgotpassword.ResetPasswordRequest
+import com.example.tamangfood.data.model.auth.forgotpassword.ResetPasswordResponse
 import com.example.tamangfood.data.model.auth.signin.SignInRequest
 import com.example.tamangfood.data.model.auth.signin.SignInResponse
 import com.example.tamangfood.data.model.auth.signup.SignUpRequest
 import com.example.tamangfood.data.model.auth.signup.SignUpResponse
 import com.example.tamangfood.data.model.sample.SampleRequest
 import com.example.tamangfood.data.model.sample.SampleResponse
+import com.example.tamangfood.data.model.user.changepassword.ChangePasswordRequest
+import com.example.tamangfood.data.model.user.changepassword.ChangePasswordResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -30,6 +35,21 @@ interface ApiService {
     suspend fun signIn(
         @Body request: SignInRequest
     ): Response<SignInResponse>
+
+    @POST("api/v1/auth/OTP/{email}")
+    suspend fun requestOTP(
+        @Path(value = "email") email: String,
+    ): Response<RequestOtpResponse>
+
+    @POST("api/v1/auth/forgot-password")
+    suspend fun resetPassword(
+        @Body request: ResetPasswordRequest
+    ): Response<ResetPasswordResponse>
+
+    @POST("api/v1/auth/change-password")
+    suspend fun changePassword(
+        @Body body: ChangePasswordRequest
+    ): Response<ChangePasswordResponse>
 
     @DELETE("api/v1/users/{id}")
     suspend fun deleteUser(

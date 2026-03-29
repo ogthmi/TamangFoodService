@@ -43,7 +43,7 @@ class AuthInterceptor @Inject constructor(
                     .build()
                 return chain.proceed(request)
             }
-            // If access token is invalid -> call api refresh token get access token
+//             If access token is invalid -> call api refresh token get access token
 //            if (!tokenRefreshService.refreshSync()) {
 //                request = original.newBuilder()
 //                    .apply { addBearerIfPresent(this, accessBefore) }
