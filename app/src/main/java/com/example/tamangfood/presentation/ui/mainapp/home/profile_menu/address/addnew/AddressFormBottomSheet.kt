@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
+import androidx.core.os.bundleOf
 import com.example.tamangfood.R
 import com.example.tamangfood.databinding.BottomSheetAddressFormBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -19,22 +19,37 @@ class AddressFormBottomSheet : BottomSheetDialogFragment() {
     private var fullAddress: String? = null
     private var isDetail: Boolean = false
     private var name: String? = null
+    private var addressId: Int = -1
 
     companion object {
         const val TAG = "AddressFormBottomSheet"
         const val REQUEST_KEY = "address_form_result"
+
+        const val RESULT_ACTION = "result_action"
+        const val RESULT_ADDRESS_ID = "result_address_id"
+
+        const val ACTION_ADD = "ADD"
+        const val ACTION_UPDATE = "UPDATE"
+        const val ACTION_DELETE = "DELETE"
+
+        const val RESULT_LATITUDE = "result_latitude"
+        const val RESULT_LONGITUDE = "result_longitude"
+        const val RESULT_ADDRESS = "result_address"
+        const val RESULT_NAME = "result_name"
 
         private const val ARG_LATITUDE = "latitude"
         private const val ARG_LONGITUDE = "longitude"
         private const val ARG_ADDRESS = "address"
         private const val ARG_DETAIL = "isDetail"
         private const val ARG_NAME = "name"
+        private const val ARG_ADDRESS_ID = "addressId"
         
         fun newInstance(
             location: GeoPoint,
             address: String,
             isDetails: Boolean,
-            name: String
+            name: String,
+            addressId: Int
         ): AddressFormBottomSheet {
             return AddressFormBottomSheet().apply {
                 arguments = Bundle().apply {
@@ -43,6 +58,7 @@ class AddressFormBottomSheet : BottomSheetDialogFragment() {
                     putString(ARG_ADDRESS, address)
                     putBoolean(ARG_DETAIL, isDetails)
                     putString(ARG_NAME, name)
+                    putInt(ARG_ADDRESS_ID, addressId)
                 }
             }
         }
@@ -57,6 +73,7 @@ class AddressFormBottomSheet : BottomSheetDialogFragment() {
             fullAddress = it.getString(ARG_ADDRESS)
             isDetail = it.getBoolean(ARG_DETAIL)
             name = it.getString(ARG_NAME)
+            addressId = it.getInt(ARG_ADDRESS_ID, -1)
         }
     }
 
@@ -105,16 +122,43 @@ class AddressFormBottomSheet : BottomSheetDialogFragment() {
             }
 
             selectedLocation?.let { location ->
+                if (isDetail && addressId <= 0) {
+                    Toast.makeText(requireContext(), "Invalid address id", Toast.LENGTH_SHORT).show()
+                    return@let
+                }
+
+                val action = if (isDetail) ACTION_UPDATE else ACTION_ADD
+                parentFragmentManager.setFragmentResult(
+                    REQUEST_KEY,
+                    bundleOf(
+                        RESULT_ACTION to action,
+                        RESULT_ADDRESS_ID to addressId,
+                        RESULT_LATITUDE to location.latitude,
+                        RESULT_LONGITUDE to location.longitude,
+                        RESULT_ADDRESS to address,
+                        RESULT_NAME to name
+                    )
+                )
                 dismiss()
-                findNavController().popBackStack()
             } ?: run {
                 Toast.makeText(requireContext(), "Please select a location on the map", Toast.LENGTH_SHORT).show()
             }
         }
 
         binding.btnDelete.setOnClickListener {
+            if (addressId <= 0) {
+                Toast.makeText(requireContext(), "Invalid address id", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-            // TODO: delete address
+            parentFragmentManager.setFragmentResult(
+                REQUEST_KEY,
+                bundleOf(
+                    RESULT_ACTION to ACTION_DELETE,
+                    RESULT_ADDRESS_ID to addressId
+                )
+            )
+            dismiss()
         }
     }
 

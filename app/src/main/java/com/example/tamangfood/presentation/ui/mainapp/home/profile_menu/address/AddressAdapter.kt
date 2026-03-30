@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tamangfood.data.model.Address
+import com.example.tamangfood.domain.model.Address
 import com.example.tamangfood.databinding.ItemAddressBinding
 
 class AddressAdapter(
@@ -32,7 +32,6 @@ class AddressAdapter(
         fun bind(address: Address) {
             binding.apply {
                 tvAddressName.text = address.name
-                tvAddressFull.text = address.fullAddress
 
                 root.setOnClickListener {
                     onItemClick(address)

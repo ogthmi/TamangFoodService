@@ -1,4 +1,4 @@
-package com.example.tamangfood.data.model
+package com.example.tamangfood.domain.model
 
 data class Address(
     val id: Int,
@@ -7,4 +7,3 @@ data class Address(
     val latitude: Double,
     val longitude: Double,
 )
-

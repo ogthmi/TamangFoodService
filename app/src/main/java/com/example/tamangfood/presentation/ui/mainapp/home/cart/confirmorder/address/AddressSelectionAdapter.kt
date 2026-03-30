@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tamangfood.data.model.Address
+import com.example.tamangfood.domain.model.Address
 import com.example.tamangfood.databinding.ItemAddressSelectionBinding
 
 class AddressSelectionAdapter(

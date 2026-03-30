@@ -55,7 +55,9 @@
                 android:textColor="@color/main_color"
                 android:background="@drawable/edittext_underline"
                 android:padding="10dp"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:imeOptions="actionDone"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 

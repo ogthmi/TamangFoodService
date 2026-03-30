@@ -46,6 +46,26 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/content_background">
 
+        <ProgressBar
+            android:id="@+id/progress_addresses"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/no_address"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/no_delivery_address_found"
+            android:textColor="@color/body_text"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAddresses"
             android:layout_width="match_parent"

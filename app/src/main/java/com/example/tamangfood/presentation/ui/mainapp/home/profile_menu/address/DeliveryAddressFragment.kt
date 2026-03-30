@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
-import com.example.tamangfood.data.model.Address
+import com.example.tamangfood.domain.model.Address
 import com.example.tamangfood.databinding.FragmentDeliveryAddressBinding
+import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DeliveryAddressFragment : Fragment() {
@@ -21,7 +24,6 @@ class DeliveryAddressFragment : Fragment() {
     
     private val viewModel: DeliveryAddressViewModel by viewModels()
     private lateinit var addressAdapter: AddressAdapter
-    private lateinit var addressMockData: List<Address>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,16 +37,56 @@ class DeliveryAddressFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-        mockData()
-
         setupRecyclerView()
         setupClickListeners()
+        observeAddresses()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Reload so that add/update/delete reflects immediately.
+        viewModel.loadAddresses()
+    }
+
+    private fun observeAddresses() {
+        viewModel.loadAddresses()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.addressesState.collect { state ->
+                when (state) {
+                    is NetworkState.Init -> Unit
+                    is NetworkState.Loading -> {
+                        binding.progressAddresses.visibility = View.VISIBLE
+                    }
+                    is NetworkState.Success<*> -> {
+                        binding.progressAddresses.visibility = View.GONE
+                        val list = state.data as List<Address>
+                        if(list.isEmpty()){
+                            binding.noAddress.visibility = View.VISIBLE
+                            binding.rvAddresses.visibility = View.GONE
+                        }
+                        else{
+                            addressAdapter.submitList(list)
+                            binding.noAddress.visibility = View.GONE
+                            binding.rvAddresses.visibility = View.VISIBLE
+                        }
+                    }
+                    is NetworkState.Error -> {
+                        binding.progressAddresses.visibility = View.GONE
+                        Utils.showToast(requireContext(), state.message)
+                    }
+                }
+            }
+        }
     }
 
     private fun setupRecyclerView() {
         addressAdapter = AddressAdapter(
             onItemClick = { address ->
-                findNavController().navigate(DeliveryAddressFragmentDirections.actionDeliveryAddressFragmentToAddNewAddressFragment(true))
+                findNavController().navigate(
+                    DeliveryAddressFragmentDirections.actionDeliveryAddressFragmentToAddNewAddressFragment(
+                        true, address.id
+                    )
+                )
             }
         )
         
@@ -52,8 +94,6 @@ class DeliveryAddressFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = addressAdapter
         }
-
-        addressAdapter.submitList(addressMockData)
     }
 
     private fun setupClickListeners() {
@@ -62,39 +102,17 @@ class DeliveryAddressFragment : Fragment() {
         }
 
         binding.btnAddNewAddress.setOnClickListener {
-            findNavController().navigate(DeliveryAddressFragmentDirections.actionDeliveryAddressFragmentToAddNewAddressFragment(false))
+            findNavController().navigate(
+                DeliveryAddressFragmentDirections.actionDeliveryAddressFragmentToAddNewAddressFragment(
+                    false,
+                    -1
+                )
+            )
         }
     }
 
-    private fun mockData(){
-        val sampleAddresses = listOf(
-            Address(
-                id = 1,
-                name = "My home",
-                fullAddress = "778 Locust View Drive Oakland, CA",
-                latitude = 37.7749,
-                longitude = -122.4194
-            ),
-            Address(
-                id = 2,
-                name = "My Office",
-                fullAddress = "778 Locust View Drive Oakland, CA",
-                latitude = 37.7849,
-                longitude = -122.4094
-            ),
-            Address(
-                id = 3,
-                name = "Parent's House",
-                fullAddress = "778 Locust View Drive Oakland, CA",
-                latitude = 37.7649,
-                longitude = -122.4294
-            )
-        )
-        addressMockData = sampleAddresses
-    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
-

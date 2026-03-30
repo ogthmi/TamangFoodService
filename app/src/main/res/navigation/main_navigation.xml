@@ -293,6 +293,9 @@
         <argument
             android:name="detail"
             app:argType="boolean" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/recommendFragment"

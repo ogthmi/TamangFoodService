@@ -1,6 +1,7 @@
 package com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.address.addnew
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
@@ -20,7 +21,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,8 +35,11 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.example.tamangfood.R
 import com.example.tamangfood.data.model.SearchLocationItem
+import com.example.tamangfood.domain.model.Address
 import com.example.tamangfood.databinding.FragmentAddNewAddressBinding
+import com.example.tamangfood.presentation.utils.AppPreferences
 import com.example.tamangfood.presentation.utils.DefaultLocation
+import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.Utils
 import com.example.tamangfood.presentation.utils.Zoom
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,6 +75,7 @@ class AddNewAddressFragment : Fragment() {
     private val args: AddNewAddressFragmentArgs by navArgs()
     private var isDetails: Boolean = false
     private var curName: String? = null
+    private var isClickBackToCurrentButton: Boolean = false
 
     private val locationPermissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -99,34 +106,167 @@ class AddNewAddressFragment : Fragment() {
         )
         Configuration.getInstance().userAgentValue = requireContext().packageName
 
-        if(isDetails){
-            //TODO: get infor address from server
-            // Mock data
-            lat = DefaultLocation.LAT.value
-            lng = DefaultLocation.LNG.value
-            val name = "Home"
-            curName = name
-            val address = "Ha Noi, Viet Nam"
-            showAddressFormBottomSheet(GeoPoint(lat, lng), address, name)
-
+        if (isDetails && args.id > 0) {
+            binding.tvTitle.text = "My Address"
+            viewModel.loadAddressById(args.id)
+        } else if (isDetails) {
+            binding.tvTitle.text = "My Address"
+            Utils.showToast(requireContext(), "Invalid address id")
+            findNavController().popBackStack()
+            return
         }
         setupMap()
         setupSearchBar()
         setupRecyclerView()
         setupClickListeners()
 
+        // Luôn check permission -> lấy vị trí hiện tại đang đứng
         if (checkLocationPermissions()) {
             getCurrentLocation()
         } else {
             requestLocationPermissions()
         }
+
+        // Nhận lại action từ bottom sheet
+        parentFragmentManager.setFragmentResultListener(
+            AddressFormBottomSheet.REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val lat = bundle.getDouble(AddressFormBottomSheet.RESULT_LATITUDE, 0.0)
+            val lng = bundle.getDouble(AddressFormBottomSheet.RESULT_LONGITUDE, 0.0)
+            val name = bundle.getString(AddressFormBottomSheet.RESULT_NAME).orEmpty()
+
+            val action = bundle.getString(AddressFormBottomSheet.RESULT_ACTION).orEmpty()
+            val actionAddressId =
+                bundle.getInt(AddressFormBottomSheet.RESULT_ADDRESS_ID, args.id)
+
+            when (action) {
+                AddressFormBottomSheet.ACTION_DELETE -> {
+                    showPopupConfirm(
+                        "Delete address",
+                        "Are you sure you want to delete the address?",
+                        "Delete"){
+                        viewModel.deleteAddress(actionAddressId)
+                    }
+                }
+                AddressFormBottomSheet.ACTION_UPDATE -> {
+                    showPopupConfirm(
+                        "Update address",
+                        "Are you sure you want to update the address?",
+                        "Update"){
+                        viewModel.updateAddress(actionAddressId, name, lat, lng)
+                    }
+                }
+                else -> viewModel.addAddress(name, lat, lng)
+            }
+        }
+
+        observeAddAddress()
+        observeUpdateAddress()
+        observeDeleteAddress()
+        observeAddressById()
     }
 
+    private fun observeAddressById() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.addressByIdState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> Unit
+                        is NetworkState.Success<*> -> {
+                            val address = state.data as Address
+                            lat = address.latitude
+                            lng = address.longitude
+                            curName = address.name
+                            val geo = GeoPoint(lat, lng)
+                            updateMapToLocation(geo)
+                            getAddressFromLocationAndShowBottomSheet(geo)
+                            viewModel.resetAddressByIdState()
+                        }
+                        is NetworkState.Error -> {
+                            Utils.showToast(requireContext(), state.message)
+                            viewModel.resetAddressByIdState()
+                            findNavController().popBackStack()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeAddAddress() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.addAddressState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> Unit
+                        is NetworkState.Success<*> -> {
+                            Utils.showToast(requireContext(), "Add address successful!")
+                            viewModel.resetAddAddressState()
+                            findNavController().popBackStack()
+                        }
+                        is NetworkState.Error -> {
+                            Utils.showToast(requireContext(), state.message)
+                            viewModel.resetAddAddressState()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeUpdateAddress() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.updateAddressState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> Unit
+                        is NetworkState.Success<*> -> {
+                            Utils.showToast(requireContext(), "Update address successful!")
+                            viewModel.resetUpdateAddressState()
+                            findNavController().popBackStack()
+                        }
+                        is NetworkState.Error -> {
+                            Utils.showToast(requireContext(), state.message)
+                            viewModel.resetUpdateAddressState()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeDeleteAddress() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.deleteAddressState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> Unit
+                        is NetworkState.Success<*> -> {
+                            Utils.showToast(requireContext(), "Delete address successful!")
+                            viewModel.resetDeleteAddressState()
+                            findNavController().popBackStack()
+                        }
+                        is NetworkState.Error -> {
+                            Utils.showToast(requireContext(), state.message)
+                            viewModel.resetDeleteAddressState()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Init map
     private fun setupMap() {
         mapView = binding.mapView
         mapView?.setTileSource(TileSourceFactory.MAPNIK)
         mapView?.controller?.setZoom(Zoom.DEFAULT.value)
-        mapView?.controller?.setCenter(GeoPoint(lat, lng))
+        mapView?.controller?.setCenter(GeoPoint(lat, lng)) // Map được set với vị trí lat, lng
         mapView?.setMultiTouchControls(true)
 
         // Add click listener to map using overlay
@@ -138,6 +278,7 @@ class AddNewAddressFragment : Fragment() {
                         it.y.toInt()
                     ) as? GeoPoint
                     geoPoint?.let { point ->
+                        Log.d(TAG, "lat: ${point.latitude}, long: ${point.longitude}" )
                         selectedLocation = point
                         updateMarker(point)
 
@@ -153,6 +294,7 @@ class AddNewAddressFragment : Fragment() {
         mapView?.overlays?.add(mapOverlay)
     }
 
+    // Hàm lấy vị trí hiện tại đang đứng
     private fun getCurrentLocation(showBottomSheet: Boolean = false) {
         if (!checkLocationPermissions()) {
             return
@@ -217,6 +359,7 @@ class AddNewAddressFragment : Fragment() {
     private fun updateMapToLocation(geoPoint: GeoPoint) {
         var curPoint = geoPoint
         if(isDetails) curPoint = GeoPoint(lat, lng)
+        if(isClickBackToCurrentButton) curPoint = geoPoint
         mapView?.controller?.setCenter(curPoint)
         mapView?.controller?.setZoom(Zoom.DEFAULT.value)
         selectedLocation = curPoint
@@ -270,19 +413,13 @@ class AddNewAddressFragment : Fragment() {
     
     private fun showAddressFormBottomSheet(location: GeoPoint, address: String, name: String? = null) {
         addressFormBottomSheet?.dismiss()
-        
-        parentFragmentManager.setFragmentResultListener(
-            AddressFormBottomSheet.REQUEST_KEY,
-            viewLifecycleOwner
-        ) { _, result ->
-            // TODO: save new address
-        }
-        
+
         addressFormBottomSheet = AddressFormBottomSheet.newInstance(
             location = location,
             address = address,
             isDetails = isDetails,
-            name = name ?: ""
+            name = name ?: "",
+            addressId = args.id
         )
         addressFormBottomSheet?.show(parentFragmentManager, AddressFormBottomSheet.TAG)
     }
@@ -403,6 +540,7 @@ class AddNewAddressFragment : Fragment() {
         
         binding.btnBackToCurrentLocation.setOnClickListener {
             currentLocation?.let { location ->
+                isClickBackToCurrentButton = true
                 updateMapToLocation(location)
             }
         }
@@ -468,6 +606,23 @@ class AddNewAddressFragment : Fragment() {
         locationCallback?.let {
             fusedLocationClient.removeLocationUpdates(it)
         }
+    }
+
+    private fun showPopupConfirm(
+        title: String,
+        des: String,
+        confirmButton: String,
+        onConfirm: () -> Unit
+    ){
+        AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(des)
+            .setNegativeButton(R.string.delete_account_cancel) { dialog, _ -> dialog.dismiss() }
+            .setPositiveButton(confirmButton) { dialog, _ ->
+                dialog.dismiss()
+                onConfirm()
+            }
+            .show()
     }
 
     override fun onDestroyView() {

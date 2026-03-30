@@ -218,5 +218,6 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="map_point_pickup">Pickup</string>
     <string name="map_point_dropoff">Drop-off</string>
     <string name="map_driver">Driver</string>
+    <string name="no_delivery_address_found">No delivery address found</string>
 
 </resources>
