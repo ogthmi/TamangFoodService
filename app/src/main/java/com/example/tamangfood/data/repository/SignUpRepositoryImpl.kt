@@ -31,6 +31,7 @@ class SignUpRepositoryImpl @Inject constructor(
             val body = response.body()
             if (body?.code == HTTP.SUCCESS.status) {
                 AppPreferences.saveToken(body.result.token.accessToken)
+                AppPreferences.saveRefreshToken(body.result.token.refreshToken)
                 AppPreferences.saveUserId(body.result.id)
                 trySend(NetworkState.Success(body))
             } else {

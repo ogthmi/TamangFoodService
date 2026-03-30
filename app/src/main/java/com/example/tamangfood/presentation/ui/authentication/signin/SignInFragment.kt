@@ -15,11 +15,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.tamangfood.R
-import com.example.tamangfood.data.model.auth.signin.SignInRequest
 import com.example.tamangfood.databinding.FragmentSignInBinding
 import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.Utils
@@ -48,6 +49,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         super.onViewCreated(view, savedInstanceState)
 
         setupClickListeners()
+        observeSignInState()
         val inputs = listOf(
             binding.etEmail,
             binding.etPassword
@@ -56,6 +58,31 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         inputs.forEach {editText ->
             editText.addTextChangedListener {
                 handleSignIn(false)
+            }
+        }
+    }
+
+    private fun observeSignInState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.signInState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> {
+                            binding.btnSignIn.isEnabled = false
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        is NetworkState.Success<*> -> {
+                            binding.progressBar.visibility = View.GONE
+                            navigateToHome()
+                        }
+                        is NetworkState.Error -> {
+                            binding.progressBar.visibility = View.GONE
+                            binding.btnSignIn.isEnabled = true
+                            Utils.showToast(requireContext(), state.message)
+                        }
+                    }
+                }
             }
         }
     }
@@ -70,7 +97,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             if(handleSignIn(true)) {
                 val email = binding.etEmail.text.toString().trim()
                 val password = binding.etPassword.text.toString().trim()
-                signIn(email, password)
+                viewModel.signIn(email, password)
             }
         }
 
@@ -86,31 +113,6 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             setupFingerPrint()
         }
 
-    }
-
-    private fun signIn(email: String, password: String) {
-        viewModel.signIn(email, password)
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.signInState.collect { state ->
-                when (state) {
-                    is NetworkState.Init -> Unit
-                    is NetworkState.Loading -> {
-                        binding.btnSignIn.isEnabled = false
-                        binding.progressBar.visibility = View.VISIBLE
-                    }
-                    is NetworkState.Success<*> -> {
-                        binding.progressBar.visibility = View.GONE
-                        navigateToHome()
-                    }
-                    is NetworkState.Error -> {
-                        binding.progressBar.visibility = View.GONE
-                        binding.btnSignIn.isEnabled = true
-                        Utils.showToast(requireContext(), state.message)
-                    }
-                }
-            }
-        }
     }
 
     private fun handleSignIn(isSubmit: Boolean): Boolean {

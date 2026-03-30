@@ -6,7 +6,7 @@ import okhttp3.Response
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
-
+    private val tokenRefreshHelper: TokenRefreshHelper
 ) : Interceptor {
 
     private val lock = Any()
@@ -17,7 +17,6 @@ class AuthInterceptor @Inject constructor(
             return chain.proceed(original)
         }
 
-        // get access token from SharedPreferences
         val accessBefore = AppPreferences.getToken()
         var request = original.newBuilder()
             .apply { addBearerIfPresent(this, accessBefore) }
@@ -32,7 +31,8 @@ class AuthInterceptor @Inject constructor(
         if (response.code != HTTP_UNAUTHORIZED && response.code != HTTP_FORBIDDEN) {
             return response
         }
-        else response.close()
+
+        response.close()
 
         synchronized(lock) {
             val current = AppPreferences.getToken()
@@ -43,25 +43,27 @@ class AuthInterceptor @Inject constructor(
                     .build()
                 return chain.proceed(request)
             }
-//             If access token is invalid -> call api refresh token get access token
-//            if (!tokenRefreshService.refreshSync()) {
-//                request = original.newBuilder()
-//                    .apply { addBearerIfPresent(this, accessBefore) }
-//                    .header(HEADER_AUTH_RETRY, "true")
-//                    .build()
-//                return chain.proceed(request)
-//            }
-        }
 
-        val newAccess = AppPreferences.getToken()
-        request = original.newBuilder()
-            .apply { addBearerIfPresent(this, newAccess) }
-            .header(HEADER_AUTH_RETRY, "true")
-            .build()
-        return chain.proceed(request)
+            val isRefreshed = tokenRefreshHelper.refreshSync()
+
+            if (isRefreshed) {
+                val newAccess = AppPreferences.getToken()
+
+                val newRequest = original.newBuilder()
+                    .apply { addBearerIfPresent(this, newAccess) }
+                    .header(HEADER_AUTH_RETRY, "true")
+                    .build()
+
+                return chain.proceed(newRequest)
+            }
+            val unauthorizedRequest = original.newBuilder()
+                .apply { addBearerIfPresent(this, accessBefore) }
+                .header(HEADER_AUTH_RETRY, "true")
+                .build()
+            return chain.proceed(unauthorizedRequest)
+        }
     }
 
-    // Skip auth: apply some api
     private fun shouldSkipAuth(request: okhttp3.Request): Boolean {
         val path = request.url.encodedPath
         return path.contains("/auth/log-in", ignoreCase = true) ||
@@ -70,7 +72,6 @@ class AuthInterceptor @Inject constructor(
             path.contains("/auth/forgot", ignoreCase = true)
     }
 
-    // Add bearer token to header
     private fun addBearerIfPresent(builder: okhttp3.Request.Builder, token: String?) {
         if (!token.isNullOrBlank()) {
             builder.header("Authorization", "Bearer $token")

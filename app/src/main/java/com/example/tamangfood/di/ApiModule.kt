@@ -3,6 +3,7 @@ package com.example.tamangfood.di
 import com.example.tamangfood.BuildConfig
 import com.example.tamangfood.data.api.ApiService
 import com.example.tamangfood.data.api.AuthInterceptor
+import com.example.tamangfood.data.api.RefreshApi
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -14,6 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -59,6 +61,30 @@ object ApiModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @Named("plain")
+    fun providePlainOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRefreshApi(
+        @Named("plain") plainClient: OkHttpClient,
+        gson: Gson
+    ): RefreshApi {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(plainClient)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(RefreshApi::class.java)
     }
 
 }
