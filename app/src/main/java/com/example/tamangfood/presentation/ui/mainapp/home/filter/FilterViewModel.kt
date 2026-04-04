@@ -1,7 +1,50 @@
 package com.example.tamangfood.presentation.ui.mainapp.home.filter
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.tamangfood.domain.usecase.GetCategoriesUseCase
+import com.example.tamangfood.domain.usecase.GetCategoryDetailsUseCase
+import com.example.tamangfood.presentation.utils.NetworkState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FilterViewModel: ViewModel() {
+@HiltViewModel
+class FilterViewModel @Inject constructor(
+    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getCategoryDetailsUseCase: GetCategoryDetailsUseCase
+) : ViewModel() {
+
+    private val _categoriesState = MutableStateFlow<NetworkState>(NetworkState.Init)
+    val categoriesState: StateFlow<NetworkState> = _categoriesState.asStateFlow()
+
+    private val _detailsState = MutableStateFlow<NetworkState>(NetworkState.Init)
+    val detailsState: StateFlow<NetworkState> = _detailsState.asStateFlow()
+
+    init {
+        loadCategories()
+    }
+
+    fun loadCategories() {
+        viewModelScope.launch {
+            getCategoriesUseCase.execute().collect { state ->
+                _categoriesState.value = state
+            }
+        }
+    }
+
+    fun loadCategoryDetails(categoryId: Int) {
+        viewModelScope.launch {
+            getCategoryDetailsUseCase.execute(categoryId).collect { state ->
+                _detailsState.value = state
+            }
+        }
+    }
+
+    fun resetDetailsState() {
+        _detailsState.value = NetworkState.Init
+    }
 }

@@ -11,6 +11,8 @@ import com.example.tamangfood.data.model.auth.signin.SignInRequest
 import com.example.tamangfood.data.model.auth.signin.SignInResponse
 import com.example.tamangfood.data.model.auth.signup.SignUpRequest
 import com.example.tamangfood.data.model.auth.signup.SignUpResponse
+import com.example.tamangfood.data.model.category.CategoryDetailsResponse
+import com.example.tamangfood.data.model.category.CategoryResponse
 import com.example.tamangfood.data.model.sample.SampleRequest
 import com.example.tamangfood.data.model.sample.SampleResponse
 import com.example.tamangfood.data.model.user.changepassword.ChangePasswordRequest
@@ -25,6 +27,7 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.PUT
 
@@ -108,4 +111,16 @@ interface ApiService {
     suspend fun deleteAddress(
         @Path("addressId") addressId: Int
     ): Response<AddAddressResponse>
+
+    // Lấy danh sách category
+    @GET("api/v1/category")
+    @Headers("Accept: application/hal+json")
+    suspend fun getCategories(): Response<CategoryResponse>
+
+    // Lấy danh sách categroryDetail của category
+    @GET("api/v1/category/details/{categoryId}")
+    @Headers("Accept: application/hal+json")
+    suspend fun getCategoryDetails(
+        @Path("categoryId") categoryId: Int
+    ): Response<CategoryDetailsResponse>
 }

@@ -9,10 +9,11 @@
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:duplicateParentState="true"
-        tools:src="@drawable/ic_snack"/>
+        android:scaleType="centerInside"
+        tools:src="@drawable/ic_snack" />
 
 </LinearLayout>
 

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/spacing_xl"
     android:layout_margin="@dimen/spacing_sm"
+    android:padding="4dp"
     android:background="@drawable/btn_pill"
     android:text="Sub Category"
     android:textAllCaps="false"

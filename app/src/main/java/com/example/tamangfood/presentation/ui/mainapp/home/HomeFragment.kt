@@ -7,23 +7,32 @@ import android.view.ViewGroup
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.FragmentHomeBinding
+import com.example.tamangfood.domain.model.FoodCategory
 import com.example.tamangfood.presentation.ui.mainapp.home.cart.CartFragment
 import com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.ProfileFragment
 import com.example.tamangfood.presentation.utils.FoodType
+import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.SpacingItem
 import com.example.tamangfood.presentation.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : androidx.fragment.app.Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val homeViewModel: HomeViewModel by viewModels()
+    private lateinit var homeCategoryAdapter: HomeCategoryAdapter
     private lateinit var foodBestSellerAdapter: FoodBestSellerAdapter
     private lateinit var foodRecommendAdapter: FoodRecommendAdapter
 
@@ -47,10 +56,41 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         Utils.showBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
 
         setupDrawerWidth()
+        setupCategoryRecyclerView()
+        observeCategories()
         setupFoodBestSellerRecyclerViews()
         setupFoodRecommendRecyclerViews()
         setupDrawer()
         setupClickListeners()
+    }
+
+    private fun setupCategoryRecyclerView() {
+        homeCategoryAdapter = HomeCategoryAdapter()
+        binding.rvCategories.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = homeCategoryAdapter
+        }
+    }
+
+    private fun observeCategories() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.categoriesState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> Unit
+                        is NetworkState.Success<*> -> {
+                            @Suppress("UNCHECKED_CAST")
+                            val list = state.data as? List<FoodCategory> ?: emptyList()
+                            homeCategoryAdapter.submitList(list)
+                        }
+                        is NetworkState.Error ->
+                            Utils.showToast(requireContext(), state.message)
+                    }
+                }
+            }
+        }
     }
 
     private val bestSellerItems = listOf(

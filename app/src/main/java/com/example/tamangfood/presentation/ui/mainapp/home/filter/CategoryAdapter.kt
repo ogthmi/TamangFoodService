@@ -8,19 +8,23 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tamangfood.R
 import com.example.tamangfood.databinding.ItemFoodCategoryBinding
+import com.example.tamangfood.domain.model.FoodCategoryDetail
 
 class CategoryAdapter(
-    private val onItemClick: (String) -> Unit
-) : ListAdapter<String, CategoryAdapter.CategoryViewHolder>(CategoryDiffCallback()) {
+    private val onItemClick: (FoodCategoryDetail) -> Unit
+) : ListAdapter<FoodCategoryDetail, CategoryAdapter.CategoryViewHolder>(CategoryDiffCallback()) {
     inner class CategoryViewHolder(val binding: ItemFoodCategoryBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    class CategoryDiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
+    class CategoryDiffCallback : DiffUtil.ItemCallback<FoodCategoryDetail>() {
+        override fun areItemsTheSame(oldItem: FoodCategoryDetail, newItem: FoodCategoryDetail): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+        override fun areContentsTheSame(
+            oldItem: FoodCategoryDetail,
+            newItem: FoodCategoryDetail
+        ): Boolean {
             return oldItem == newItem
         }
     }
@@ -37,26 +41,27 @@ class CategoryAdapter(
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val context = holder.itemView.context
 
-        val category = getItem(position)
+        val item = getItem(position)
 
         val selected = selectedPositions.contains(position)
 
         val textColor = if (selected) R.color.white else R.color.orange_base
 
         holder.binding.tvCategoryName.apply {
-            text = category
+            text = item.name
             isSelected = selected
 
-            setTextColor( ContextCompat.getColor(context, textColor))
+            setTextColor(ContextCompat.getColor(context, textColor))
 
             setOnClickListener {
                 val pos = holder.bindingAdapterPosition
+                if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
 
                 if (!selectedPositions.add(pos)) selectedPositions.remove(pos)
 
                 notifyItemChanged(pos)
 
-                onItemClick(category)
+                onItemClick(item)
             }
         }
     }
