@@ -11,6 +11,7 @@ data class Result(
     val id: Int,
     val fullName: String,
     val email: String,
+    val imageUrl: String,
     val token: Token
 )
 

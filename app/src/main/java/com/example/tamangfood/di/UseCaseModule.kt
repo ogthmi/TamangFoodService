@@ -1,6 +1,5 @@
 package com.example.tamangfood.di
 
-import com.example.tamangfood.data.repository.SampleRepositoryImpl
 import com.example.tamangfood.domain.repository.AddressRepository
 import com.example.tamangfood.domain.repository.ChangePasswordRepository
 import com.example.tamangfood.domain.repository.OtpRepository
@@ -11,10 +10,11 @@ import com.example.tamangfood.domain.repository.SignUpRepository
 import com.example.tamangfood.domain.repository.UserRepository
 import com.example.tamangfood.domain.usecase.AddAddressUseCase
 import com.example.tamangfood.domain.usecase.ChangePasswordUseCase
-import com.example.tamangfood.domain.usecase.DeleteAddressUseCase
 import com.example.tamangfood.domain.usecase.DeleteAccountUseCase
+import com.example.tamangfood.domain.usecase.DeleteAddressUseCase
 import com.example.tamangfood.domain.usecase.GetAddressByIdUseCase
 import com.example.tamangfood.domain.usecase.GetUserAddressUseCase
+import com.example.tamangfood.domain.usecase.GetUserProfileUserCase
 import com.example.tamangfood.domain.usecase.OtpUseCase
 import com.example.tamangfood.domain.usecase.ResetPasswordUseCase
 import com.example.tamangfood.domain.usecase.SampleUseCase
@@ -32,20 +32,26 @@ import javax.inject.Singleton
 object UseCaseModule {
     @Provides
     @Singleton
-    fun bindSampleUseCase(repo: SampleRepository): SampleUseCase{
+    fun bindSampleUseCase(repo: SampleRepository): SampleUseCase {
         return SampleUseCase(repo)
     }
 
     @Provides
     @Singleton
-    fun bindSignInUseCase(repo: SignInRepository): SignInUseCase{
+    fun bindSignInUseCase(repo: SignInRepository): SignInUseCase {
         return SignInUseCase(repo)
     }
 
     @Provides
     @Singleton
-    fun bindSignUpUseCase(repo: SignUpRepository): SignUpUseCase{
+    fun bindSignUpUseCase(repo: SignUpRepository): SignUpUseCase {
         return SignUpUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindGetUserProfileUseCase(repo: UserRepository): GetUserProfileUserCase {
+        return GetUserProfileUserCase(repo)
     }
 
     @Provides
@@ -56,19 +62,19 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun bindOtpUseCase(repo: OtpRepository): OtpUseCase{
+    fun bindOtpUseCase(repo: OtpRepository): OtpUseCase {
         return OtpUseCase(repo)
     }
 
     @Provides
     @Singleton
-    fun bindResetPasswordUseCase(repo: ResetPasswordRepository): ResetPasswordUseCase{
+    fun bindResetPasswordUseCase(repo: ResetPasswordRepository): ResetPasswordUseCase {
         return ResetPasswordUseCase(repo)
     }
 
     @Provides
     @Singleton
-    fun bindChangePasswordUseCase(repo: ChangePasswordRepository): ChangePasswordUseCase{
+    fun bindChangePasswordUseCase(repo: ChangePasswordRepository): ChangePasswordUseCase {
         return ChangePasswordUseCase(repo)
     }
 
