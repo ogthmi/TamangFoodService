@@ -48,6 +48,22 @@ enum class FoodType(val imageRes: Int, val title: Int, val tabSelector: Int){
     DRINK(R.drawable.ic_drink, R.string.drinks, R.drawable.tab_drinks_selector);
 }
 
+/** Maps API category name to local enum for icons; falls back to [FoodType.MEAL] when unknown. */
+fun String.toFoodTypeOrDefault(): FoodType {
+    val compact = trim().lowercase().replace(Regex("[\\s_-]+"), "")
+    val matched = when {
+        "snack" in compact -> FoodType.SNACK
+        "meal" in compact -> FoodType.MEAL
+        "vegan" in compact -> FoodType.VEGAN
+        "dessert" in compact -> FoodType.DESSERT
+        "drink" in compact -> FoodType.DRINK
+        else -> FoodType.entries.firstOrNull {
+            it.name.equals(trim().replace(' ', '_'), ignoreCase = true)
+        }
+    }
+    return matched ?: FoodType.MEAL
+}
+
 class FoodCategoryProvider {
     private val categoryMap = mapOf(
         FoodType.SNACK to listOf("Bruschetta","Spring Rolls","Crepes","Wings","Skewers","Salmon","Mexican","Baked","Appetizer"),

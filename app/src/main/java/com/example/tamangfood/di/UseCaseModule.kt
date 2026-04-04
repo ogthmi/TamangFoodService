@@ -1,6 +1,7 @@
 package com.example.tamangfood.di
 
 import com.example.tamangfood.domain.repository.AddressRepository
+import com.example.tamangfood.domain.repository.CategoryRepository
 import com.example.tamangfood.domain.repository.ChangePasswordRepository
 import com.example.tamangfood.domain.repository.OtpRepository
 import com.example.tamangfood.domain.repository.ResetPasswordRepository
@@ -13,6 +14,8 @@ import com.example.tamangfood.domain.usecase.ChangePasswordUseCase
 import com.example.tamangfood.domain.usecase.DeleteAccountUseCase
 import com.example.tamangfood.domain.usecase.DeleteAddressUseCase
 import com.example.tamangfood.domain.usecase.GetAddressByIdUseCase
+import com.example.tamangfood.domain.usecase.GetCategoriesUseCase
+import com.example.tamangfood.domain.usecase.GetCategoryDetailsUseCase
 import com.example.tamangfood.domain.usecase.GetUserAddressUseCase
 import com.example.tamangfood.domain.usecase.GetUserProfileUserCase
 import com.example.tamangfood.domain.usecase.OtpUseCase
@@ -106,5 +109,17 @@ object UseCaseModule {
     @Singleton
     fun bindDeleteAddressUseCase(repo: AddressRepository): DeleteAddressUseCase {
         return DeleteAddressUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindGetCategoriesUseCase(repo: CategoryRepository): GetCategoriesUseCase {
+        return GetCategoriesUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindGetCategoryDetailsUseCase(repo: CategoryRepository): GetCategoryDetailsUseCase {
+        return GetCategoryDetailsUseCase(repo)
     }
 }

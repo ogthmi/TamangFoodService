@@ -7,14 +7,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.FragmentMenuBinding
+import com.example.tamangfood.domain.model.FoodCategory
 import com.example.tamangfood.presentation.ui.mainapp.home.cart.addtocart.AddToCartBottomSheet
 import com.example.tamangfood.presentation.utils.FoodType
+import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.Utils
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,41 +48,62 @@ class MenuFragment : Fragment() {
 
         mockMenuFood()
         setupRecyclerView()
-        setupTabLayout()
+        observeCategories()
     }
 
-    private fun setupTabLayout() {
+    private fun observeCategories() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.categoriesState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> Unit
+                        is NetworkState.Success<*> -> {
+                            @Suppress("UNCHECKED_CAST")
+                            val list = state.data as? List<FoodCategory> ?: emptyList()
+                            rebuildTabLayout(list)
+                        }
+                        is NetworkState.Error ->
+                            Utils.showToast(requireContext(), state.message)
+                    }
+                }
+            }
+        }
+    }
 
-        FoodType.values().forEach { type ->
+    private fun rebuildTabLayout(categories: List<FoodCategory>) {
+        binding.tabLayout.clearOnTabSelectedListeners()
+        binding.tabLayout.removeAllTabs()
+        categories.forEach { category ->
             val tab = binding.tabLayout.newTab()
-            tab.customView = createTabView(type.tabSelector)
+            tab.customView = createTabView(category.type.tabSelector)
             binding.tabLayout.addTab(tab)
         }
-
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab ?: return
-                observeViewModel(FoodType.values()[tab.position])
+                categories.getOrNull(tab.position)?.let { applyCategoryFilter(it) }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
-
-        binding.tabLayout.getTabAt(0)?.let {
-            binding.tabLayout.selectTab(it)
-            observeViewModel(FoodType.values()[it.position])
+        if (categories.isNotEmpty()) {
+            applyCategoryFilter(categories.first())
+            binding.tabLayout.getTabAt(0)?.let { binding.tabLayout.selectTab(it) }
+        } else {
+            binding.tvTitle.text = ""
+            menuFoodAdapter.submitList(emptyList())
         }
     }
 
-    private fun createTabView(icon: Int): View {
+    private fun createTabView(iconRes: Int): View {
         val view = layoutInflater.inflate(
             R.layout.item_menu_category_tab,
             binding.tabLayout,
             false
         )
-        val iconView = view.findViewById<ImageView>(R.id.iv_icon)
-        iconView.setImageResource(icon)
+        view.findViewById<ImageView>(R.id.iv_icon).setImageResource(iconRes)
         return view
     }
 
@@ -103,12 +128,10 @@ class MenuFragment : Fragment() {
     }
 
 
-    private fun observeViewModel(type: FoodType) {
-        binding.tvTitle.text = type.title.let { getString(it) }
-        lifecycleScope.launch {
-            val filtered = menuFoods.filter { type == it.type }
-            menuFoodAdapter.submitList(filtered)
-        }
+    private fun applyCategoryFilter(category: FoodCategory) {
+        binding.tvTitle.text = category.name
+        val filtered = menuFoods.filter { category.type == it.type }
+        menuFoodAdapter.submitList(filtered)
     }
 
     private fun mockMenuFood() {
