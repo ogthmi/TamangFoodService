@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.ItemFoodBinding
 import com.example.tamangfood.presentation.utils.FoodType
+import com.example.tamangfood.presentation.utils.ImageLoader
 
 class FoodAdapter(
     private val onItemClick: (Food) -> Unit,

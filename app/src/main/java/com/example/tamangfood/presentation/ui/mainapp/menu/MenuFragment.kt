@@ -5,23 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
-import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.FragmentMenuBinding
 import com.example.tamangfood.domain.model.FoodCategory
 import com.example.tamangfood.presentation.ui.mainapp.home.cart.addtocart.AddToCartBottomSheet
-import com.example.tamangfood.presentation.utils.FoodType
 import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.Utils
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -31,7 +34,6 @@ class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by viewModels()
 
     private lateinit var menuFoodAdapter: MenuFoodAdapter
-    private lateinit var menuFoods: List<Food>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,9 +48,11 @@ class MenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Utils.showBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
 
-        mockMenuFood()
+        setupMenuSearch()
         setupRecyclerView()
+        observeMenuFoodLoadAndEmpty()
         observeCategories()
+        observePagingFoods()
     }
 
     private fun observeCategories() {
@@ -68,6 +72,22 @@ class MenuFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun observePagingFoods() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.menuFoodsPaging.collectLatest { pagingData ->
+                    menuFoodAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                }
+            }
+        }
+    }
+
+    private fun setupMenuSearch() {
+        binding.etSearch.doAfterTextChanged { editable ->
+            viewModel.setMenuSearchQuery(editable?.toString().orEmpty())
         }
     }
 
@@ -93,7 +113,7 @@ class MenuFragment : Fragment() {
             binding.tabLayout.getTabAt(0)?.let { binding.tabLayout.selectTab(it) }
         } else {
             binding.tvTitle.text = ""
-            menuFoodAdapter.submitList(emptyList())
+            viewModel.clearMenuFoods()
         }
     }
 
@@ -110,14 +130,14 @@ class MenuFragment : Fragment() {
     private fun setupRecyclerView() {
         menuFoodAdapter = MenuFoodAdapter(
             onItemClick = { selectedFood ->
-                Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-                val action =
-                    MenuFragmentDirections.actionMenuFragmentToFoodDetailFragment(selectedFood)
-                findNavController().navigate(action)
+//                Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+//                val action =
+//                    MenuFragmentDirections.actionMenuFragmentToFoodDetailFragment(selectedFood)
+//                findNavController().navigate(action)
             },
             onAddToCartClick = { selectedFood ->
-                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
-                bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
+//                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
+//                bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
             }
         )
 
@@ -127,31 +147,49 @@ class MenuFragment : Fragment() {
         }
     }
 
+    private fun observeMenuFoodLoadAndEmpty() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                combine(
+                    menuFoodAdapter.loadStateFlow,
+                    viewModel.menuSearchQuery
+                ) { loadState, rawQuery -> loadState to rawQuery }
+                    .collect { (loadState, rawQuery) ->
+                        val refresh = loadState.refresh
+                        val append = loadState.append
+                        val empty = menuFoodAdapter.itemCount == 0
+                        val searching = rawQuery.trim().isNotEmpty()
 
-    private fun applyCategoryFilter(category: FoodCategory) {
-        binding.tvTitle.text = category.name
-        val filtered = menuFoods.filter { category.type == it.type }
-        menuFoodAdapter.submitList(filtered)
+                        binding.progressMenuFoods.isVisible =
+                            refresh is LoadState.Loading && empty
+                        binding.progressMenuLoadMore.isVisible = append is LoadState.Loading
+
+                        val showEmpty =
+                            empty &&
+                                refresh is LoadState.NotLoading &&
+                                (searching || append.endOfPaginationReached)
+
+                        if (refresh is LoadState.Error && empty) {
+                            binding.tvMenuFoodEmpty.isVisible = false
+                            Utils.showToast(requireContext(), refresh.error.message ?: "Error")
+                        } else {
+                            binding.tvMenuFoodEmpty.isVisible = showEmpty
+                            if (showEmpty) {
+                                binding.tvMenuFoodEmpty.setText(
+                                    if (searching) R.string.menu_food_search_empty
+                                    else R.string.menu_food_list_empty
+                                )
+                            }
+                        }
+                    }
+            }
+        }
     }
 
-    private fun mockMenuFood() {
-        menuFoods = listOf(
-            // Snacks
-            Food(1, "Mexican Appetizer", "$15.00", 1, 5.0, FoodType.SNACK, "Tortilla Chips with Topping", R.drawable.ic_launcher_background),
-            Food(2, "Pork Skewer", "$12.99", 1, 4.5, FoodType.SNACK, "Marinated in a rich blend of herbs and spices, then grilled to perfection.", R.drawable.ic_launcher_background),
-            // Meal
-            Food(3, "Fresh Prawn Ceviche", "$15.00", 1, 5.0, FoodType.MEAL, "Shrimp marinated in zesty lime juice, mixed with crisp onions, tomatoes, and cilantro.", R.drawable.ic_launcher_background),
-            Food(4, "Chicken Burger", "$12.99", 1, 4.5, FoodType.MEAL, "Tender grilled chicken breast, topped with crisp lettuce, tomatoes, creamy mayo.", R.drawable.ic_launcher_background),
-            // Vegan
-            Food(5, "Mushroom Risotto", "$15.00", 1, 5.0, FoodType.VEGAN, "Creamy mushroom risotto with arborio rice, wild mushrooms, Parmesan, and white wine.", R.drawable.ic_launcher_background),
-            Food(6, "Broccoli Lasagna", "$12.99", 1, 4.5, FoodType.VEGAN, "Tender broccoli florets, creamy ricotta, savory marinara, melted mozzarella.", R.drawable.ic_launcher_background),
-            // Dessert
-            Food(7, "Chocolate Brownie", "$15.00", 1, 5.0, FoodType.DESSERT, "Premium cocoa, melted chocolate, vanilla, moist fudgey center with crisp top.", R.drawable.ic_launcher_background),
-            Food(8, "Macarons", "$12.99", 1, 4.5, FoodType.DESSERT, "Delicate vanilla and chocolate macarons, crisp shell and smooth creamy filling.", R.drawable.ic_launcher_background),
-            // Drinks
-            Food(9, "Iced Coffee", "$15.00", 1, 5.0, FoodType.DRINK, "Cold brew with milk and a hint of vanilla.", R.drawable.ic_launcher_background),
-            Food(10, "Fresh Lemonade", "$12.99", 1, 4.5, FoodType.DRINK, "Freshly squeezed lemons with mint and a touch of honey.", R.drawable.ic_launcher_background),
-        )
+    private fun applyCategoryFilter(category: FoodCategory) {
+        binding.etSearch.setText("")
+        binding.tvTitle.text = category.name
+        viewModel.selectCategory(category)
     }
 
     override fun onDestroyView() {

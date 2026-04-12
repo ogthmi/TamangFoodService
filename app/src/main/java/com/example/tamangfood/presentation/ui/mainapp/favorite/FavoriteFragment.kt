@@ -48,13 +48,13 @@ class FavoriteFragment : Fragment() {
         foodAdapter = FoodAdapter(
             onItemClick = {food ->
                 Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-                val action = FavoriteFragmentDirections.actionFavoriteFragmentToFoodDeailFragment(food)
-                findNavController().navigate(action)
+//                val action = FavoriteFragmentDirections.actionFavoriteFragmentToFoodDeailFragment(food)
+//                findNavController().navigate(action)
             },
             onFavoriteClick = {},
             onAddToCartClick = { selectedFood ->
-                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
-                bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
+//                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
+//                bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
             },
         )
 

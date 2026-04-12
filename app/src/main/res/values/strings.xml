@@ -21,6 +21,8 @@
     <string name="recommend">Recommend</string>
     <string name="home">Home</string>
     <string name="menu">Menu</string>
+    <string name="menu_food_list_empty">There are no foods in this category.</string>
+    <string name="menu_food_search_empty">No dishes match your search.</string>
     <string name="favorite">Favorite</string>
     <string name="favorite_subtitle">It\'s time to buy your favorite dish.</string>
 

@@ -80,16 +80,51 @@
             android:alpha="0.3"
             android:background="@color/active_color"
             android:layout_marginBottom="16dp"/>
-        <!-- Food list -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_menu_food"
+
+        <ProgressBar
+            android:id="@+id/progress_menu_foods"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:indeterminateTint="@color/active_color"
+            android:visibility="gone" />
+
+        <!-- Food list + empty state -->
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:clipToPadding="false"
-            android:paddingBottom="16dp"
-            tools:itemCount="4"
-            tools:listitem="@layout/item_menu_food_card" />
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_menu_food"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="8dp"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_menu_food_card" />
+
+            <TextView
+                android:id="@+id/tv_menu_food_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingHorizontal="24dp"
+                android:text="@string/menu_food_list_empty"
+                android:textColor="@color/body_text"
+                android:textSize="15sp"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_menu_load_more"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:indeterminateTint="@color/active_color"
+            android:visibility="gone" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
