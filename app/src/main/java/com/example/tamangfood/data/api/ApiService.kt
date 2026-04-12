@@ -13,6 +13,7 @@ import com.example.tamangfood.data.model.auth.signup.SignUpRequest
 import com.example.tamangfood.data.model.auth.signup.SignUpResponse
 import com.example.tamangfood.data.model.category.CategoryDetailsResponse
 import com.example.tamangfood.data.model.category.CategoryResponse
+import com.example.tamangfood.data.model.food.FoodsByCategoryResponse
 import com.example.tamangfood.data.model.sample.SampleRequest
 import com.example.tamangfood.data.model.sample.SampleResponse
 import com.example.tamangfood.data.model.user.changepassword.ChangePasswordRequest
@@ -30,6 +31,7 @@ import retrofit2.http.Part
 import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.PUT
+import retrofit2.http.Query
 
 interface ApiService {
     // Sample
@@ -123,4 +125,13 @@ interface ApiService {
     suspend fun getCategoryDetails(
         @Path("categoryId") categoryId: Int
     ): Response<CategoryDetailsResponse>
+
+    // Lấy ds food theo category sort theo id
+    @GET("api/v1/foods/category/{categoryId}")
+    suspend fun getFoodsByCategory(
+        @Path("categoryId") categoryId: Int,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String = "id",
+    ): Response<FoodsByCategoryResponse>
 }
