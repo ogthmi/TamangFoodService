@@ -72,12 +72,10 @@
         android:label="fragment_food_detail"
         tools:layout="@layout/fragment_food_detail">
         <argument
-            android:name="foodObj"
-            app:argType="com.example.tamangfood.data.model.Food"
-            app:nullable="false" />
+            android:name="foodId"
+            app:argType="integer" />
         <argument
             android:name="foodOrderQuantity"
-            android:defaultValue="1"
             app:argType="integer" />
     </fragment>
 

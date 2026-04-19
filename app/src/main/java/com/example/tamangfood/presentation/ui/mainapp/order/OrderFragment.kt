@@ -138,7 +138,10 @@ class OrderFragment : Fragment() {
                 // TODO: View detail order
             },
             onFoodClick = {food ->
-                val action = OrderFragmentDirections.actionOrderFragmentToFoodDetailFragment(food)
+                val action = OrderFragmentDirections.actionOrderFragmentToFoodDetailFragment(
+                    food.id,
+                    food.quantity
+                )
                 findNavController().navigate(action)
             }
         )

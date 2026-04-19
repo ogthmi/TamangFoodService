@@ -13,6 +13,8 @@ import com.example.tamangfood.data.model.auth.signup.SignUpRequest
 import com.example.tamangfood.data.model.auth.signup.SignUpResponse
 import com.example.tamangfood.data.model.category.CategoryDetailsResponse
 import com.example.tamangfood.data.model.category.CategoryResponse
+import com.example.tamangfood.data.model.food.CommentsByFoodResponse
+import com.example.tamangfood.data.model.food.FoodDetailResponse
 import com.example.tamangfood.data.model.food.FoodsByCategoryResponse
 import com.example.tamangfood.data.model.sample.SampleRequest
 import com.example.tamangfood.data.model.sample.SampleResponse
@@ -134,4 +136,20 @@ interface ApiService {
         @Query("size") size: Int,
         @Query("sort") sort: String = "id",
     ): Response<FoodsByCategoryResponse>
+
+    // Lấy food details
+    @GET("api/v1/foods/details/{foodId}")
+    @Headers("Accept: application/hal+json")
+    suspend fun getFoodDetail(
+        @Path("foodId") foodId: Int
+    ): Response<FoodDetailResponse>
+
+    @GET("api/v1/comments/{foodId}")
+    @Headers("Accept: application/hal+json")
+    suspend fun getCommentsByFood(
+        @Path("foodId") foodId: Int,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String = "createdAt"
+    ): Response<CommentsByFoodResponse>
 }

@@ -155,7 +155,10 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             onItemClick = { selectedFood ->
                 Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
                 val action = HomeFragmentDirections
-                    .actionHomeFragmentToFoodDetailFragment(selectedFood)
+                    .actionHomeFragmentToFoodDetailFragment(
+                        selectedFood.id,
+                        selectedFood.quantity
+                    )
                 findNavController().navigate(action)
             },
         )
@@ -177,7 +180,10 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             onItemClick = { selectedFood ->
                 Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
                 val action = HomeFragmentDirections
-                    .actionHomeFragmentToFoodDetailFragment(selectedFood)
+                    .actionHomeFragmentToFoodDetailFragment(
+                        selectedFood.id,
+                        selectedFood.quantity
+                    )
                 findNavController().navigate(action)
             }
         )

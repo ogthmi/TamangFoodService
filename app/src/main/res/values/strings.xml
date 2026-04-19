@@ -23,6 +23,8 @@
     <string name="menu">Menu</string>
     <string name="menu_food_list_empty">There are no foods in this category.</string>
     <string name="menu_food_search_empty">No dishes match your search.</string>
+    <string name="food_detail_load_error">Could not load dish details. Tap to retry.</string>
+    <string name="food_total_bought">Total purchased: %d</string>
     <string name="favorite">Favorite</string>
     <string name="favorite_subtitle">It\'s time to buy your favorite dish.</string>
 
@@ -158,6 +160,7 @@ Your feedback helps us improve our service and provide a better experience next 
     
     <!-- Leave Review strings -->
     <string name="review_from_customer">Review from customer</string>
+    <string name="food_reviews_empty">No reviews yet.</string>
     <string name="review_prompt">We\'d love to know what you think of your dish.</string>
     <string name="leave_us_your_comment">Leave us your comment!</string>
     <string name="write_review_hint">Write Review…</string>
