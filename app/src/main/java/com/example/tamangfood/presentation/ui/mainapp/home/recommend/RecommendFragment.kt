@@ -51,7 +51,8 @@ class RecommendFragment : Fragment() {
             onItemClick = { selectedFood ->
                 val action =
                     RecommendFragmentDirections.actionRecommendFragmentToFoodDetailFragment(
-                        selectedFood
+                        selectedFood.id,
+                        selectedFood.quantity
                     )
                 findNavController().navigate(action)
             },

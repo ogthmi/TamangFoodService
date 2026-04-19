@@ -72,8 +72,8 @@ class CartFragment : Fragment() {
             },
             onItemClick = { selectedOrder ->
                 val bundle = bundleOf(
-                    "foodObj" to selectedOrder.food,
-                    "foodOrderQuantity" to selectedOrder.quantity
+                    "foodId" to selectedOrder.food.id,
+                    "foodOrderQuantity" to selectedOrder.food.quantity
                 )
                 parentFragment
                     ?.findNavController()

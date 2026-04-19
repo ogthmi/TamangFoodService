@@ -7,6 +7,32 @@
     android:background="@color/accent_color"
     tools:context="com.example.tamangfood.presentation.ui.mainapp.fooddetail.FoodDetailFragment">
 
+    <ProgressBar
+        android:id="@+id/progress_food_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/active_color"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_food_detail_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="24dp"
+        android:textColor="@color/body_text"
+        android:textSize="15sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/food_detail_load_error" />
+
     <ScrollView
         android:id="@+id/scroll_content"
         android:layout_width="0dp"
@@ -220,10 +246,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_sm"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_add_ingredient"
                     tools:listitem="@layout/item_food_ingredient" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier_after_ingredients_block"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="tv_food_description,tv_add_ingredient,rv_ingredients" />
 
                 <Button
                     android:id="@+id/btn_add_to_cart"
@@ -237,7 +272,7 @@
                     android:textAllCaps="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rv_ingredients" />
+                    app:layout_constraintTop_toBottomOf="@id/barrier_after_ingredients_block" />
 
                 <TextView
                     android:id="@+id/tv_review"
@@ -252,15 +287,33 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn_add_to_cart" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_review"
+                <FrameLayout
+                    android:id="@+id/review_list_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_sm"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_review"
-                    tools:listitem="@layout/item_food_review" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_review">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_review"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        tools:listitem="@layout/item_food_review" />
+
+                    <TextView
+                        android:id="@+id/tv_review_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="@dimen/spacing_sm"
+                        android:text="@string/food_reviews_empty"
+                        android:textColor="@color/body_text"
+                        android:textSize="@dimen/text_caption"
+                        android:visibility="gone" />
+                </FrameLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

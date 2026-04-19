@@ -53,7 +53,8 @@ class BestSellerFragment : Fragment() {
             onItemClick = { selectedFood ->
                 val action =
                     BestSellerFragmentDirections.actionBestSellerFragmentToFoodDetailFragment(
-                        selectedFood
+                        selectedFood.id,
+                        selectedFood.quantity
                     )
                 findNavController().navigate(action)
             },

@@ -130,10 +130,13 @@ class MenuFragment : Fragment() {
     private fun setupRecyclerView() {
         menuFoodAdapter = MenuFoodAdapter(
             onItemClick = { selectedFood ->
-//                Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-//                val action =
-//                    MenuFragmentDirections.actionMenuFragmentToFoodDetailFragment(selectedFood)
-//                findNavController().navigate(action)
+                Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+                val action =
+                    MenuFragmentDirections.actionMenuFragmentToFoodDetailFragment(
+                        selectedFood.id,
+                        selectedFood.quantity
+                    )
+                findNavController().navigate(action)
             },
             onAddToCartClick = { selectedFood ->
 //                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)

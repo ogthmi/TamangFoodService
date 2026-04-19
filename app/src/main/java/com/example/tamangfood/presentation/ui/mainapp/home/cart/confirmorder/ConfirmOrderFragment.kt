@@ -108,8 +108,8 @@ class ConfirmOrderFragment : Fragment() {
         orderAdapter = ConfirmOrderAdapter(
             onItemClick = {food ->
                 val bundle = bundleOf(
-                    "foodObj" to food,
-                    "foodOrderQuantity" to 1 //TODO: fix 1 to orderItem.quantity (not food.quantity)
+                    "foodId" to food.id,
+                    "foodOrderQuantity" to food.quantity
                 )
                 findNavController().navigate(
                     R.id.action_confirmOrderFragment_to_foodDetailFragment,
