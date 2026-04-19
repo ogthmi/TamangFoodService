@@ -4,6 +4,7 @@ import com.example.tamangfood.data.api.ApiService
 import com.example.tamangfood.data.model.FailedResponse
 import com.example.tamangfood.data.model.food.FoodPageResult
 import com.example.tamangfood.data.model.food.toDomain
+import com.example.tamangfood.domain.model.Food
 import com.example.tamangfood.domain.model.FoodComment
 import com.example.tamangfood.domain.repository.FoodRepository
 import com.example.tamangfood.presentation.utils.HTTP
@@ -94,5 +95,33 @@ class FoodRepositoryImpl @Inject constructor(
             throw IOException(body.message)
         }
         return body.result.content.map { it.toDomain() }
+    }
+
+    override suspend fun fetchRecommendedFoods(): List<Food> {
+        val response = apiService.getRecommendedFoods()
+        if (!response.isSuccessful) {
+            val raw = response.errorBody()?.string()
+            val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+            throw IOException(err?.message ?: "HTTP Error")
+        }
+        val body = response.body() ?: throw IOException("Empty body")
+        if (body.code != HTTP.SUCCESS.status || body.result == null) {
+            throw IOException(body.message)
+        }
+        return body.result.orEmpty().map { it.toDomain() }
+    }
+
+    override suspend fun fetchBestSellerFoods(): List<Food> {
+        val response = apiService.getBestSellerFoods()
+        if (!response.isSuccessful) {
+            val raw = response.errorBody()?.string()
+            val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+            throw IOException(err?.message ?: "HTTP Error")
+        }
+        val body = response.body() ?: throw IOException("Empty body")
+        if (body.code != HTTP.SUCCESS.status || body.result == null) {
+            throw IOException(body.message)
+        }
+        return body.result.orEmpty().map { it.toDomain() }
     }
 }

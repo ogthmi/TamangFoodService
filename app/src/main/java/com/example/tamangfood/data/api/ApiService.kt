@@ -16,6 +16,7 @@ import com.example.tamangfood.data.model.category.CategoryResponse
 import com.example.tamangfood.data.model.food.CommentsByFoodResponse
 import com.example.tamangfood.data.model.food.FoodDetailResponse
 import com.example.tamangfood.data.model.food.FoodsByCategoryResponse
+import com.example.tamangfood.data.model.food.FoodsRecommendResponse
 import com.example.tamangfood.data.model.sample.SampleRequest
 import com.example.tamangfood.data.model.sample.SampleResponse
 import com.example.tamangfood.data.model.user.changepassword.ChangePasswordRequest
@@ -128,6 +129,16 @@ interface ApiService {
         @Path("categoryId") categoryId: Int
     ): Response<CategoryDetailsResponse>
 
+    // lấy danh sách recommend
+    @GET("api/v1/foods/recommend")
+    @Headers("Accept: application/hal+json")
+    suspend fun getRecommendedFoods(): Response<FoodsRecommendResponse>
+
+    // Lấy danh sách best seller
+    @GET("api/v1/foods/best-seller")
+    @Headers("Accept: application/hal+json")
+    suspend fun getBestSellerFoods(): Response<FoodsRecommendResponse>
+
     // Lấy ds food theo category sort theo id
     @GET("api/v1/foods/category/{categoryId}")
     suspend fun getFoodsByCategory(
@@ -144,6 +155,7 @@ interface ApiService {
         @Path("foodId") foodId: Int
     ): Response<FoodDetailResponse>
 
+    // Lấy comment of food
     @GET("api/v1/comments/{foodId}")
     @Headers("Accept: application/hal+json")
     suspend fun getCommentsByFood(

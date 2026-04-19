@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tamangfood.data.model.Food
+import com.example.tamangfood.R
 import com.example.tamangfood.databinding.ItemFoodBestSellerCardBinding
-
+import com.example.tamangfood.domain.model.Food
+import com.example.tamangfood.presentation.utils.ImageLoader
 
 class FoodBestSellerAdapter(
     private val onItemClick: (Food) -> Unit,
@@ -32,9 +33,12 @@ class FoodBestSellerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(food: Food) {
-            binding.tvPrice.text = food.price
-            binding.ivFood.setImageResource(food.imageRes)
-
+            binding.tvPrice.text = "$" + food.price.toString()
+            if (!food.urlImage.isNullOrBlank()) {
+                ImageLoader.load(binding.root.context, binding.ivFood, food.urlImage)
+            } else {
+                binding.ivFood.setImageResource(R.drawable.ic_launcher_foreground)
+            }
             binding.ivFood.setOnClickListener { onItemClick(food) }
         }
     }

@@ -1,12 +1,10 @@
 package com.example.tamangfood.presentation.ui.mainapp.favorite
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.data.model.Food
@@ -53,7 +51,7 @@ class FavoriteFragment : Fragment() {
             },
             onFavoriteClick = {},
             onAddToCartClick = { selectedFood ->
-//                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
+//                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood.toUiFoodForCart())
 //                bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
             },
         )
@@ -66,7 +64,7 @@ class FavoriteFragment : Fragment() {
             addItemDecoration(GridSpacingItem(2, spacing))
         }
 
-        foodAdapter.submitList(favoriteFoodList)
+//        foodAdapter.submitList(favoriteFoodList)
     }
 
     private fun mockData(){

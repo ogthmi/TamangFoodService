@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,13 +17,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.tamangfood.R
-import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.FragmentHomeBinding
+import com.example.tamangfood.domain.model.Food
 import com.example.tamangfood.domain.model.FoodCategory
 import com.example.tamangfood.presentation.ui.mainapp.home.cart.CartFragment
 import com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.ProfileFragment
-import com.example.tamangfood.presentation.utils.FoodType
 import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.SpacingItem
 import com.example.tamangfood.presentation.utils.Utils
@@ -29,6 +32,12 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : androidx.fragment.app.Fragment() {
+
+    private companion object {
+        private const val MAX_HOME_BEST_SELLER_DISPLAY = 5
+        private const val MAX_HOME_RECOMMEND_DISPLAY = 5
+    }
+
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val homeViewModel: HomeViewModel by viewModels()
@@ -36,11 +45,10 @@ class HomeFragment : androidx.fragment.app.Fragment() {
     private lateinit var foodBestSellerAdapter: FoodBestSellerAdapter
     private lateinit var foodRecommendAdapter: FoodRecommendAdapter
 
-    //    private lateinit var drawerCartAdapter: CartAdapter
-//    private val cartViewModel: CartViewModel by viewModels()
+    private var bestSellerFoodsFull: List<Food> = emptyList()
+    private var recommendFoodsFull: List<Food> = emptyList()
+
     var isNavigatingToFragment = false
-//    private var isCartDrawerVisible = false
-//    private val currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,8 +68,11 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         observeCategories()
         setupFoodBestSellerRecyclerViews()
         setupFoodRecommendRecyclerViews()
+        observeBestSellerFoods()
+        observeRecommendFoods()
         setupDrawer()
         setupClickListeners()
+        setupFoodSearchFilter()
     }
 
     private fun setupCategoryRecyclerView() {
@@ -93,60 +104,69 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    private val bestSellerItems = listOf(
-        Food(
-            1,
-            "Strawberry Cake",
-            "$10.3",
-            1,
-            4.5,
-            FoodType.DESSERT,
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
-            R.drawable.ic_launcher_background
-        ),
-        Food(
-            2,
-            "Cheesy Pizza",
-            "$12.9",
-            1,
-            5.0,
-            FoodType.MEAL,
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
-            R.drawable.ic_launcher_background
-        ),
-        Food(
-            3,
-            "Ice Cream",
-            "$8.2",
-            1,
-            3.0,
-            FoodType.DESSERT,
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
-            R.drawable.ic_launcher_background
-        )
-    )
-    private val recommendItems = listOf(
-        Food(
-            4,
-            "Big Burger",
-            "10.0",
-            1,
-            3.5,
-            FoodType.MEAL,
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
-            R.drawable.ic_launcher_background
-        ),
-        Food(
-            5,
-            "Spring Rolls",
-            "9.5",
-            1,
-            5.0,
-            FoodType.MEAL,
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
-            R.drawable.ic_launcher_background
-        )
-    )
+    private fun observeBestSellerFoods() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.bestSellerState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> {
+                            binding.progressBestSellerHome.isVisible = true
+                            binding.rvBestSeller.isVisible = false
+                            binding.tvEmptyBestSeller.isVisible = false
+                        }
+                        is NetworkState.Success<*> -> {
+                            binding.progressBestSellerHome.isVisible = false
+                            binding.rvBestSeller.isVisible = true
+                            @Suppress("UNCHECKED_CAST")
+                            val fullList = state.data as? List<Food> ?: emptyList()
+                            bestSellerFoodsFull = fullList
+                            applyFoodSearchFilterToLists()
+                        }
+                        is NetworkState.Error -> {
+                            binding.progressBestSellerHome.isVisible = false
+                            binding.rvBestSeller.isVisible = true
+                            Utils.showToast(requireContext(), state.message)
+                            bestSellerFoodsFull = emptyList()
+                            applyFoodSearchFilterToLists()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeRecommendFoods() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.recommendState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> {
+                            binding.progressRecommendHome.isVisible = true
+                            binding.rvRecommend.isVisible = false
+                            binding.tvEmptyRecommend.isVisible = false
+                        }
+                        is NetworkState.Success<*> -> {
+                            binding.progressRecommendHome.isVisible = false
+                            binding.rvRecommend.isVisible = true
+                            @Suppress("UNCHECKED_CAST")
+                            val fullList = state.data as? List<Food> ?: emptyList()
+                            recommendFoodsFull = fullList
+                            applyFoodSearchFilterToLists()
+                        }
+                        is NetworkState.Error -> {
+                            binding.progressRecommendHome.isVisible = false
+                            binding.rvRecommend.isVisible = true
+                            Utils.showToast(requireContext(), state.message)
+                            recommendFoodsFull = emptyList()
+                            applyFoodSearchFilterToLists()
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private fun setupFoodBestSellerRecyclerViews() {
         val context = requireContext()
@@ -166,16 +186,13 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = foodBestSellerAdapter
+            overScrollMode = View.OVER_SCROLL_NEVER
             val space = resources.getDimensionPixelSize(R.dimen.space)
             addItemDecoration(SpacingItem(space))
         }
-        foodBestSellerAdapter.submitList(bestSellerItems)
-
-
     }
 
     private fun setupFoodRecommendRecyclerViews() {
-
         foodRecommendAdapter = FoodRecommendAdapter(
             onItemClick = { selectedFood ->
                 Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
@@ -188,12 +205,17 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             }
         )
         binding.rvRecommend.apply {
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = GridLayoutManager(context, 2).apply {
+                isAutoMeasureEnabled = true
+            }
             adapter = foodRecommendAdapter
+            isNestedScrollingEnabled = false
+            overScrollMode = View.OVER_SCROLL_NEVER
+            setHasFixedSize(false)
+            itemAnimator = null
             val space = resources.getDimensionPixelSize(R.dimen.space)
             addItemDecoration(SpacingItem(space))
         }
-        foodRecommendAdapter.submitList(recommendItems)
     }
 
     private fun setupDrawer() {
@@ -223,6 +245,58 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             .commit()
 
         binding.fragmentHome.openDrawer(GravityCompat.END)
+    }
+
+    private fun setupFoodSearchFilter() {
+        binding.etSearch.doAfterTextChanged {
+            applyFoodSearchFilterToLists()
+        }
+    }
+
+    private fun applyFoodSearchFilterToLists() {
+        val q = binding.etSearch.text?.toString().orEmpty().trim()
+        val hasQuery = q.isNotEmpty()
+        val bestFiltered = bestSellerFoodsFull.filterByFoodName(q).take(MAX_HOME_BEST_SELLER_DISPLAY)
+        val recommendFiltered = recommendFoodsFull.filterByFoodName(q).take(MAX_HOME_RECOMMEND_DISPLAY)
+        foodBestSellerAdapter.submitList(bestFiltered)
+        foodRecommendAdapter.submitList(recommendFiltered)
+        updateHomeFoodEmptyUi(
+            bestFiltered.isEmpty(),
+            hasQuery,
+            binding.tvEmptyBestSeller,
+            binding.rvBestSeller
+        )
+        updateHomeFoodEmptyUi(
+            recommendFiltered.isEmpty(),
+            hasQuery,
+            binding.tvEmptyRecommend,
+            binding.rvRecommend
+        )
+    }
+
+    private fun updateHomeFoodEmptyUi(
+        isEmpty: Boolean,
+        hasSearchQuery: Boolean,
+        emptyView: TextView,
+        listView: RecyclerView
+    ) {
+        if (isEmpty) {
+            emptyView.text = if (hasSearchQuery) {
+                getString(R.string.menu_food_search_empty)
+            } else {
+                getString(R.string.home_no_items_hint)
+            }
+            emptyView.isVisible = true
+            listView.isVisible = false
+        } else {
+            emptyView.isVisible = false
+            listView.isVisible = true
+        }
+    }
+
+    private fun List<Food>.filterByFoodName(query: String): List<Food> {
+        if (query.isEmpty()) return this
+        return filter { it.name.contains(query, ignoreCase = true) }
     }
 
     private fun setupClickListeners() {
