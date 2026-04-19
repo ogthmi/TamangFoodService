@@ -44,13 +44,15 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/search_input"
                         android:hint="@string/search"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:maxLines="1"
                         android:paddingVertical="6dp"
                         android:paddingStart="16dp"
                         android:paddingEnd="40dp"
                         android:textColor="@color/main_color"
                         android:textColorHint="@color/body_text"
                         android:textSize="14sp"
-
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -111,10 +113,12 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fillViewport="true"
+            android:overScrollMode="never"
+            android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -174,15 +178,45 @@
                         android:backgroundTint="@color/active_color" />
                 </LinearLayout>
 
-                <!-- Best seller horizontal list -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_best_seller"
+                <!-- Best seller: API; tối đa hiển thị xử lý ở HomeFragment -->
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/item_food_best_seller_card" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+
+                    <ProgressBar
+                        android:id="@+id/progress_best_seller_home"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|start"
+                        android:layout_marginStart="24dp"
+                        android:indeterminateTint="@color/active_color"
+                        android:visibility="gone" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_best_seller"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:nestedScrollingEnabled="true"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        tools:itemCount="5"
+                        tools:listitem="@layout/item_food_best_seller_card" />
+
+                    <TextView
+                        android:id="@+id/tv_empty_best_seller"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:minHeight="120dp"
+                        android:paddingVertical="16dp"
+                        android:textColor="@color/body_text"
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        tools:text="@string/menu_food_search_empty"
+                        tools:visibility="visible" />
+                </FrameLayout>
                 <!-- Best Seller header -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -221,17 +255,45 @@
                         android:backgroundTint="@color/active_color" />
                 </LinearLayout>
 
-                <!-- Recommend vertical list -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_recommend"
+                <!-- Recommend: API list; loading overlay trong HomeFragment -->
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/item_food_recommend_card" />
+                    android:layout_marginTop="12dp">
+
+                    <ProgressBar
+                        android:id="@+id/progress_recommend_home"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@color/active_color"
+                        android:visibility="gone" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_recommend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"
+                        tools:listitem="@layout/item_food_recommend_card" />
+
+                    <TextView
+                        android:id="@+id/tv_empty_recommend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:paddingVertical="24dp"
+                        android:textColor="@color/body_text"
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        tools:text="@string/home_no_items_hint"
+                        tools:visibility="visible" />
+                </FrameLayout>
 
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

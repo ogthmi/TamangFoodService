@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tamangfood.data.model.Food
+import com.example.tamangfood.R
 import com.example.tamangfood.databinding.ItemFoodRecommendCardBinding
-
+import com.example.tamangfood.domain.model.Food
+import com.example.tamangfood.presentation.utils.ImageLoader
 
 class FoodRecommendAdapter(
     private val onItemClick: (Food) -> Unit,
@@ -32,10 +33,17 @@ class FoodRecommendAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(food: Food) {
-            binding.tvPrice.text = food.price
-            binding.ivFood.setImageResource(food.imageRes)
-
-            binding.ivFood.setOnClickListener { onItemClick(food) }
+            binding.tvPrice.text = "$" + food.price.toString()
+            binding.tvRating.text = food.avgRating.toString()
+            if (!food.urlImage.isNullOrBlank()) {
+                ImageLoader.load(binding.root.context, binding.ivFood, food.urlImage)
+            } else {
+                binding.ivFood.setImageResource(R.drawable.ic_launcher_foreground)
+            }
+            binding.ivFavorite.setImageResource(
+                if (food.hasLiked) R.drawable.ic_heart else R.drawable.ic_heart_outline
+            )
+            binding.root.setOnClickListener { onItemClick(food) }
         }
     }
 
