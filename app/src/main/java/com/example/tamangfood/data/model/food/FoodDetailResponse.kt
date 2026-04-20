@@ -15,6 +15,7 @@ data class FoodDetailItem(
     val name: String,
     val urlImage: String? = null,
     val description: String? = null,
+    val quantity: Int,
     val price: Int,
     val avgRating: Double,
     val totalComment: Int,
@@ -35,5 +36,6 @@ fun FoodDetailItem.toDomain(): FoodDetail = FoodDetail(
     totalLikes = totalLikes,
     hasLiked = hasLiked,
     totalBought = totalBought,
-    ingredients = ingredientResponse.orEmpty().map { it.toDomain() }
+    ingredients = ingredientResponse.orEmpty().map { it.toDomain() },
+    quantity = quantity
 )

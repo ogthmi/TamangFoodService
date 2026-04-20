@@ -64,7 +64,7 @@
         android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/tv_cart_items_count"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.65"
+        app:layout_constraintHeight_percent="0.62"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -94,6 +94,17 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <ProgressBar
+        android:id="@+id/progress_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/cart_scroll_view"
+        app:layout_constraintEnd_toEndOf="@id/cart_scroll_view"
+        app:layout_constraintStart_toStartOf="@id/cart_scroll_view"
+        app:layout_constraintTop_toTopOf="@id/cart_scroll_view" />
+
     <LinearLayout
         android:id="@+id/total_fees"
         android:layout_width="match_parent"
@@ -121,6 +132,18 @@
                 android:textStyle="bold"/>
         </LinearLayout>
     <Button
+        android:id="@+id/btn_update_cart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/update_cart"
+        android:textAllCaps="false"
+        android:textColor="@color/active_color"
+        android:textSize="14sp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/input_background"
+        app:layout_constraintTop_toBottomOf="@id/total_fees"/>
+
+    <Button
         android:id="@+id/btn_checkout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -128,8 +151,9 @@
         android:textAllCaps="false"
         android:textColor="@color/active_color"
         android:textSize="14sp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/input_background"
-        app:layout_constraintTop_toBottomOf="@id/total_fees"/>
+        app:layout_constraintTop_toBottomOf="@id/btn_update_cart"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

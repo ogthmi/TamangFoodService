@@ -133,14 +133,13 @@ class MenuFragment : Fragment() {
                 Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
                 val action =
                     MenuFragmentDirections.actionMenuFragmentToFoodDetailFragment(
-                        selectedFood.id,
-                        selectedFood.quantity
+                        selectedFood.id
                     )
                 findNavController().navigate(action)
             },
             onAddToCartClick = { selectedFood ->
-//                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
-//                bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
+                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
+                bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
             }
         )
 

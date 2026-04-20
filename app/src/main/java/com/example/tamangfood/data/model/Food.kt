@@ -14,5 +14,6 @@ data class Food(
     val rating: Double,
     val type: FoodType,
     val description: String? = null,
+    val urlImage: String? = null,
     @DrawableRes val imageRes: Int
 ) : Parcelable

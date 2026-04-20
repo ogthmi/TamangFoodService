@@ -2,6 +2,7 @@ package com.example.tamangfood.di
 
 import com.example.tamangfood.domain.repository.AddressRepository
 import com.example.tamangfood.domain.repository.CategoryRepository
+import com.example.tamangfood.domain.repository.CartRepository
 import com.example.tamangfood.domain.repository.FoodRepository
 import com.example.tamangfood.domain.repository.ChangePasswordRepository
 import com.example.tamangfood.domain.repository.OtpRepository
@@ -11,11 +12,14 @@ import com.example.tamangfood.domain.repository.SignInRepository
 import com.example.tamangfood.domain.repository.SignUpRepository
 import com.example.tamangfood.domain.repository.UserRepository
 import com.example.tamangfood.domain.usecase.AddAddressUseCase
+import com.example.tamangfood.domain.usecase.AddCartItemUseCase
 import com.example.tamangfood.domain.usecase.ChangePasswordUseCase
 import com.example.tamangfood.domain.usecase.DeleteAccountUseCase
 import com.example.tamangfood.domain.usecase.DeleteAddressUseCase
+import com.example.tamangfood.domain.usecase.DeleteCartItemUseCase
 import com.example.tamangfood.domain.usecase.GetAddressByIdUseCase
 import com.example.tamangfood.domain.usecase.GetCategoriesUseCase
+import com.example.tamangfood.domain.usecase.GetCartItemsUseCase
 import com.example.tamangfood.domain.usecase.GetCategoryDetailsUseCase
 import com.example.tamangfood.domain.usecase.GetFoodCommentsUseCase
 import com.example.tamangfood.domain.usecase.GetBestSellerFoodsUseCase
@@ -30,6 +34,7 @@ import com.example.tamangfood.domain.usecase.SampleUseCase
 import com.example.tamangfood.domain.usecase.SignInUseCase
 import com.example.tamangfood.domain.usecase.SignUpUseCase
 import com.example.tamangfood.domain.usecase.UpdateAddressUseCase
+import com.example.tamangfood.domain.usecase.UpdateCartItemQuantityUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -103,6 +108,30 @@ object UseCaseModule {
     @Singleton
     fun bindAddAddressUseCase(repo: AddressRepository): AddAddressUseCase {
         return AddAddressUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindAddCartItemUseCase(repo: CartRepository): AddCartItemUseCase {
+        return AddCartItemUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindGetCartItemsUseCase(repo: CartRepository): GetCartItemsUseCase {
+        return GetCartItemsUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindDeleteCartItemUseCase(repo: CartRepository): DeleteCartItemUseCase {
+        return DeleteCartItemUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindUpdateCartItemQuantityUseCase(repo: CartRepository): UpdateCartItemQuantityUseCase {
+        return UpdateCartItemQuantityUseCase(repo)
     }
 
     @Provides

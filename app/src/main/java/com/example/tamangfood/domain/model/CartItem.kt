@@ -1,6 +1,14 @@
 package com.example.tamangfood.domain.model
 
-data class FoodDetail(
+data class CartItem(
+    val id: Int,
+    val userId: Int,
+    val food: CartFood,
+    val ingredients: List<Ingredient> = emptyList(),
+    val quantity: Int
+)
+
+data class CartFood(
     val id: Int,
     val name: String,
     val urlImage: String? = null,
@@ -11,6 +19,6 @@ data class FoodDetail(
     val totalLikes: Int,
     val hasLiked: Boolean,
     val totalBought: Int,
-    val ingredients: List<Ingredient> = emptyList(),
+    val ingredientResponse: List<Ingredient> = emptyList(),
     val quantity: Int,
 )

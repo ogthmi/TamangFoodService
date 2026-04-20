@@ -1,4 +1,4 @@
-package com.example.tamangfood.data.model.food
+package com.example.tamangfood.data.model.recommend
 
 import com.example.tamangfood.data.model.food.ingredient.IngredientItem
 import com.example.tamangfood.data.model.food.ingredient.toDomain

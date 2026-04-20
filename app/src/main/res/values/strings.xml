@@ -25,6 +25,7 @@
     <string name="menu_food_list_empty">There are no foods in this category.</string>
     <string name="menu_food_search_empty">No dishes match your search.</string>
     <string name="food_detail_load_error">Could not load dish details. Tap to retry.</string>
+    <string name="food_detail_out_of_stock">This dish is currently out of stock.</string>
     <string name="food_total_bought">Total purchased: %d</string>
     <string name="favorite">Favorite</string>
     <string name="favorite_subtitle">It\'s time to buy your favorite dish.</string>
@@ -174,6 +175,11 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="your_cart_is_empty">Your cart is empty</string>
     <string name="want_to_add_something">Want To Add Something?</string>
     <string name="you_have_items_in_cart">You have %d items in the cart</string>
+    <string name="cart_item_ingredients">Ingredients: %1$s</string>
+    <string name="cart_item_delete_success">Removed item from cart.</string>
+    <string name="update_cart">Update cart</string>
+    <string name="cart_updated_success">Cart updated successfully.</string>
+    <string name="cart_no_pending_changes">No cart changes to update.</string>
     <string name="subtotal">Subtotal</string>
     <string name="tax_and_fees">Tax and Fees</string>
     <string name="delivery">Delivery</string>
