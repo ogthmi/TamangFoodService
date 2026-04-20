@@ -11,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.databinding.FragmentFoodDetailBinding
@@ -19,13 +18,14 @@ import com.example.tamangfood.domain.model.FoodDetail
 import com.example.tamangfood.presentation.utils.ImageLoader
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import com.example.tamangfood.presentation.utils.NetworkState
+import com.example.tamangfood.presentation.utils.Utils
 
 @AndroidEntryPoint
 class FoodDetailFragment : Fragment() {
     private var _binding: FragmentFoodDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val args: FoodDetailFragmentArgs by navArgs()
     private val viewModel: FoodDetailViewModel by viewModels()
 
     private var orderQuantity: Int = 1
@@ -67,6 +67,24 @@ class FoodDetailFragment : Fragment() {
                         binding.tvReviewEmpty.isVisible = list.isEmpty()
                     }
                 }
+                launch {
+                    viewModel.addToCartState.collect { state ->
+                        when (state) {
+                            is NetworkState.Init -> Unit
+                            is NetworkState.Loading -> binding.btnAddToCart.isEnabled = false
+                            is NetworkState.Success<*> -> {
+                                binding.btnAddToCart.isEnabled = true
+                                Utils.showToast(requireContext(), "Add to cart successful!")
+                                viewModel.clearAddToCartState()
+                            }
+                            is NetworkState.Error -> {
+                                binding.btnAddToCart.isEnabled = true
+                                Utils.showToast(requireContext(), state.message)
+                                viewModel.clearAddToCartState()
+                            }
+                        }
+                    }
+                }
                 viewModel.uiState.collect { state ->
                     when (state) {
                         FoodDetailUiState.Loading -> showLoading(true)
@@ -100,7 +118,7 @@ class FoodDetailFragment : Fragment() {
         binding.scrollContent.isVisible = true
         binding.tvFoodDetailError.isVisible = false
 
-        maxOrderQuantity = args.foodOrderQuantity.coerceAtLeast(0)
+        maxOrderQuantity = detail.quantity.coerceAtLeast(0)
         orderQuantity = when {
             maxOrderQuantity <= 0 -> 0
             else -> orderQuantity.coerceIn(1, maxOrderQuantity)
@@ -230,7 +248,19 @@ class FoodDetailFragment : Fragment() {
         }
 
         binding.btnAddToCart.setOnClickListener {
-            // TODO: add food to cart
+            if (maxOrderQuantity <= 0 || orderQuantity <= 0) {
+                Utils.showToast(requireContext(), getString(R.string.food_detail_out_of_stock))
+                return@setOnClickListener
+            }
+            val selectedIngredientIds = foodIngredientAdapter
+                .getSelectedIngredients()
+                .mapNotNull { it.id.toIntOrNull() }
+                .distinct()
+
+            viewModel.addToCart(
+                quantity = orderQuantity,
+                ingredientIds = selectedIngredientIds
+            )
         }
     }
 

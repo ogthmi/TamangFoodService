@@ -1,4 +1,4 @@
-package com.example.tamangfood.data.model.food
+package com.example.tamangfood.data.model.comment
 
 import com.example.tamangfood.domain.model.FoodComment
 import com.google.gson.annotations.SerializedName
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 data class CommentsByFoodResponse(
     val code: Int,
     val message: String,
-    val result: PageDto<FoodCommentItem>? = null
+    val result: com.example.tamangfood.data.model.food.PageDto<FoodCommentItem>? = null
 )
 
 data class FoodCommentItem(
@@ -31,6 +31,7 @@ fun FoodCommentItem.toDomain(): FoodComment {
         fullName = fullName.orEmpty(),
         rating = rating.coerceIn(0.0, 5.0),
         text = comment.orEmpty(),
-        avatarUrl = urlImage
+        avatarUrl = urlImage,
+        commentTime = createdAt
     )
 }

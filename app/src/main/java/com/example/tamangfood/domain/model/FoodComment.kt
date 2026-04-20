@@ -6,4 +6,5 @@ data class FoodComment(
     val rating: Double,
     val text: String,
     val avatarUrl: String? = null,
+    val commentTime: String? = null,
 )

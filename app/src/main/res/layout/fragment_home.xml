@@ -178,7 +178,6 @@
                         android:backgroundTint="@color/active_color" />
                 </LinearLayout>
 
-                <!-- Best seller: API; tối đa hiển thị xử lý ở HomeFragment -->
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -188,8 +187,8 @@
                         android:id="@+id/progress_best_seller_home"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|start"
                         android:layout_marginStart="24dp"
+                        android:layout_gravity="center"
                         android:indeterminateTint="@color/active_color"
                         android:visibility="gone" />
 

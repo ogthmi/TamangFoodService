@@ -4,51 +4,62 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
-import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.BottomSheetAddToCartBinding
+import com.example.tamangfood.domain.model.Food
+import com.example.tamangfood.domain.model.FoodDetail
+import com.example.tamangfood.domain.model.Ingredient
 import com.example.tamangfood.presentation.ui.mainapp.fooddetail.FoodIngredient
 import com.example.tamangfood.presentation.ui.mainapp.fooddetail.FoodIngredientAdapter
+import com.example.tamangfood.presentation.utils.ImageLoader
+import com.example.tamangfood.presentation.utils.NetworkState
+import com.example.tamangfood.presentation.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class AddToCartBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetAddToCartBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: AddToCartBottomSheetViewModel by viewModels()
 
     private lateinit var foodIngredientAdapter: FoodIngredientAdapter
     private lateinit var food: Food
 
     private var orderQuantity = 1
-    private val mockFoodIngredients = listOf(
-        FoodIngredient("1", "Hot sauce", 1.0),
-        FoodIngredient("2", "Ketchup", 10.0),
-        FoodIngredient("3", "Mustard", 1.0),
-        FoodIngredient("4", "Mustard", 10.0),
-        FoodIngredient("5", "Mustard", 1.0),
-        FoodIngredient("6", "Mustard", 10.0),
-        FoodIngredient("7", "Mustard", 1.0),
-        FoodIngredient("8", "Mustard", 10.0),
-        FoodIngredient("9", "Mustard", 1.0),
-        FoodIngredient("10", "Mustard", 1.50),
-        FoodIngredient("11", "Mustard", 1.0),
-        FoodIngredient("12", "Mustard", 10.0),
-        FoodIngredient("13", "Mustard", 1.0),
-        FoodIngredient("14", "Mustard", 10.0),
-        FoodIngredient("15", "Mustard", 10.0),
-        FoodIngredient("16", "Mustard", 1.0),
-        FoodIngredient("17", "Mustard", 10.0),
-    )
 
     companion object {
-        const val TAG = "AddToCardBottomSheet"
-        const val ARG_FOOD = "arg_food"
+        const val TAG = "AddToCartBottomSheet"
+        private const val ARG_FOOD_ID = "arg_food_id"
+        private const val ARG_FOOD_NAME = "arg_food_name"
+        private const val ARG_FOOD_DESCRIPTION = "arg_food_description"
+        private const val ARG_FOOD_PRICE = "arg_food_price"
+        private const val ARG_FOOD_QUANTITY = "arg_food_quantity"
+        private const val ARG_FOOD_URL_IMAGE = "arg_food_url_image"
+        private const val ARG_INGREDIENT_ID = "arg_ingredient_id"
+        private const val ARG_INGREDIENT_NAME = "arg_ingredient_name"
+        private const val ARG_INGREDIENT_PRICE = "arg_ingredient_price"
 
         fun newInstance(food: Food): AddToCartBottomSheet {
             return AddToCartBottomSheet().apply {
                 arguments = Bundle().apply {
-                    putParcelable(ARG_FOOD, food)
+                    putInt(ARG_FOOD_ID, food.id)
+                    putString(ARG_FOOD_NAME, food.name)
+                    putString(ARG_FOOD_DESCRIPTION, food.description.orEmpty())
+                    putInt(ARG_FOOD_PRICE, food.price)
+                    putInt(ARG_FOOD_QUANTITY, food.quantity)
+                    putString(ARG_FOOD_URL_IMAGE, food.urlImage)
+                    putInt(ARG_INGREDIENT_ID, food.ingredientResponse.id)
+                    putString(ARG_INGREDIENT_NAME, food.ingredientResponse.name)
+                    putInt(ARG_INGREDIENT_PRICE, food.ingredientResponse.price)
                 }
             }
         }
@@ -65,13 +76,14 @@ class AddToCartBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.let {
-            food = it.getParcelable(ARG_FOOD)!!
-        }
+        food = buildFoodFromArguments()
         setupFoodInfo()
         setupQuantity()
         setIngredientRecyclerView()
         setClickListeners()
+        observeAddToCart()
+        observeFoodDetail()
+        viewModel.loadFoodDetail(food.id)
     }
 
     override fun onStart() {
@@ -89,11 +101,15 @@ class AddToCartBottomSheet : BottomSheetDialogFragment() {
 
     private fun setupFoodInfo() {
         binding.apply {
-            ivFoodImage.setImageResource(food.imageRes)
+            if (!food.urlImage.isNullOrBlank()) {
+                ImageLoader.load(requireContext(), ivFoodImage, food.urlImage)
+            } else {
+                ivFoodImage.setImageResource(R.drawable.ic_launcher_foreground)
+            }
 
             tvFoodName.text = food.name
-            tvFoodDescriptionReduced.text = food.description
-            tvFoodPrice.text = food.price
+            tvFoodDescriptionReduced.text = food.description.orEmpty()
+            tvFoodPrice.text = String.format("$%d", food.price)
 
             tvAvailableQuantity.text = getString(R.string.available_quantity, food.quantity)
         }
@@ -147,28 +163,140 @@ class AddToCartBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setIngredientRecyclerView(){
+    private fun setIngredientRecyclerView() {
         foodIngredientAdapter = FoodIngredientAdapter(
-            onItemClick = { foodIngredient ->
-                //TODO: handle click food ingredient
-            }
+            onItemClick = { }
         )
         binding.rvIngredients.apply {
             adapter = foodIngredientAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             itemAnimator = null
         }
-        foodIngredientAdapter.submitList(mockFoodIngredients)
+
+        val ingredients = buildFallbackIngredientList(food.ingredientResponse)
+        foodIngredientAdapter.submitList(ingredients)
+        binding.tvAddIngredient.isVisible = ingredients.isNotEmpty()
+        binding.rvIngredients.isVisible = ingredients.isNotEmpty()
     }
 
     private fun setClickListeners() {
         binding.btnClose.setOnClickListener {
             dismiss()
         }
+
+        binding.btnAddToCart.setOnClickListener {
+            if (food.quantity <= 0 || orderQuantity <= 0) {
+                Utils.showToast(requireContext(), getString(R.string.food_detail_out_of_stock))
+                return@setOnClickListener
+            }
+
+            val selectedIngredientIds = foodIngredientAdapter
+                .getSelectedIngredients()
+                .mapNotNull { it.id.toIntOrNull() }
+                .distinct()
+
+            viewModel.addToCart(
+                foodId = food.id,
+                quantity = orderQuantity,
+                ingredientIds = selectedIngredientIds
+            )
+        }
+    }
+
+    private fun observeAddToCart() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.addToCartState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> {
+                            binding.btnAddToCart.isEnabled = false
+                        }
+                        is NetworkState.Success<*> -> {
+                            binding.btnAddToCart.isEnabled = true
+                            Utils.showToast(requireContext(), "Add to cart successful!")
+                            viewModel.resetAddToCartState()
+                            dismiss()
+                        }
+                        is NetworkState.Error -> {
+                            binding.btnAddToCart.isEnabled = true
+                            Utils.showToast(requireContext(), state.message)
+                            viewModel.resetAddToCartState()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeFoodDetail() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.foodDetailState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> Unit
+                        is NetworkState.Success<*> -> {
+                            @Suppress("UNCHECKED_CAST")
+                            val detail = state.data as? FoodDetail
+                            if (detail != null) {
+                                val ingredients = detail.ingredients.map {
+                                    FoodIngredient(
+                                        id = it.id.toString(),
+                                        name = it.name,
+                                        price = it.price.toDouble()
+                                    )
+                                }
+                                foodIngredientAdapter.submitList(ingredients)
+                                binding.tvAddIngredient.isVisible = ingredients.isNotEmpty()
+                                binding.rvIngredients.isVisible = ingredients.isNotEmpty()
+                            }
+                            viewModel.resetFoodDetailState()
+                        }
+                        is NetworkState.Error -> {
+                            viewModel.resetFoodDetailState()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun buildFallbackIngredientList(ingredient: Ingredient): List<FoodIngredient> {
+        if (ingredient.id <= 0 || ingredient.name.isBlank()) return emptyList()
+        return listOf(
+            FoodIngredient(
+                id = ingredient.id.toString(),
+                name = ingredient.name,
+                price = ingredient.price.toDouble()
+            )
+        )
+    }
+
+    private fun buildFoodFromArguments(): Food {
+        val bundle = requireArguments()
+        return Food(
+            id = bundle.getInt(ARG_FOOD_ID),
+            name = bundle.getString(ARG_FOOD_NAME).orEmpty(),
+            urlImage = bundle.getString(ARG_FOOD_URL_IMAGE),
+            description = bundle.getString(ARG_FOOD_DESCRIPTION).orEmpty(),
+            price = bundle.getInt(ARG_FOOD_PRICE),
+            avgRating = 0.0,
+            totalComment = 0,
+            totalLikes = 0,
+            hasLiked = false,
+            quantity = bundle.getInt(ARG_FOOD_QUANTITY),
+            ingredientResponse = Ingredient(
+                id = bundle.getInt(ARG_INGREDIENT_ID),
+                name = bundle.getString(ARG_INGREDIENT_NAME).orEmpty(),
+                price = bundle.getInt(ARG_INGREDIENT_PRICE)
+            )
+        )
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.resetFoodDetailState()
         _binding = null
     }
 }

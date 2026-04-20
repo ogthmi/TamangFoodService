@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.domain.model.Address
-import com.example.tamangfood.data.model.CartItem
 import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.data.model.payment.Card
 import com.example.tamangfood.databinding.FragmentConfirmOrderBinding
@@ -108,8 +107,7 @@ class ConfirmOrderFragment : Fragment() {
         orderAdapter = ConfirmOrderAdapter(
             onItemClick = {food ->
                 val bundle = bundleOf(
-                    "foodId" to food.id,
-                    "foodOrderQuantity" to food.quantity
+                    "foodId" to food.id
                 )
                 findNavController().navigate(
                     R.id.action_confirmOrderFragment_to_foodDetailFragment,

@@ -2,8 +2,10 @@ package com.example.tamangfood.data.repository
 
 import com.example.tamangfood.data.api.ApiService
 import com.example.tamangfood.data.model.FailedResponse
+import com.example.tamangfood.data.model.comment.toDomain
 import com.example.tamangfood.data.model.food.FoodPageResult
 import com.example.tamangfood.data.model.food.toDomain
+import com.example.tamangfood.data.model.recommend.toDomain
 import com.example.tamangfood.domain.model.Food
 import com.example.tamangfood.domain.model.FoodComment
 import com.example.tamangfood.domain.repository.FoodRepository

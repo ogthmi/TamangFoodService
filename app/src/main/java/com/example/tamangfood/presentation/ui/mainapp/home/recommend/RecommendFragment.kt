@@ -41,7 +41,6 @@ class RecommendFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Utils.showBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
         setUpRecyclerView()
         observeRecommendedFoods()
         setUpClickListeners()
@@ -59,15 +58,14 @@ class RecommendFragment : Fragment() {
                 Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
                 val action =
                     RecommendFragmentDirections.actionRecommendFragmentToFoodDetailFragment(
-                        selectedFood.id,
-                        selectedFood.quantity
+                        selectedFood.id
                     )
                 findNavController().navigate(action)
             },
             onFavoriteClick = { },
             onAddToCartClick = { selectedFood ->
-//                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood.toUiFoodForCart())
-//                bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
+                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
+                bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
             }
         )
 

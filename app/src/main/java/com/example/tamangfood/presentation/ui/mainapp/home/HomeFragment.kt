@@ -35,7 +35,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
 
     private companion object {
         private const val MAX_HOME_BEST_SELLER_DISPLAY = 5
-        private const val MAX_HOME_RECOMMEND_DISPLAY = 5
+        private const val MAX_HOME_RECOMMEND_DISPLAY = 4
     }
 
     private var _binding: FragmentHomeBinding? = null
@@ -176,8 +176,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                 Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
                 val action = HomeFragmentDirections
                     .actionHomeFragmentToFoodDetailFragment(
-                        selectedFood.id,
-                        selectedFood.quantity
+                        selectedFood.id
                     )
                 findNavController().navigate(action)
             },
@@ -198,8 +197,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                 Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
                 val action = HomeFragmentDirections
                     .actionHomeFragmentToFoodDetailFragment(
-                        selectedFood.id,
-                        selectedFood.quantity
+                        selectedFood.id
                     )
                 findNavController().navigate(action)
             }

@@ -36,6 +36,9 @@ class FoodReviewAdapter : ListAdapter<FoodComment, FoodReviewAdapter.FoodReviewV
         val item = getItem(position)
         holder.binding.apply {
             tvFullName.text = item.fullName
+            val timeText = item.commentTime.orEmpty().trim()
+            tvCommentTime.isVisible = timeText.isNotEmpty()
+            tvCommentTime.text = timeText
             tvReview.text = item.text
             rbRating.rating = item.rating.toFloat().coerceIn(0f, 5f)
             val url = item.avatarUrl

@@ -153,31 +153,6 @@
         app:layout_constraintTop_toBottomOf="@id/tv_add_ingredient"
         tools:listitem="@layout/item_food_ingredient" />
 
-    <TextView
-        android:id="@+id/tv_note_for_restaurant"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_md"
-        android:text="@string/note_for_restaurant"
-        android:textColor="@color/main_color"
-        android:textSize="@dimen/text_sm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_ingredients" />
-
-    <EditText
-        android:id="@+id/et_note_for_restaurant"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_sm"
-        android:background="@drawable/edittext_underline"
-        android:hint="@string/note_for_restaurant"
-        android:textColor="@color/body_text"
-        android:textSize="@dimen/text_caption"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_note_for_restaurant" />
-
     <Button
         android:id="@+id/btn_add_to_cart"
         android:layout_width="match_parent"
@@ -189,6 +164,6 @@
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_note_for_restaurant" />
+        app:layout_constraintTop_toBottomOf="@id/rv_ingredients" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

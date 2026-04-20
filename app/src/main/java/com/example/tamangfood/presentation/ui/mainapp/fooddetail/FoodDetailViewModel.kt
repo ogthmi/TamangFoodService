@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tamangfood.domain.model.FoodComment
 import com.example.tamangfood.domain.model.FoodDetail
+import com.example.tamangfood.domain.usecase.AddCartItemUseCase
 import com.example.tamangfood.domain.usecase.GetFoodCommentsUseCase
 import com.example.tamangfood.domain.usecase.GetFoodDetailUseCase
 import com.example.tamangfood.presentation.utils.NetworkState
@@ -25,6 +26,7 @@ sealed class FoodDetailUiState {
 class FoodDetailViewModel @Inject constructor(
     private val getFoodDetailUseCase: GetFoodDetailUseCase,
     private val getFoodCommentsUseCase: GetFoodCommentsUseCase,
+    private val addCartItemUseCase: AddCartItemUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -37,6 +39,9 @@ class FoodDetailViewModel @Inject constructor(
 
     private val _comments = MutableStateFlow<List<FoodComment>>(emptyList())
     val comments: StateFlow<List<FoodComment>> = _comments.asStateFlow()
+
+    private val _addToCartState = MutableStateFlow<NetworkState>(NetworkState.Init)
+    val addToCartState: StateFlow<NetworkState> = _addToCartState.asStateFlow()
 
     init {
         load()
@@ -78,5 +83,25 @@ class FoodDetailViewModel @Inject constructor(
     fun reloadDetailAndComments() {
         load()
         loadComments()
+    }
+
+    fun addToCart(quantity: Int, ingredientIds: List<Int> = emptyList()) {
+        if (quantity <= 0) {
+            _addToCartState.value = NetworkState.Error("Invalid quantity")
+            return
+        }
+        viewModelScope.launch {
+            addCartItemUseCase.execute(
+                foodId = foodId,
+                quantity = quantity,
+                ingredientIds = ingredientIds
+            ).collect { state ->
+                _addToCartState.value = state
+            }
+        }
+    }
+
+    fun clearAddToCartState() {
+        _addToCartState.value = NetworkState.Init
     }
 }

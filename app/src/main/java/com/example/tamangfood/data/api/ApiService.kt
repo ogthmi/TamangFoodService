@@ -11,12 +11,18 @@ import com.example.tamangfood.data.model.auth.signin.SignInRequest
 import com.example.tamangfood.data.model.auth.signin.SignInResponse
 import com.example.tamangfood.data.model.auth.signup.SignUpRequest
 import com.example.tamangfood.data.model.auth.signup.SignUpResponse
+import com.example.tamangfood.data.model.cart.AddCartItemRequest
+import com.example.tamangfood.data.model.cart.AddCartItemResponse
+import com.example.tamangfood.data.model.cart.DeleteCartItemResponse
+import com.example.tamangfood.data.model.cart.GetCartItemsResponse
+import com.example.tamangfood.data.model.cart.UpdateCartItemRequest
+import com.example.tamangfood.data.model.cart.UpdateCartItemResponse
 import com.example.tamangfood.data.model.category.CategoryDetailsResponse
 import com.example.tamangfood.data.model.category.CategoryResponse
-import com.example.tamangfood.data.model.food.CommentsByFoodResponse
+import com.example.tamangfood.data.model.comment.CommentsByFoodResponse
 import com.example.tamangfood.data.model.food.FoodDetailResponse
 import com.example.tamangfood.data.model.food.FoodsByCategoryResponse
-import com.example.tamangfood.data.model.food.FoodsRecommendResponse
+import com.example.tamangfood.data.model.recommend.FoodsRecommendResponse
 import com.example.tamangfood.data.model.sample.SampleRequest
 import com.example.tamangfood.data.model.sample.SampleResponse
 import com.example.tamangfood.data.model.user.changepassword.ChangePasswordRequest
@@ -164,4 +170,26 @@ interface ApiService {
         @Query("size") size: Int,
         @Query("sort") sort: String = "createdAt"
     ): Response<CommentsByFoodResponse>
+
+    // Thêm food vào cart
+    @POST("api/v1/cart-items/add-item")
+    suspend fun addCartItem(
+        @Body body: AddCartItemRequest
+    ): Response<AddCartItemResponse>
+
+    // Lấy danh sách food trong cart
+    @GET("api/v1/cart-items")
+    suspend fun getCartItems(): Response<GetCartItemsResponse>
+
+    // Xóa food khỏi cart
+    @DELETE("api/v1/cart-items/delete-cart-item/{cartId}")
+    suspend fun deleteCartItem(
+        @Path("cartId") cartId: Int
+    ): Response<DeleteCartItemResponse>
+
+    // Cập nhật số lượng food trong cart
+    @POST("api/v1/cart-items/update-cart-item")
+    suspend fun updateCartItem(
+        @Body body: UpdateCartItemRequest
+    ): Response<UpdateCartItemResponse>
 }

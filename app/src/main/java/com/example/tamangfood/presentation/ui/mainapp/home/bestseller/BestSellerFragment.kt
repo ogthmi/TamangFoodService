@@ -16,6 +16,7 @@ import com.example.tamangfood.R
 import com.example.tamangfood.databinding.FragmentBestSellerBinding
 import com.example.tamangfood.domain.model.Food
 import com.example.tamangfood.presentation.ui.mainapp.FoodAdapter
+import com.example.tamangfood.presentation.ui.mainapp.home.cart.addtocart.AddToCartBottomSheet
 import com.example.tamangfood.presentation.utils.GridSpacingItem
 import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.Utils
@@ -41,7 +42,6 @@ class BestSellerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Utils.showBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
         setUpRecyclerView()
         observeBestSellerFoods()
         setUpClickListeners()
@@ -59,17 +59,14 @@ class BestSellerFragment : Fragment() {
                 Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
                 val action =
                     BestSellerFragmentDirections.actionBestSellerFragmentToFoodDetailFragment(
-                        selectedFood.id,
-                        selectedFood.quantity
+                        selectedFood.id
                     )
                 findNavController().navigate(action)
             },
             onFavoriteClick = { },
-            onAddToCartClick = {
-                /*
-                val bottomSheet = AddToCartBottomSheet.newInstance(it.toUiFoodForCart())
+            onAddToCartClick = { selectedFood ->
+                val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
                 bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
-                */
             }
         )
 

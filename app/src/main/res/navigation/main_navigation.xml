@@ -74,9 +74,6 @@
         <argument
             android:name="foodId"
             app:argType="integer" />
-        <argument
-            android:name="foodOrderQuantity"
-            app:argType="integer" />
     </fragment>
 
     <fragment
