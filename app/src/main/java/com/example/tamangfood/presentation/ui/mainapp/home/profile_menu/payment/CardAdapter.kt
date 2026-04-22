@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tamangfood.data.model.payment.Card
+import com.example.tamangfood.domain.model.Card
 import com.example.tamangfood.databinding.ItemCardBinding
 
 class CardAdapter(
@@ -31,7 +31,8 @@ class CardAdapter(
 
         fun bind(card: Card) {
             binding.apply {
-                tvCardNumber.text = "•••• ${card.last4}"
+                tvCardNumber.text = "**** ${card.last4}"
+                tvCardExpiry.text = "Exp: ${card.expMonth}/${card.expYear}"
                 ivDelete.setOnClickListener {
                     onDeleteClick(card)
                 }

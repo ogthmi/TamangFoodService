@@ -79,5 +79,6 @@ class FoodCategoryProvider {
 }
 
 enum class HTTP(val status: Int){
-    SUCCESS(200)
+    SUCCESS(200),
+    CREATED(201),
 }

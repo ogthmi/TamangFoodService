@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.domain.model.Address
 import com.example.tamangfood.data.model.Food
-import com.example.tamangfood.data.model.payment.Card
+import com.example.tamangfood.domain.model.Card
 import com.example.tamangfood.databinding.FragmentConfirmOrderBinding
 import com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder.address.AddressSelectionBottomSheet
 import com.example.tamangfood.presentation.ui.mainapp.home.cart.payment.CardSelectionBottomSheet
@@ -95,8 +95,8 @@ class ConfirmOrderFragment : Fragment() {
             paymentMethodId = "pm_mock_1",
             brand = "Visa",
             last4 = "4242",
-            expMonth = 12,
-            expYear = 2029
+            expMonth = "12",
+            expYear = "2029"
         )
         updatePaymentDisplay()
         updateAddressDisplay()

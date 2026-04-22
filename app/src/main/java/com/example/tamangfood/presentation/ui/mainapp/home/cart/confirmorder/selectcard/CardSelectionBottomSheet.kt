@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.tamangfood.data.model.payment.Card
+import com.example.tamangfood.domain.model.Card
 import com.example.tamangfood.databinding.BottomSheetCardSelectionBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -64,22 +64,22 @@ class CardSelectionBottomSheet : BottomSheetDialogFragment() {
                 paymentMethodId = "pm_mock_1",
                 brand = "Visa",
                 last4 = "4242",
-                expMonth = 12,
-                expYear = 2029
+                expMonth = "12",
+                expYear = "2029"
             ),
             Card(
                 paymentMethodId = "pm_mock_2",
                 brand = "Mastercard",
                 last4 = "5454",
-                expMonth = 6,
-                expYear = 2028
+                expMonth = "6",
+                expYear = "2028"
             ),
             Card(
                 paymentMethodId = "pm_mock_3",
                 brand = "Amex",
                 last4 = "3000",
-                expMonth = 9,
-                expYear = 2030
+                expMonth = "9",
+                expYear = "2030"
             )
         )
     }

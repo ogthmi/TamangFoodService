@@ -1,0 +1,12 @@
+package com.example.tamangfood.domain.usecase
+
+import com.example.tamangfood.domain.repository.PaymentRepository
+import com.example.tamangfood.presentation.utils.NetworkState
+import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+
+class GetPaymentMethodsUseCase @Inject constructor(
+    private val paymentRepository: PaymentRepository
+) {
+    suspend fun execute(): Flow<NetworkState> = paymentRepository.getPaymentMethods()
+}

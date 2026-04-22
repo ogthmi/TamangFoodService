@@ -65,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="12dp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:indeterminateTint="@color/active_color"/>
 
             <Button
                 android:id="@+id/btnAddCard"

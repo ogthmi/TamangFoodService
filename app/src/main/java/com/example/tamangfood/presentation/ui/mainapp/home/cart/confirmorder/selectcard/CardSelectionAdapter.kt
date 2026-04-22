@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tamangfood.data.model.payment.Card
+import com.example.tamangfood.domain.model.Card
 import com.example.tamangfood.databinding.ItemCardSelectionBinding
 
 class CardSelectionAdapter(

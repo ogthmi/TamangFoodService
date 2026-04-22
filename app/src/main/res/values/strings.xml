@@ -202,6 +202,7 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="add_ingredients">Add on ingredients</string>
     <string name="add_new_card">Add New Card</string>
     <string name="add_card">Add Card</string>
+    <string name="please_enter_card_details">Please enter valid card details</string>
 
     <!-- Payment -->
     <string name="payment_method">Payment Method</string>
