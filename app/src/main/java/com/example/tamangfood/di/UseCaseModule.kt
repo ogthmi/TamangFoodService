@@ -6,6 +6,7 @@ import com.example.tamangfood.domain.repository.CartRepository
 import com.example.tamangfood.domain.repository.FoodRepository
 import com.example.tamangfood.domain.repository.ChangePasswordRepository
 import com.example.tamangfood.domain.repository.OtpRepository
+import com.example.tamangfood.domain.repository.PaymentRepository
 import com.example.tamangfood.domain.repository.ResetPasswordRepository
 import com.example.tamangfood.domain.repository.SampleRepository
 import com.example.tamangfood.domain.repository.SignInRepository
@@ -14,9 +15,11 @@ import com.example.tamangfood.domain.repository.UserRepository
 import com.example.tamangfood.domain.usecase.AddAddressUseCase
 import com.example.tamangfood.domain.usecase.AddCartItemUseCase
 import com.example.tamangfood.domain.usecase.ChangePasswordUseCase
+import com.example.tamangfood.domain.usecase.CreatePaymentMethodUseCase
 import com.example.tamangfood.domain.usecase.DeleteAccountUseCase
 import com.example.tamangfood.domain.usecase.DeleteAddressUseCase
 import com.example.tamangfood.domain.usecase.DeleteCartItemUseCase
+import com.example.tamangfood.domain.usecase.DeletePaymentMethodUseCase
 import com.example.tamangfood.domain.usecase.GetAddressByIdUseCase
 import com.example.tamangfood.domain.usecase.GetCategoriesUseCase
 import com.example.tamangfood.domain.usecase.GetCartItemsUseCase
@@ -26,6 +29,7 @@ import com.example.tamangfood.domain.usecase.GetBestSellerFoodsUseCase
 import com.example.tamangfood.domain.usecase.GetRecommendedFoodsUseCase
 import com.example.tamangfood.domain.usecase.GetFoodDetailUseCase
 import com.example.tamangfood.domain.usecase.GetFoodsByCategoryUseCase
+import com.example.tamangfood.domain.usecase.GetPaymentMethodsUseCase
 import com.example.tamangfood.domain.usecase.GetUserAddressUseCase
 import com.example.tamangfood.domain.usecase.GetUserProfileUserCase
 import com.example.tamangfood.domain.usecase.OtpUseCase
@@ -186,5 +190,23 @@ object UseCaseModule {
     @Singleton
     fun bindGetBestSellerFoodsUseCase(repo: FoodRepository): GetBestSellerFoodsUseCase {
         return GetBestSellerFoodsUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindCreatePaymentMethodUseCase(repo: PaymentRepository): CreatePaymentMethodUseCase {
+        return CreatePaymentMethodUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindGetPaymentMethodsUseCase(repo: PaymentRepository): GetPaymentMethodsUseCase {
+        return GetPaymentMethodsUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindDeletePaymentMethodsUseCase(repo: PaymentRepository): DeletePaymentMethodUseCase {
+        return DeletePaymentMethodUseCase(repo)
     }
 }

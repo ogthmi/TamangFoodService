@@ -22,6 +22,9 @@ import com.example.tamangfood.data.model.category.CategoryResponse
 import com.example.tamangfood.data.model.comment.CommentsByFoodResponse
 import com.example.tamangfood.data.model.food.FoodDetailResponse
 import com.example.tamangfood.data.model.food.FoodsByCategoryResponse
+import com.example.tamangfood.data.model.payment.CreatePaymentMethodRequest
+import com.example.tamangfood.data.model.payment.CreatePaymentMethodResponse
+import com.example.tamangfood.data.model.payment.GetPaymentMethodsResponse
 import com.example.tamangfood.data.model.recommend.FoodsRecommendResponse
 import com.example.tamangfood.data.model.sample.SampleRequest
 import com.example.tamangfood.data.model.sample.SampleResponse
@@ -192,4 +195,20 @@ interface ApiService {
     suspend fun updateCartItem(
         @Body body: UpdateCartItemRequest
     ): Response<UpdateCartItemResponse>
+
+    // Tạo phương thức thanh toán
+    @POST("api/v1/payment-method")
+    suspend fun createPaymentMethod(
+        @Body body: CreatePaymentMethodRequest
+    ): Response<CreatePaymentMethodResponse>
+
+    // Lấy danh sách phương thức thanh toán
+    @GET("api/v1/payment-method")
+    suspend fun getPaymentMethods(): Response<GetPaymentMethodsResponse>
+
+    // Xóa phương thức thanh toán
+    @DELETE("api/v1/payment-method/{pmId}")
+    suspend fun deletePaymentMethod(
+        @Path("pmId") paymentMethodId: String
+    ): Response<CreatePaymentMethodResponse>
 }

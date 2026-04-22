@@ -28,11 +28,25 @@
         android:textColor="@color/main_color"
         android:textSize="14sp"
         android:textStyle="bold"
-        tools:text="shfsbdf"
+        tools:text="**** 4242"
         app:layout_constraintStart_toEndOf="@id/ivCardIcon"
         app:layout_constraintEnd_toStartOf="@id/ivDelete"
-        app:layout_constraintTop_toTopOf="@id/ivCardIcon"
-        app:layout_constraintBottom_toBottomOf="@id/ivCardIcon"/>
+        app:layout_constraintTop_toTopOf="@id/ivCardIcon" />
+
+    <TextView
+        android:id="@+id/tvCardExpiry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/body_text"
+        android:textSize="12sp"
+        tools:text="12/2029"
+        app:layout_constraintStart_toEndOf="@id/ivCardIcon"
+        app:layout_constraintEnd_toStartOf="@id/ivDelete"
+        app:layout_constraintTop_toBottomOf="@id/tvCardNumber"
+        app:layout_constraintBottom_toBottomOf="@id/ivCardIcon" />
 
     <ImageView
         android:id="@+id/ivDelete"
