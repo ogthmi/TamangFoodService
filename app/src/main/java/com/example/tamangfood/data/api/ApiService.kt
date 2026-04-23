@@ -24,7 +24,10 @@ import com.example.tamangfood.data.model.food.FoodDetailResponse
 import com.example.tamangfood.data.model.food.FoodsByCategoryResponse
 import com.example.tamangfood.data.model.order.CreateOrderRequest
 import com.example.tamangfood.data.model.order.CreateOrderResponse
+import com.example.tamangfood.data.model.order.GetOrderByIdResponse
+import com.example.tamangfood.data.model.order.GetOrdersByStatusResponse
 import com.example.tamangfood.data.model.order.UpdateOrderStatusRequest
+import com.example.tamangfood.data.model.order.UpdateOrderStatusResponse
 import com.example.tamangfood.data.model.payment.CreatePaymentMethodRequest
 import com.example.tamangfood.data.model.payment.CreatePaymentIntentRequest
 import com.example.tamangfood.data.model.payment.CreatePaymentIntentResponse
@@ -36,7 +39,6 @@ import com.example.tamangfood.data.model.sample.SampleResponse
 import com.example.tamangfood.data.model.user.changepassword.ChangePasswordRequest
 import com.example.tamangfood.data.model.user.changepassword.ChangePasswordResponse
 import com.example.tamangfood.data.model.user.profile.UserProfileResponse
-import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -235,12 +237,20 @@ interface ApiService {
     @POST("api/v1/orders/update-order-status")
     suspend fun updateOrderStatus(
         @Body body: UpdateOrderStatusRequest
-    ): Response<JsonObject>
+    ): Response<UpdateOrderStatusResponse>
+
+    // Lấy đơn hàng theo status
+    @GET("api/v1/orders/get-orders")
+    suspend fun getOrdersByStatusAndUserId(
+        @Query("status") status: String,
+        @Query("userId") userId: Int,
+        @Query("sort") sort: String = "id"
+    ): Response<GetOrdersByStatusResponse>
 
 
     // Lấy thông tin order
     @GET("api/v1/orders/{orderId}")
     suspend fun getOrderById(
         @Path("orderId") orderId: Int
-    ): Response<JsonObject>
+    ): Response<GetOrderByIdResponse>
 }

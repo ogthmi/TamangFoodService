@@ -6,15 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
-import com.example.tamangfood.data.model.Order
-import com.example.tamangfood.data.model.Food
 import com.example.tamangfood.databinding.FragmentOrderBinding
-import com.example.tamangfood.presentation.utils.FoodType
+import com.example.tamangfood.domain.model.Order
+import com.example.tamangfood.presentation.utils.AppPreferences
+import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.OrderStatus
 import com.example.tamangfood.presentation.utils.Utils
 import com.google.android.material.tabs.TabLayout
@@ -25,10 +28,12 @@ import kotlinx.coroutines.launch
 class OrderFragment : Fragment() {
     private var _binding: FragmentOrderBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: OrderViewModel by viewModels()
     private lateinit var orderAdapter: OrderAdapter
-    private lateinit var order: List<Order>
     private var selectTab = OrderStatus.ACTIVE
     private val args: OrderFragmentArgs by navArgs()
+    private val cachedOrders = mutableMapOf<OrderStatus, List<Order>>()
+    private val requestedStatuses = mutableSetOf<OrderStatus>()
 
     companion object {
         private const val STATE_SELECTED_TAB_INDEX = "state_selected_tab_index"
@@ -44,11 +49,10 @@ class OrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        mockData()
         setupUI()
         setupRecyclerView()
         setupTabListeners()
+        observeOrders()
         restoreSelectedTabAndList(savedInstanceState)
         setupClickListeners()
     }
@@ -176,7 +180,7 @@ class OrderFragment : Fragment() {
                         else -> OrderStatus.ACTIVE
                     }
                     selectTab = status
-                    observeViewModel(status)
+                    requestOrders(status)
                 }
             }
 
@@ -205,14 +209,61 @@ class OrderFragment : Fragment() {
         }
 
         binding.tabLayout.selectTab(binding.tabLayout.getTabAt(safeIndex))
-        observeViewModel(selectTab)
+        requestOrders(selectTab)
     }
 
-    private fun observeViewModel(status: OrderStatus) {
-        lifecycleScope.launch {
-            val filtered = order.filter { status == it.status }
-            orderAdapter.submitList(filtered)
-            setupEmptyState(filtered.isEmpty())
+    private fun observeOrders() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.ordersState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> {
+                            renderLoading(true)
+                        }
+                        is NetworkState.Error -> {
+                            renderLoading(false)
+                            requestedStatuses.remove(selectTab)
+                            Utils.showToast(requireContext(), state.message)
+                            val cached = cachedOrders[selectTab].orEmpty()
+                            orderAdapter.submitList(cached)
+                            setupEmptyState(cached.isEmpty())
+                        }
+                        is NetworkState.Success<*> -> {
+                            renderLoading(false)
+                            val data = state.data as? OrdersByStatusData ?: return@collect
+                            cachedOrders[data.status] = data.orders
+                            requestedStatuses.remove(data.status)
+                            if (data.status == selectTab) {
+                                orderAdapter.submitList(data.orders)
+                                setupEmptyState(data.orders.isEmpty())
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun requestOrders(status: OrderStatus) {
+        val cached = cachedOrders[status]
+        if (cached != null) {
+            renderLoading(false)
+            orderAdapter.submitList(cached)
+            setupEmptyState(cached.isEmpty())
+            return
+        }
+        if (requestedStatuses.contains(status)) return
+        val userId = AppPreferences.getUserId() ?: -1
+        requestedStatuses.add(status)
+        viewModel.loadOrders(status, userId)
+    }
+
+    private fun renderLoading(show: Boolean) {
+        binding.progressOrders.visibility = if (show) View.VISIBLE else View.GONE
+        binding.rvOrders.visibility = if (show) View.GONE else View.VISIBLE
+        if (show) {
+            binding.emptyStateContainer.visibility = View.GONE
         }
     }
 
@@ -224,204 +275,6 @@ class OrderFragment : Fragment() {
             binding.emptyStateContainer.visibility = View.GONE
             binding.rvOrders.visibility = View.VISIBLE
         }
-    }
-
-    private fun mockData(){
-        order = listOf(
-            // Active orders
-            Order(
-                id = 1,
-                name = "Order #001",
-                price = "$20.00",
-                dateTime = "29 Nov, 01:20 pm",
-                itemCount = 2,
-                status = OrderStatus.ACTIVE,
-                imageRes = R.drawable.ic_launcher_background,
-                items = listOf(
-                    Food(
-                        1,
-                        "Strawberry shake",
-                        "$10.00",
-                        1,
-                        4.5,
-                        FoodType.DESSERT,
-                        imageRes = R.drawable.ic_launcher_background),
-                    Food(2,
-                        "Chocolate Cake",
-                        "$10.00",
-                        10,
-                        5.0,
-                        FoodType.DRINK,
-                        imageRes = R.drawable.ic_launcher_background)
-                )
-            ),
-            // Completed orders
-            Order(
-                id = 2,
-                name = "Order #002",
-                price = "$50.00",
-                dateTime = "29 Nov, 01:20 pm",
-                itemCount = 2,
-                status = OrderStatus.COMPLETED,
-                imageRes = R.drawable.ic_launcher_background,
-                items = listOf(
-                    Food(3,
-                        "Chicken Curry",
-                        "$25.00",
-                        1,
-                        3.5,
-                        FoodType.MEAL,
-                        imageRes = R.drawable.ic_launcher_background),
-                    Food(4,
-                        "Rice Bowl",
-                        "$25.00",
-                        1,
-                        3.0,
-                        FoodType.SNACK,
-                        imageRes = R.drawable.ic_launcher_background)
-                )
-            ),
-            Order(
-                id = 3,
-                name = "Order #003",
-                price = "$50.00",
-                dateTime = "10 Nov, 06:05 pm",
-                itemCount = 2,
-                status = OrderStatus.COMPLETED,
-                imageRes = R.drawable.ic_launcher_background,
-                items = listOf(
-                    Food(5,
-                        "Bean and Vegetable Burger",
-                        "$25.00",
-                        1,
-                        4.0,
-                        FoodType.VEGAN,
-                        imageRes = R.drawable.ic_launcher_background),
-                    Food(
-                        6,
-                        "French Fries",
-                        "$25.00",
-                        1,
-                        4.2,
-                        FoodType.SNACK,
-                        imageRes = R.drawable.ic_launcher_background
-                    )
-                )
-            ),
-            Order(
-                id = 4,
-                name = "Order #004",
-                price = "$8.00",
-                dateTime = "10 Nov, 08:30 am",
-                itemCount = 1,
-                status = OrderStatus.COMPLETED,
-                imageRes = R.drawable.ic_launcher_background,
-                items = listOf(
-                    Food(
-                        7,
-                        "Coffee Latte",
-                        "$8.00",
-                        1,
-                        4.6,
-                        FoodType.DRINK,
-                        imageRes = R.drawable.ic_launcher_background
-                    )
-                )
-            ),
-            Order(
-                id = 5,
-                name = "Order #005",
-                price = "$22.00",
-                dateTime = "03 Oct, 03:40 pm",
-                itemCount = 2,
-                status = OrderStatus.COMPLETED,
-                imageRes = R.drawable.ic_launcher_background,
-                items = listOf(
-                    Food(8,
-                        "Strawberry Cheesecake",
-                        "$12.00",
-                        1,
-                        5.0,
-                        FoodType.DESSERT,
-                        imageRes = R.drawable.ic_launcher_background),
-                    Food(9,
-                        "Ice Cream",
-                        "$10.00",
-                        1,
-                        4.5,
-                        FoodType.DESSERT,
-                        imageRes = R.drawable.ic_launcher_background)
-                )
-            ),
-            // Cancelled orders
-            Order(
-                id = 6,
-                name = "Order #006",
-                price = "$103.00",
-                dateTime = "02 Nov, 04:00 pm",
-                itemCount = 3,
-                status = OrderStatus.CANCELLED,
-                imageRes = R.drawable.ic_launcher_background,
-                items = listOf(
-                    Food(
-                        10,
-                        "Sushi Roll",
-                        "$35.00",
-                        2,
-                        4.4,
-                        FoodType.MEAL,
-                        imageRes = R.drawable.ic_launcher_background
-                    ),
-                    Food(
-                        11,
-                        "Miso Soup",
-                        "$18.00",
-                        1,
-                        4.1,
-                        FoodType.MEAL,
-                        imageRes = R.drawable.ic_launcher_background
-                    ),
-                    Food(
-                        12,
-                        "Sashimi",
-                        "$50.00",
-                        1,
-                        4.7,
-                        FoodType.MEAL,
-                        imageRes = R.drawable.ic_launcher_background
-                    )
-                )
-            ),
-            Order(
-                id = 7,
-                name = "Order #007",
-                price = "$15.00",
-                dateTime = "12 Oct, 03:15 pm",
-                itemCount = 2,
-                status = OrderStatus.CANCELLED,
-                imageRes = R.drawable.ic_launcher_background,
-                items = listOf(
-                    Food(
-                        13,
-                        "Fruit and Berry Tea",
-                        "$8.00",
-                        1,
-                        4.3,
-                        FoodType.DRINK,
-                        imageRes = R.drawable.ic_launcher_background
-                    ),
-                    Food(
-                        14,
-                        "Green Tea",
-                        "$7.00",
-                        1,
-                        4.0,
-                        FoodType.DRINK,
-                        imageRes = R.drawable.ic_launcher_background
-                    )
-                )
-            )
-        )
     }
 
     override fun onDestroyView() {

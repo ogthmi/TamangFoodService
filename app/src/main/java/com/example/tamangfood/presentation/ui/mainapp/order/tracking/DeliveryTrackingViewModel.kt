@@ -79,15 +79,14 @@ class DeliveryTrackingViewModel @Inject constructor(
                         _orderInfoState.value = NetworkState.Error("Khong the tai thong tin don hang")
                         return@onSuccess
                     }
-                    val result = response.body()
-                        ?.getAsJsonObject("result")
+                    val result = response.body()?.result
                     if (result == null) {
                         _orderInfoState.value = NetworkState.Error("Khong tim thay don hang")
                         return@onSuccess
                     }
 
-                    val latitude = result.get("latitude")?.asDouble ?: 0.0
-                    val longitude = result.get("longitude")?.asDouble ?: 0.0
+                    val latitude = result.latitude
+                    val longitude = result.longitude
                     if (latitude == 0.0 && longitude == 0.0) {
                         _orderInfoState.value = NetworkState.Error("Don hang khong co toa do giao hang")
                         return@onSuccess
@@ -95,8 +94,8 @@ class DeliveryTrackingViewModel @Inject constructor(
 
                     _orderInfoState.value = NetworkState.Success(
                         DeliveryTrackingOrderInfo(
-                            orderId = result.get("id")?.asInt ?: orderId,
-                            shippingAddress = result.get("address")?.asString.orEmpty(),
+                            orderId = result.id,
+                            shippingAddress = result.address,
                             latitude = latitude,
                             longitude = longitude
                         )

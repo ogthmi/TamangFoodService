@@ -22,8 +22,10 @@ import com.example.tamangfood.R
 import com.example.tamangfood.databinding.FragmentHomeBinding
 import com.example.tamangfood.domain.model.Food
 import com.example.tamangfood.domain.model.FoodCategory
+import com.example.tamangfood.presentation.ui.mainapp.home.bestseller.FoodBestSellerAdapter
 import com.example.tamangfood.presentation.ui.mainapp.home.cart.CartFragment
 import com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.ProfileFragment
+import com.example.tamangfood.presentation.ui.mainapp.home.recommend.FoodRecommendAdapter
 import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.SpacingItem
 import com.example.tamangfood.presentation.utils.Utils

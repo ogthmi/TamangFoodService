@@ -48,6 +48,7 @@ class FoodDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
         setupRecyclerView()
         setupQuantityControls()
         setupFavoriteClick()

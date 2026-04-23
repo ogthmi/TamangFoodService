@@ -1,4 +1,4 @@
-package com.example.tamangfood.presentation.ui.mainapp.home
+package com.example.tamangfood.presentation.ui.mainapp.home.bestseller
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
