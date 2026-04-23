@@ -1,10 +1,12 @@
 package com.example.tamangfood.presentation.utils
 
 import android.content.Context
+import android.location.Geocoder
 import android.view.View
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import com.example.tamangfood.R
+import java.util.Locale
 
 object Utils {
     fun showToast(context: Context, message: String){
@@ -21,6 +23,22 @@ object Utils {
 
     fun hideBottomNav(bottomNav: CardView){
         bottomNav.visibility = View.GONE
+    }
+
+    fun resolveFullAddressFromLocation(
+        context: Context,
+        latitude: Double,
+        longitude: Double
+    ): String {
+        return try {
+            val geocoder = Geocoder(context, Locale.getDefault())
+            val address = geocoder.getFromLocation(latitude, longitude, 1)?.firstOrNull()
+            address?.getAddressLine(0).orEmpty().ifBlank {
+                String.format(Locale.US, "%.6f, %.6f", latitude, longitude)
+            }
+        } catch (_: Exception) {
+            String.format(Locale.US, "%.6f, %.6f", latitude, longitude)
+        }
     }
 
 }

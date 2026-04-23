@@ -140,8 +140,9 @@
         android:textColor="@color/active_color"
         android:textSize="14sp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/input_background"
-        app:layout_constraintTop_toBottomOf="@id/total_fees"/>
+        app:layout_constraintBottom_toTopOf="@id/btn_checkout"/>
 
     <Button
         android:id="@+id/btn_checkout"
@@ -153,7 +154,6 @@
         android:textSize="14sp"
         android:layout_marginTop="12dp"
         android:background="@drawable/input_background"
-        app:layout_constraintTop_toBottomOf="@id/btn_update_cart"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -22,7 +22,11 @@ import com.example.tamangfood.data.model.category.CategoryResponse
 import com.example.tamangfood.data.model.comment.CommentsByFoodResponse
 import com.example.tamangfood.data.model.food.FoodDetailResponse
 import com.example.tamangfood.data.model.food.FoodsByCategoryResponse
+import com.example.tamangfood.data.model.order.CreateOrderRequest
+import com.example.tamangfood.data.model.order.CreateOrderResponse
 import com.example.tamangfood.data.model.payment.CreatePaymentMethodRequest
+import com.example.tamangfood.data.model.payment.CreatePaymentIntentRequest
+import com.example.tamangfood.data.model.payment.CreatePaymentIntentResponse
 import com.example.tamangfood.data.model.payment.CreatePaymentMethodResponse
 import com.example.tamangfood.data.model.payment.GetPaymentMethodsResponse
 import com.example.tamangfood.data.model.recommend.FoodsRecommendResponse
@@ -211,4 +215,15 @@ interface ApiService {
     suspend fun deletePaymentMethod(
         @Path("pmId") paymentMethodId: String
     ): Response<CreatePaymentMethodResponse>
+
+    // Thanh toán hóa đơn
+    @POST("api/v1/payments/create-intent")
+    suspend fun createPaymentIntent(
+        @Body body: CreatePaymentIntentRequest
+    ): Response<CreatePaymentIntentResponse>
+
+    @POST("api/v1/orders/create-order")
+    suspend fun createOrder(
+        @Body body: CreateOrderRequest
+    ): Response<CreateOrderResponse>
 }

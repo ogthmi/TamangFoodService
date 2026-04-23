@@ -8,6 +8,12 @@ data class CartItem(
     val quantity: Int
 )
 
+data class CartSummary(
+    val userId: Int,
+    val totalPrice: Int,
+    val carts: List<CartItem> = emptyList()
+)
+
 data class CartFood(
     val id: Int,
     val name: String,

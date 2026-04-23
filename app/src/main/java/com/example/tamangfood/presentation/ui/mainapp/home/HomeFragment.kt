@@ -338,4 +338,9 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun onResume() {
+        super.onResume()
+        Utils.showBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+    }
 }

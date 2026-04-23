@@ -4,17 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.domain.model.Card
 import com.example.tamangfood.databinding.BottomSheetCardSelectionBinding
+import com.example.tamangfood.presentation.utils.NetworkState
+import com.example.tamangfood.presentation.utils.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CardSelectionBottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetCardSelectionBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: CardSelectionViewModel by viewModels()
 
     private var selectedCardId: String? = null
-    private lateinit var cards: List<Card>
+    private lateinit var adapter: CardSelectionAdapter
 
     var onCardSelected: ((Card) -> Unit)? = null
 
@@ -35,8 +45,9 @@ class CardSelectionBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loadMockCards()
         setupRecycler()
+        observePaymentMethods()
+        viewModel.loadPaymentMethods()
 
         binding.btnClose.setOnClickListener {
             dismiss()
@@ -44,7 +55,7 @@ class CardSelectionBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setupRecycler() {
-        val adapter = CardSelectionAdapter(
+        adapter = CardSelectionAdapter(
             selectedCardId = selectedCardId,
             onItemClick = { card ->
                 onCardSelected?.invoke(card)
@@ -54,34 +65,26 @@ class CardSelectionBottomSheet : BottomSheetDialogFragment() {
 
         binding.rvCards.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCards.adapter = adapter
-
-        adapter.submitList(cards)
     }
 
-    private fun loadMockCards() {
-        cards = listOf(
-            Card(
-                paymentMethodId = "pm_mock_1",
-                brand = "Visa",
-                last4 = "4242",
-                expMonth = "12",
-                expYear = "2029"
-            ),
-            Card(
-                paymentMethodId = "pm_mock_2",
-                brand = "Mastercard",
-                last4 = "5454",
-                expMonth = "6",
-                expYear = "2028"
-            ),
-            Card(
-                paymentMethodId = "pm_mock_3",
-                brand = "Amex",
-                last4 = "3000",
-                expMonth = "9",
-                expYear = "2030"
-            )
-        )
+    private fun observePaymentMethods() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.paymentMethodsState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> Unit
+                        is NetworkState.Success<*> -> {
+                            val cards = (state.data as? List<*>)?.filterIsInstance<Card>().orEmpty()
+                            adapter.submitList(cards)
+                        }
+                        is NetworkState.Error -> {
+                            Utils.showToast(requireContext(), state.message)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
