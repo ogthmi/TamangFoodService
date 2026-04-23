@@ -1,6 +1,7 @@
 package com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -43,12 +44,12 @@ class ConfirmOrderAdapter(
                 tvProductName.text = item.food.name
                 tvProductPrice.text = String.format("$%.2f", lineTotal.toDouble())
                 tvProductQuantity.text = "${item.quantity} items"
-                tvProductIngredients.text = if (ingredientDetails.isBlank()) {
-                    root.context.getString(R.string.cart_item_ingredients, "None")
-                } else {
-                     ingredientDetails
+                if(ingredientDetails.isBlank()){
+                    tvProductIngredients.text = ingredientDetails
                 }
-
+                else {
+                    tvProductIngredients.visibility = View.GONE
+                }
                 root.setOnClickListener { onItemClick(item) }
             }
         }

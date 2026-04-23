@@ -2,7 +2,9 @@ package com.example.tamangfood.presentation.ui.mainapp.order.tracking
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tamangfood.data.api.ApiService
 import com.example.tamangfood.presentation.ui.mainapp.order.tracking.DeliveryTrackingViewModel.Companion.TOTAL_DISTANCE_KM
+import com.example.tamangfood.presentation.utils.NetworkState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Job
@@ -32,11 +34,22 @@ data class DeliveryTrackingUiState(
     val activeTimelineStep: Int = 2
 )
 
+data class DeliveryTrackingOrderInfo(
+    val orderId: Int,
+    val shippingAddress: String,
+    val latitude: Double,
+    val longitude: Double
+)
+
 @HiltViewModel
-class DeliveryTrackingViewModel @Inject constructor() : ViewModel() {
+class DeliveryTrackingViewModel @Inject constructor(
+    private val apiService: ApiService
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DeliveryTrackingUiState())
     val uiState: StateFlow<DeliveryTrackingUiState> = _uiState.asStateFlow()
+    private val _orderInfoState = MutableStateFlow<NetworkState>(NetworkState.Init)
+    val orderInfoState: StateFlow<NetworkState> = _orderInfoState.asStateFlow()
 
     private var trackingJob: Job? = null
 
@@ -53,6 +66,46 @@ class DeliveryTrackingViewModel @Inject constructor() : ViewModel() {
                 isDelivered = false,
                 activeTimelineStep = 2
             )
+        }
+    }
+
+    fun loadOrderById(orderId: Int) {
+        if (_orderInfoState.value is NetworkState.Loading) return
+        viewModelScope.launch {
+            _orderInfoState.value = NetworkState.Loading
+            runCatching { apiService.getOrderById(orderId) }
+                .onSuccess { response ->
+                    if (!response.isSuccessful) {
+                        _orderInfoState.value = NetworkState.Error("Khong the tai thong tin don hang")
+                        return@onSuccess
+                    }
+                    val result = response.body()
+                        ?.getAsJsonObject("result")
+                    if (result == null) {
+                        _orderInfoState.value = NetworkState.Error("Khong tim thay don hang")
+                        return@onSuccess
+                    }
+
+                    val latitude = result.get("latitude")?.asDouble ?: 0.0
+                    val longitude = result.get("longitude")?.asDouble ?: 0.0
+                    if (latitude == 0.0 && longitude == 0.0) {
+                        _orderInfoState.value = NetworkState.Error("Don hang khong co toa do giao hang")
+                        return@onSuccess
+                    }
+
+                    _orderInfoState.value = NetworkState.Success(
+                        DeliveryTrackingOrderInfo(
+                            orderId = result.get("id")?.asInt ?: orderId,
+                            shippingAddress = result.get("address")?.asString.orEmpty(),
+                            latitude = latitude,
+                            longitude = longitude
+                        )
+                    )
+                }
+                .onFailure { throwable ->
+                    _orderInfoState.value =
+                        NetworkState.Error(throwable.message ?: "Khong the tai thong tin don hang")
+                }
         }
     }
 

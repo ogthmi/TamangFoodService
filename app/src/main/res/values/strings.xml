@@ -226,7 +226,7 @@ Your feedback helps us improve our service and provide a better experience next 
     <string name="timeline_min_5">5 min</string>
     <string name="timeline_min_10">10 min</string>
     <string name="timeline_min_8">8 min</string>
-    <string name="return_home">Return Home</string>
+    <string name="return_home">Back to Home</string>
     <string name="track_order">Track Order</string>
     <string name="map_point_pickup">Pickup</string>
     <string name="map_point_dropoff">Drop-off</string>

@@ -1,8 +1,6 @@
 package com.example.tamangfood.presentation.ui.mainapp.order.tracking
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -19,6 +17,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.tamangfood.R
 import com.example.tamangfood.databinding.FragmentDeliveryTrackingBinding
 import com.example.tamangfood.presentation.utils.DefaultLocation
+import com.example.tamangfood.presentation.utils.NetworkState
+import com.example.tamangfood.presentation.utils.OrderProgressNotifier
 import com.example.tamangfood.presentation.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -29,7 +29,6 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
-import androidx.core.graphics.drawable.toBitmap
 
 @AndroidEntryPoint
 class DeliveryTrackingFragment : Fragment() {
@@ -45,6 +44,8 @@ class DeliveryTrackingFragment : Fragment() {
     private var routePolyline: Polyline? = null
 
     private var routePoints: List<GeoPoint> = emptyList()
+    private var hasInitializedTracking = false
+    private var hasSentArrivedNotification = false
 
     private lateinit var route_start: GeoPoint
     private lateinit var route_end: GeoPoint
@@ -61,18 +62,13 @@ class DeliveryTrackingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
-
-        val address = getString(R.string.sample_tracking_address)
-        binding.tvShippingAddress.text = address
-
-        setPointStartEnd()
-        setupOsmdroid()
-        setupMapScrollTouch()
+        binding.tvShippingAddress.text = getString(R.string.sample_tracking_address)
 
         binding.ivBack.setOnClickListener { findNavController().popBackStack() }
         binding.btnReturnHome.setOnClickListener {
             findNavController().popBackStack()
         }
+        setupMapScrollTouch()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -84,31 +80,47 @@ class DeliveryTrackingFragment : Fragment() {
                         R.string.distance_km_format,
                         state.remainingDistanceKm
                     )
-                    updateTimelineHighlight(state.activeTimelineStep, state.isDelivered)
+                    if (state.isDelivered && !hasSentArrivedNotification) {
+                        hasSentArrivedNotification = true
+                        OrderProgressNotifier.notifyArrived(requireContext(), state.orderId)
+                    }
                 }
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            val streetRoute = OsrmStreetRouteFetcher.fetchDrivingRoute(route_start, route_end)
-            val km: Float
-            if (streetRoute != null) {
-                routePoints = streetRoute.points
-                km = (streetRoute.distanceMeters / 1000.0).toFloat()
-                routePolyline?.setPoints(routePoints)
-            } else {
-                routePoints = listOf(route_start, route_end)
-                km = (route_start.distanceToAsDouble(route_end) / 1000.0).toFloat()
-                routePolyline?.setPoints(routePoints)
-            }
-            mapView?.invalidate()
-            fitBoundsToRoute(routePoints)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.orderInfoState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init,
+                        is NetworkState.Loading -> Unit
 
-            viewModel.initOrder(args.orderId, address, km)
-            if (savedInstanceState == null) {
-                viewModel.startOrRestartTracking()
+                        is NetworkState.Success<*> -> {
+                            val info = state.data as? DeliveryTrackingOrderInfo ?: return@collect
+                            initializeTrackingIfNeeded(
+                                orderInfo = info,
+                                shouldStartTracking = savedInstanceState == null
+                            )
+                        }
+
+                        is NetworkState.Error -> {
+                            initializeTrackingIfNeeded(
+                                orderInfo = DeliveryTrackingOrderInfo(
+                                    orderId = args.orderId,
+                                    shippingAddress = getString(R.string.sample_tracking_address),
+                                    latitude = 20.9802749,
+                                    longitude = 105.777174
+                                ),
+                                shouldStartTracking = savedInstanceState == null
+                            )
+                            Utils.showToast(requireContext(), state.message)
+                        }
+                    }
+                }
             }
         }
+
+        viewModel.loadOrderById(args.orderId)
     }
 
     private fun setupOsmdroid() {
@@ -210,22 +222,43 @@ class DeliveryTrackingFragment : Fragment() {
         mv.postInvalidate()
     }
 
-    private fun updateTimelineHighlight(activeStep: Int, delivered: Boolean) {
-        val steps = listOf(
-            binding.timelineDot3 to binding.timelineLabel3,
-            binding.timelineDot4 to binding.timelineLabel4
-        )
-        steps.forEachIndexed { index, (dot, label) ->
-            val on = delivered && index == 3 || !delivered && index == activeStep
-            dot.alpha = if (on) 1f else 0.45f
-        }
+
+    private fun setPointStartEnd(destinationLat: Double, destinationLng: Double) {
+        route_end = GeoPoint(destinationLat, destinationLng)
+        route_start = GeoPoint(DefaultLocation.LAT.value, DefaultLocation.LNG.value)
     }
 
-    private fun setPointStartEnd(){
-        // TODO: get route start from args
-        // Mock data
-        route_end = GeoPoint(20.9802749, 105.777174)
-        route_start = GeoPoint(DefaultLocation.LAT.value, DefaultLocation.LNG.value)
+    private fun initializeTrackingIfNeeded(
+        orderInfo: DeliveryTrackingOrderInfo,
+        shouldStartTracking: Boolean
+    ) {
+        if (hasInitializedTracking) return
+        hasInitializedTracking = true
+        val shippingAddress = orderInfo.shippingAddress.ifBlank {
+            getString(R.string.sample_tracking_address)
+        }
+        binding.tvShippingAddress.text = shippingAddress
+        setPointStartEnd(orderInfo.latitude, orderInfo.longitude)
+        setupOsmdroid()
+        viewLifecycleOwner.lifecycleScope.launch {
+            val streetRoute = OsrmStreetRouteFetcher.fetchDrivingRoute(route_start, route_end)
+            val km: Float
+            if (streetRoute != null) {
+                routePoints = streetRoute.points
+                km = (streetRoute.distanceMeters / 1000.0).toFloat()
+                routePolyline?.setPoints(routePoints)
+            } else {
+                routePoints = listOf(route_start, route_end)
+                km = (route_start.distanceToAsDouble(route_end) / 1000.0).toFloat()
+                routePolyline?.setPoints(routePoints)
+            }
+            mapView?.invalidate()
+            fitBoundsToRoute(routePoints)
+            viewModel.initOrder(orderInfo.orderId, shippingAddress, km)
+            if (shouldStartTracking) {
+                viewModel.startOrRestartTracking()
+            }
+        }
     }
 
     override fun onResume() {
