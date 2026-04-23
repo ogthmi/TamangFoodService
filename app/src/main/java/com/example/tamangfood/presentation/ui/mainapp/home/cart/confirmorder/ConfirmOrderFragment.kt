@@ -1,11 +1,16 @@
 package com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,6 +30,7 @@ import com.example.tamangfood.presentation.ui.mainapp.home.cart.payment.CardSele
 import com.example.tamangfood.presentation.utils.AppPreferences
 import com.example.tamangfood.presentation.utils.DefaultLocation
 import com.example.tamangfood.presentation.utils.NetworkState
+import com.example.tamangfood.presentation.utils.OrderProgressNotifier
 import com.example.tamangfood.presentation.utils.Utils
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
@@ -38,7 +44,7 @@ import kotlin.math.roundToLong
 class ConfirmOrderFragment : Fragment() {
     private var _binding: FragmentConfirmOrderBinding? = null
     private val binding get() = _binding!!
-    
+
     private val viewModel: ConfirmOrderViewModel by viewModels()
     private lateinit var orderAdapter: ConfirmOrderAdapter
     private var selectedAddress: Address? = null
@@ -52,10 +58,12 @@ class ConfirmOrderFragment : Fragment() {
     private var isCreatingPaymentIntent: Boolean = false
     private var isCreatingOrder: Boolean = false
     private var pendingPaymentMethodId: String? = null
+    private var pendingOrderId: Int? = null
     private lateinit var paymentSheet: PaymentSheet
 
     companion object {
         private const val TAG = "ConfirmOrderFragment"
+        private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 2001
     }
 
     override fun onCreateView(
@@ -71,6 +79,7 @@ class ConfirmOrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
         paymentSheet = PaymentSheet(this, ::onPaymentSheetResult)
+        requestNotificationPermissionIfNeeded()
 
         loadDefaultPaymentData()
         setupRecyclerView()
@@ -356,9 +365,17 @@ class ConfirmOrderFragment : Fragment() {
                         is NetworkState.Success<*> -> {
                             isCreatingOrder = false
                             val orderId = state.data as? Int ?: -1
+                            if (orderId <= 0) {
+                                Utils.showToast(requireContext(), "Invalid order id")
+                                binding.btnPlaceOrder.isEnabled = true
+                                viewModel.resetCreateOrderState()
+                                return@collect
+                            }
+                            pendingOrderId = orderId
                             val paymentMethodId = pendingPaymentMethodId
                             if (paymentMethodId.isNullOrBlank()) {
                                 Utils.showToast(requireContext(), "Order created successfully")
+                                scheduleOrderProgressNotifications(orderId)
                                 viewModel.resetCreateOrderState()
                                 navigateOrderSuccess()
                             } else {
@@ -438,11 +455,15 @@ class ConfirmOrderFragment : Fragment() {
             is PaymentSheetResult.Completed -> {
                 Utils.showToast(requireContext(), "Payment successful")
                 pendingPaymentMethodId = null
+                pendingOrderId?.let { scheduleOrderProgressNotifications(it) }
+                pendingOrderId = null
                 navigateOrderSuccess()
             }
+
             is PaymentSheetResult.Canceled -> {
                 navigateOrderSuccess()
             }
+
             is PaymentSheetResult.Failed -> {
                 val errorMessage = paymentResult.error.message.orEmpty()
                 Log.e(TAG, "Payment failed: $errorMessage", paymentResult.error)
@@ -456,14 +477,31 @@ class ConfirmOrderFragment : Fragment() {
                 if (isAlreadySucceededIntent) {
                     Utils.showToast(requireContext(), "Payment already successful")
                     pendingPaymentMethodId = null
+                    pendingOrderId?.let { scheduleOrderProgressNotifications(it) }
+                    pendingOrderId = null
                     navigateOrderSuccess()
                     return
                 }
                 navigateOrderSuccess()
-
-//                Utils.showToast(requireContext(), paymentResult.error.localizedMessage ?: "Payment failed")
             }
+
+        }}
+
+    private fun scheduleOrderProgressNotifications(orderId: Int) {
+        OrderProgressNotifier.schedule(requireContext(), orderId)
+    }
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        val permission = Manifest.permission.POST_NOTIFICATIONS
+        if (ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED) {
+            return
         }
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(permission),
+            NOTIFICATION_PERMISSION_REQUEST_CODE
+        )
     }
 
     private fun navigateOrderSuccess() {

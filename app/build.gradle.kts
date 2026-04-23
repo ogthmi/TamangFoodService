@@ -115,6 +115,9 @@ dependencies {
     // Stripe
     implementation("com.stripe:stripe-android:20.48.0")
 
+    // Background tasks for delayed order notifications
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
+
     // Fetch Image by URL
     implementation ("com.github.bumptech.glide:glide:4.15.1")
     kapt ("com.github.bumptech.glide:compiler:4.15.1")

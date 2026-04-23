@@ -151,7 +151,6 @@
                 android:id="@+id/order_summary_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/order_summary"
                 android:textColor="@color/main_color"
                 android:textSize="16sp"
@@ -166,8 +165,7 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_order_product"
-                tools:itemCount="2"
-                android:layout_gravity="top"
+                tools:itemCount="1"
                 app:layout_constraintTop_toBottomOf="@id/order_summary_label" />
 
             <!-- Payment Method: title + Edit -->
