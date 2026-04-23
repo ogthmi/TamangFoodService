@@ -30,4 +30,9 @@ interface FoodRepository {
     suspend fun fetchRecommendedFoods(): List<Food>
 
     suspend fun fetchBestSellerFoods(): List<Food>
+
+    suspend fun addToFavorite(foodId: Int): Flow<NetworkState>
+
+    suspend fun deleteFromFavorite(foodId: Int): Flow<NetworkState>
+    suspend fun fetchFavoriteFoods(page: Int, size: Int): FoodPageResult
 }

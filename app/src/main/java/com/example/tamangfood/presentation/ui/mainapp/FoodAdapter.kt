@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tamangfood.R
 import com.example.tamangfood.databinding.ItemFoodBinding
 import com.example.tamangfood.domain.model.Food
-import com.example.tamangfood.presentation.utils.FoodType
 import com.example.tamangfood.presentation.utils.ImageLoader
 
 class FoodAdapter(
