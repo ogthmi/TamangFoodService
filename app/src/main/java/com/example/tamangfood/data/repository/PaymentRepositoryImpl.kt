@@ -2,6 +2,7 @@ package com.example.tamangfood.data.repository
 
 import com.example.tamangfood.data.api.ApiService
 import com.example.tamangfood.data.model.FailedResponse
+import com.example.tamangfood.data.model.payment.CreatePaymentIntentRequest
 import com.example.tamangfood.data.model.payment.CreatePaymentMethodRequest
 import com.example.tamangfood.data.model.payment.toDomain
 import com.example.tamangfood.domain.repository.PaymentRepository
@@ -74,6 +75,38 @@ class PaymentRepositoryImpl @Inject constructor(
                 val body = response.body()
                 if (body?.code == HTTP.SUCCESS.status) {
                     trySend(NetworkState.Success(body.result?.toDomain()))
+                } else {
+                    trySend(NetworkState.Error(body?.message ?: "Error"))
+                }
+            } else {
+                val raw = response.errorBody()?.string()
+                val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+                trySend(NetworkState.Error(err?.message ?: "HTTP Error"))
+            }
+        } catch (e: Exception) {
+            trySend(NetworkState.Error(e.message ?: "Error"))
+        }
+        awaitClose { }
+    }
+
+    override suspend fun createPaymentIntent(
+        orderId: Int,
+        userId: Int,
+        paymentMethodId: String
+    ): Flow<NetworkState> = callbackFlow {
+        trySend(NetworkState.Loading)
+        try {
+            val response = apiService.createPaymentIntent(
+                CreatePaymentIntentRequest(
+                    orderId = orderId,
+                    userId = userId,
+                    paymentMethodId = paymentMethodId
+                )
+            )
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body?.code == HTTP.SUCCESS.status || body?.code == HTTP.CREATED.status) {
+                    trySend(NetworkState.Success(body.result))
                 } else {
                     trySend(NetworkState.Error(body?.message ?: "Error"))
                 }

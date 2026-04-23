@@ -6,6 +6,7 @@ import com.example.tamangfood.domain.repository.CartRepository
 import com.example.tamangfood.domain.repository.FoodRepository
 import com.example.tamangfood.domain.repository.ChangePasswordRepository
 import com.example.tamangfood.domain.repository.OtpRepository
+import com.example.tamangfood.domain.repository.OrderRepository
 import com.example.tamangfood.domain.repository.PaymentRepository
 import com.example.tamangfood.domain.repository.ResetPasswordRepository
 import com.example.tamangfood.domain.repository.SampleRepository
@@ -16,6 +17,8 @@ import com.example.tamangfood.domain.usecase.AddAddressUseCase
 import com.example.tamangfood.domain.usecase.AddCartItemUseCase
 import com.example.tamangfood.domain.usecase.ChangePasswordUseCase
 import com.example.tamangfood.domain.usecase.CreatePaymentMethodUseCase
+import com.example.tamangfood.domain.usecase.CreatePaymentIntentUseCase
+import com.example.tamangfood.domain.usecase.CreateOrderUseCase
 import com.example.tamangfood.domain.usecase.DeleteAccountUseCase
 import com.example.tamangfood.domain.usecase.DeleteAddressUseCase
 import com.example.tamangfood.domain.usecase.DeleteCartItemUseCase
@@ -208,5 +211,17 @@ object UseCaseModule {
     @Singleton
     fun bindDeletePaymentMethodsUseCase(repo: PaymentRepository): DeletePaymentMethodUseCase {
         return DeletePaymentMethodUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindCreatePaymentIntentUseCase(repo: PaymentRepository): CreatePaymentIntentUseCase {
+        return CreatePaymentIntentUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindCreateOrderUseCase(repo: OrderRepository): CreateOrderUseCase {
+        return CreateOrderUseCase(repo)
     }
 }

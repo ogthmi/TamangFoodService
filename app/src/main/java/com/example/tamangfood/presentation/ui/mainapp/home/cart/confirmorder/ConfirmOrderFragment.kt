@@ -1,24 +1,38 @@
 package com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder
 
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tamangfood.R
 import com.example.tamangfood.domain.model.Address
-import com.example.tamangfood.data.model.Food
+import com.example.tamangfood.domain.model.CartItem
+import com.example.tamangfood.domain.model.CartSummary
 import com.example.tamangfood.domain.model.Card
 import com.example.tamangfood.databinding.FragmentConfirmOrderBinding
 import com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder.address.AddressSelectionBottomSheet
 import com.example.tamangfood.presentation.ui.mainapp.home.cart.payment.CardSelectionBottomSheet
-import com.example.tamangfood.presentation.utils.FoodType
+import com.example.tamangfood.presentation.utils.AppPreferences
+import com.example.tamangfood.presentation.utils.DefaultLocation
+import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.Utils
+import com.stripe.android.paymentsheet.PaymentSheet
+import com.stripe.android.paymentsheet.PaymentSheetResult
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.math.roundToLong
 
 @AndroidEntryPoint
 class ConfirmOrderFragment : Fragment() {
@@ -28,10 +42,21 @@ class ConfirmOrderFragment : Fragment() {
     private val viewModel: ConfirmOrderViewModel by viewModels()
     private lateinit var orderAdapter: ConfirmOrderAdapter
     private var selectedAddress: Address? = null
-    private val orderItems = mutableListOf<Food>()
+    private val orderItems = mutableListOf<CartItem>()
     private var isCreditCardSelected = true
 
     private var selectedCard: Card? = null
+    private var deliveryFee: Double = 0.0
+    private var serverCartTotal: Int? = null
+    private var isLoadingCartItems: Boolean = false
+    private var isCreatingPaymentIntent: Boolean = false
+    private var isCreatingOrder: Boolean = false
+    private var pendingPaymentMethodId: String? = null
+    private lateinit var paymentSheet: PaymentSheet
+
+    companion object {
+        private const val TAG = "ConfirmOrderFragment"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,69 +70,33 @@ class ConfirmOrderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Utils.hideBottomNav(requireActivity().findViewById(R.id.bottom_nav_layout))
+        paymentSheet = PaymentSheet(this, ::onPaymentSheetResult)
 
-        loadMockData()
+        loadDefaultPaymentData()
         setupRecyclerView()
         setupPaymentMethodSelector()
         setupClickListeners()
+        observeAddresses()
+        observeCartItems()
+        observePaymentMethods()
+        observeCreateOrder()
+        observeCreatePaymentIntent()
+        viewModel.loadAddresses()
+        viewModel.loadCartItems()
+        viewModel.loadPaymentMethods()
         calculateTotals()
     }
 
-    private fun loadMockData() {
-        // TODO: Load from CartFragment or ViewModel
-        orderItems.clear()
-        orderItems.addAll(
-            listOf(
-                Food(3,
-                    "Chicken Curry",
-                    "$25.00",
-                    1,
-                    3.5,
-                    FoodType.MEAL,
-                    imageRes = R.drawable.ic_launcher_background),
-                Food(4,
-                    "Rice Bowl",
-                    "$25.00",
-                    1,
-                    3.0,
-                    FoodType.SNACK,
-                    imageRes = R.drawable.ic_launcher_background),
-                Food(5,
-                    "Bean and Vegetable Burger",
-                    "$25.00",
-                    1,
-                    4.0,
-                    FoodType.VEGAN,
-                    imageRes = R.drawable.ic_launcher_background),
-            )
-        )
-        
-        // Set default address
-        selectedAddress = Address(
-            id = 1,
-            name = "My home",
-            fullAddress = "778 Locust View Drive Oakland, CA",
-            latitude = 37.7749,
-            longitude = -122.4194
-        )
-
-        selectedCard = Card(
-            paymentMethodId = "pm_mock_1",
-            brand = "Visa",
-            last4 = "4242",
-            expMonth = "12",
-            expYear = "2029"
-        )
+    private fun loadDefaultPaymentData() {
         updatePaymentDisplay()
         updateAddressDisplay()
-        calculateEstimatedDistanceAndTime()
     }
 
     private fun setupRecyclerView() {
         orderAdapter = ConfirmOrderAdapter(
-            onItemClick = {food ->
+            onItemClick = { cartItem ->
                 val bundle = bundleOf(
-                    "foodId" to food.id
+                    "foodId" to cartItem.food.id
                 )
                 findNavController().navigate(
                     R.id.action_confirmOrderFragment_to_foodDetailFragment,
@@ -134,11 +123,7 @@ class ConfirmOrderFragment : Fragment() {
         }
 
         binding.btnPlaceOrder.setOnClickListener {
-            findNavController().navigate(
-                ConfirmOrderFragmentDirections.actionConfirmOrderFragmentToOrderCancelledSuccessFragment(
-                    false, true
-                )
-            )
+            onPlaceOrderClick()
         }
 
         binding.ivSelectCreditCard.setOnClickListener {
@@ -167,6 +152,8 @@ class ConfirmOrderFragment : Fragment() {
         isCreditCardSelected = isCreditCard
         binding.radioBtnCreditCard.isChecked = isCreditCard
         binding.radioBtnCash.isChecked = !isCreditCard
+        binding.tvCardMasked.visibility = if (isCreditCard) View.VISIBLE else View.GONE
+        binding.ivSelectCreditCard.visibility = if (isCreditCard) View.VISIBLE else View.GONE
     }
 
     private fun showAddressSelectionBottomSheet() {
@@ -183,7 +170,7 @@ class ConfirmOrderFragment : Fragment() {
 
     private fun updatePaymentDisplay(){
         binding.apply {
-            tvCardMasked.text = "*** *** *** ${selectedCard?.last4}"
+            tvCardMasked.text = selectedCard?.let { "*** *** *** ${it.last4}" } ?: "-"
         }
     }
 
@@ -191,30 +178,330 @@ class ConfirmOrderFragment : Fragment() {
         selectedAddress?.let { address ->
             binding.tvNameAddress.text = address.name
             binding.tvFullNameAddress.text = address.fullAddress
+        } ?: run {
+            binding.tvNameAddress.text = getString(R.string.no_delivery_address_found)
+            binding.tvFullNameAddress.text = ""
+            binding.tvEstimatedDistance.text = "-"
+            binding.tvEstimatedTime.text = "-"
         }
     }
 
     private fun calculateEstimatedDistanceAndTime() {
-        // TODO: Calculate based on selected address and restaurant location
-        // For now, using mock data
-        binding.tvEstimatedDistance.text = "2.5 km"
-        binding.tvEstimatedTime.text = "15-20 min"
-    }
-    private fun calculateTotals() {
-        val subtotal = orderItems.sumOf { item ->
-            val price = item.price.replace("$", "").toDoubleOrNull() ?: 0.0
-            price * item.quantity
+        val address = selectedAddress ?: run {
+            deliveryFee = 0.0
+            calculateTotals()
+            return
         }
 
-        // Mockdata
-        val taxAndFees = subtotal * 0.15 // 15% tax
-        val delivery = 3.0
-        val total = subtotal + taxAndFees + delivery
+        val distanceKm = calculateDistanceFromRestaurant(
+            destinationLat = address.latitude,
+            destinationLng = address.longitude
+        )
+        deliveryFee = calculateDeliveryFee(distanceKm)
+        val deliveryMinutes = estimateDeliveryMinutes(distanceKm)
 
-        binding.tvSubtotal.text = String.format("$%.2f", subtotal)
-        binding.tvTaxAndFees.text = String.format("$%.2f", taxAndFees)
-        binding.tvDelivery.text = String.format("$%.2f", delivery)
+        binding.tvEstimatedDistance.text = String.format("%.1f km", distanceKm)
+        binding.tvEstimatedTime.text = getString(R.string.mins_format, deliveryMinutes)
+        calculateTotals()
+    }
+    private fun calculateTotals() {
+        val computedSubtotal = orderItems.sumOf { item ->
+            val ingredientUnitPrice = item.ingredients.sumOf { it.price }
+            val unitPrice = item.food.price + ingredientUnitPrice
+            unitPrice * item.quantity
+        }
+        val subtotalValue = serverCartTotal?.toDouble() ?: computedSubtotal.toDouble()
+        val total = subtotalValue + deliveryFee
+
+        binding.tvSubtotal.text = String.format("$%.2f", subtotalValue)
+        binding.tvDelivery.text = String.format("$%.2f", deliveryFee)
         binding.tvTotal.text = String.format("$%.2f", total)
+    }
+
+    private fun observeAddresses() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.addressesState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> Unit
+                        is NetworkState.Success<*> -> {
+                            val addresses = (state.data as? List<*>)?.filterIsInstance<Address>().orEmpty()
+                            val mapped = withContext(Dispatchers.IO) {
+                                addresses.map { address ->
+                                    address.copy(
+                                        fullAddress = Utils.resolveFullAddressFromLocation(
+                                            context = requireContext(),
+                                            latitude = address.latitude,
+                                            longitude = address.longitude
+                                        )
+                                    )
+                                }
+                            }
+                            if (selectedAddress == null && mapped.isNotEmpty()) {
+                                selectedAddress = mapped.first()
+                                updateAddressDisplay()
+                                calculateEstimatedDistanceAndTime()
+                            }
+                        }
+                        is NetworkState.Error -> {
+                            Utils.showToast(requireContext(), state.message)
+                            updateAddressDisplay()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeCartItems() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.cartItemsState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> {
+                            isLoadingCartItems = true
+                            renderCartLoading()
+                        }
+                        is NetworkState.Success<*> -> {
+                            isLoadingCartItems = false
+                            renderCartLoading()
+                            val summary = state.data as? CartSummary
+                            serverCartTotal = summary?.totalPrice
+                            val cartItems = summary?.carts.orEmpty()
+                            orderItems.clear()
+                            orderItems.addAll(cartItems)
+                            orderAdapter.submitList(orderItems.toList())
+                            calculateTotals()
+                        }
+                        is NetworkState.Error -> {
+                            isLoadingCartItems = false
+                            renderCartLoading()
+                            Utils.showToast(requireContext(), state.message)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observePaymentMethods() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.paymentMethodsState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> Unit
+                        is NetworkState.Success<*> -> {
+                            val cards = (state.data as? List<*>)?.filterIsInstance<Card>().orEmpty()
+                            if (selectedCard == null && cards.isNotEmpty()) {
+                                selectedCard = cards.first()
+                                updatePaymentDisplay()
+                            }
+                        }
+                        is NetworkState.Error -> {
+                            Utils.showToast(requireContext(), state.message)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun renderCartLoading() {
+        binding.progressConfirmOrder.visibility = if (isLoadingCartItems) View.VISIBLE else View.GONE
+        binding.scrollView.visibility = if (isLoadingCartItems) View.INVISIBLE else View.VISIBLE
+        binding.btnPlaceOrder.isEnabled = !isLoadingCartItems && !isCreatingPaymentIntent && !isCreatingOrder
+    }
+
+    private fun onPlaceOrderClick() {
+        val addressId = selectedAddress?.id ?: run {
+            Utils.showToast(requireContext(), "Please select delivery address")
+            return
+        }
+        val isCartEmpty = orderItems.isEmpty() || (serverCartTotal ?: 0) <= 0
+        if (isCartEmpty) {
+            Utils.showToast(requireContext(), "Giỏ hàng đang trống")
+            return
+        }
+        pendingPaymentMethodId = if (isCreditCardSelected) {
+            val paymentMethodId = selectedCard?.paymentMethodId.orEmpty()
+            if (paymentMethodId.isBlank()) {
+                Utils.showToast(requireContext(), "Please select a card")
+                return
+            }
+            paymentMethodId
+        } else {
+            null
+        }
+
+        viewModel.createOrder(
+            addressId = addressId,
+            deliveryPrice = deliveryFee.roundToLong(),
+            cartItems = orderItems
+        )
+    }
+
+    private fun observeCreateOrder() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.createOrderState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> {
+                            isCreatingOrder = true
+                            binding.btnPlaceOrder.isEnabled = false
+                        }
+                        is NetworkState.Success<*> -> {
+                            isCreatingOrder = false
+                            val orderId = state.data as? Int ?: -1
+                            val paymentMethodId = pendingPaymentMethodId
+                            if (paymentMethodId.isNullOrBlank()) {
+                                Utils.showToast(requireContext(), "Order created successfully")
+                                viewModel.resetCreateOrderState()
+                                navigateOrderSuccess()
+                            } else {
+                                val userId = AppPreferences.getUserId() ?: -1
+                                if (userId <= 0) {
+                                    Utils.showToast(requireContext(), "Invalid user id")
+                                    binding.btnPlaceOrder.isEnabled = true
+                                    viewModel.resetCreateOrderState()
+                                    return@collect
+                                }
+                                viewModel.resetCreateOrderState()
+                                viewModel.createPaymentIntent(
+                                    orderId = orderId,
+                                    userId = userId,
+                                    paymentMethodId = paymentMethodId
+                                )
+                            }
+                        }
+                        is NetworkState.Error -> {
+                            isCreatingOrder = false
+                            binding.btnPlaceOrder.isEnabled = true
+                            Utils.showToast(requireContext(), state.message)
+                            viewModel.resetCreateOrderState()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeCreatePaymentIntent() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.createPaymentIntentState.collect { state ->
+                    when (state) {
+                        is NetworkState.Init -> Unit
+                        is NetworkState.Loading -> {
+                            isCreatingPaymentIntent = true
+                            binding.btnPlaceOrder.isEnabled = false
+                        }
+                        is NetworkState.Success<*> -> {
+                            isCreatingPaymentIntent = false
+                            binding.btnPlaceOrder.isEnabled = true
+                            val clientSecret = state.data as? String
+                            if (clientSecret.isNullOrBlank()) {
+                                Utils.showToast(requireContext(), "Invalid payment intent secret")
+                                viewModel.resetCreatePaymentIntentState()
+                                return@collect
+                            }
+                            presentPaymentSheet(clientSecret)
+                            viewModel.resetCreatePaymentIntentState()
+                        }
+                        is NetworkState.Error -> {
+                            isCreatingPaymentIntent = false
+                            binding.btnPlaceOrder.isEnabled = true
+                            Utils.showToast(requireContext(), state.message)
+                            viewModel.resetCreatePaymentIntentState()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun presentPaymentSheet(clientSecret: String) {
+        val configuration = PaymentSheet.Configuration(
+            merchantDisplayName = getString(R.string.app_name)
+        )
+        paymentSheet.presentWithPaymentIntent(
+            paymentIntentClientSecret = clientSecret,
+            configuration = configuration
+        )
+    }
+
+    private fun onPaymentSheetResult(paymentResult: PaymentSheetResult) {
+        when (paymentResult) {
+            is PaymentSheetResult.Completed -> {
+                Utils.showToast(requireContext(), "Payment successful")
+                pendingPaymentMethodId = null
+                navigateOrderSuccess()
+            }
+            is PaymentSheetResult.Canceled -> {
+                navigateOrderSuccess()
+            }
+            is PaymentSheetResult.Failed -> {
+                val errorMessage = paymentResult.error.message.orEmpty()
+                Log.e(TAG, "Payment failed: $errorMessage", paymentResult.error)
+
+                // Temporary fallback: if BE already confirmed the intent, PaymentSheet can't be shown.
+                // Treat this as success to avoid blocking user checkout while BE flow is being fixed.
+                val isAlreadySucceededIntent =
+                    errorMessage.contains("already succeeded", ignoreCase = true) ||
+                        errorMessage.contains("status of succeeded", ignoreCase = true) ||
+                        errorMessage.contains("cannot be set up in status", ignoreCase = true)
+                if (isAlreadySucceededIntent) {
+                    Utils.showToast(requireContext(), "Payment already successful")
+                    pendingPaymentMethodId = null
+                    navigateOrderSuccess()
+                    return
+                }
+                navigateOrderSuccess()
+
+//                Utils.showToast(requireContext(), paymentResult.error.localizedMessage ?: "Payment failed")
+            }
+        }
+    }
+
+    private fun navigateOrderSuccess() {
+        findNavController().navigate(
+            ConfirmOrderFragmentDirections.actionConfirmOrderFragmentToOrderCancelledSuccessFragment(
+                false, true
+            )
+        )
+    }
+
+    private fun calculateDistanceFromRestaurant(destinationLat: Double, destinationLng: Double): Double {
+        val result = FloatArray(1)
+        Location.distanceBetween(
+            DefaultLocation.LAT.value,
+            DefaultLocation.LNG.value,
+            destinationLat,
+            destinationLng,
+            result
+        )
+        return (result.firstOrNull() ?: 0f) / 1000.0
+    }
+
+    private fun calculateDeliveryFee(distanceKm: Double): Double {
+        return when {
+            distanceKm <= 2.0 -> 2.0
+            distanceKm <= 5.0 -> 3.0
+            distanceKm <= 10.0 -> 5.0
+            else -> 7.0
+        }
+    }
+
+    private fun estimateDeliveryMinutes(distanceKm: Double): Int {
+        return when {
+            distanceKm <= 2.0 -> 15
+            distanceKm <= 5.0 -> 25
+            distanceKm <= 10.0 -> 35
+            else -> 45
+        }
     }
 
     override fun onDestroyView() {

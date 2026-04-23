@@ -4,6 +4,7 @@ import com.example.tamangfood.data.api.ApiService
 import com.example.tamangfood.data.model.FailedResponse
 import com.example.tamangfood.data.model.cart.AddCartIngredientRequest
 import com.example.tamangfood.data.model.cart.AddCartItemRequest
+import com.example.tamangfood.data.model.cart.CartItemsResult
 import com.example.tamangfood.data.model.cart.toDomain
 import com.example.tamangfood.data.model.cart.UpdateCartItemRequest
 import com.example.tamangfood.domain.repository.CartRepository
@@ -25,8 +26,12 @@ class CartRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body?.code == HTTP.SUCCESS.status) {
-                    val items = body.result.map { it.toDomain() }
-                    trySend(NetworkState.Success(items))
+                    val summary = body.result?.toDomain() ?: CartItemsResult(
+                        userId = 0,
+                        totalPrice = 0,
+                        carts = emptyList()
+                    ).toDomain()
+                    trySend(NetworkState.Success(summary))
                 } else {
                     trySend(NetworkState.Error(body?.message ?: "Error"))
                 }

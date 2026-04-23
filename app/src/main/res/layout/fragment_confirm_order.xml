@@ -166,6 +166,8 @@
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_order_product"
+                tools:itemCount="2"
+                android:layout_gravity="top"
                 app:layout_constraintTop_toBottomOf="@id/order_summary_label" />
 
             <!-- Payment Method: title + Edit -->
@@ -326,29 +328,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/tax_and_fees"
-                        android:textColor="@color/main_color"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_tax_and_fees"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$5.00"
-                        android:textColor="@color/main_color"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/delivery"
                         android:textColor="@color/main_color"
                         android:textSize="14sp" />
@@ -403,5 +382,15 @@
                 app:layout_constraintBottom_toBottomOf="parent" />
         </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress_confirm_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

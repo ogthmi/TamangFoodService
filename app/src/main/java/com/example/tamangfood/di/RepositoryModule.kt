@@ -6,6 +6,7 @@ import com.example.tamangfood.data.repository.CartRepositoryImpl
 import com.example.tamangfood.data.repository.FoodRepositoryImpl
 import com.example.tamangfood.data.repository.ChangePasswordRepositoryImpl
 import com.example.tamangfood.data.repository.OtpRepositoryImpl
+import com.example.tamangfood.data.repository.OrderRepositoryImpl
 import com.example.tamangfood.data.repository.PaymentRepositoryImpl
 import com.example.tamangfood.data.repository.ResetPasswordRepositoryImpl
 import com.example.tamangfood.data.repository.SampleRepositoryImpl
@@ -18,6 +19,7 @@ import com.example.tamangfood.domain.repository.CartRepository
 import com.example.tamangfood.domain.repository.FoodRepository
 import com.example.tamangfood.domain.repository.ChangePasswordRepository
 import com.example.tamangfood.domain.repository.OtpRepository
+import com.example.tamangfood.domain.repository.OrderRepository
 import com.example.tamangfood.domain.repository.PaymentRepository
 import com.example.tamangfood.domain.repository.ResetPasswordRepository
 import com.example.tamangfood.domain.repository.SampleRepository
@@ -80,4 +82,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindPaymentRepository(impl: PaymentRepositoryImpl): PaymentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindOrderRepository(impl: OrderRepositoryImpl): OrderRepository
 }

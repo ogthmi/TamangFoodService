@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tamangfood.R
 import com.example.tamangfood.databinding.FragmentCartBinding
 import com.example.tamangfood.domain.model.CartItem
+import com.example.tamangfood.domain.model.CartSummary
 import com.example.tamangfood.presentation.ui.mainapp.cart.CartAdapter
 import com.example.tamangfood.presentation.ui.mainapp.home.HomeFragment
 import com.example.tamangfood.presentation.ui.mainapp.home.HomeFragmentDirections
@@ -48,6 +49,7 @@ class CartFragment : Fragment() {
     private var shouldNavigateAfterSync = false
     private var isSyncingCart = false
     private var isLoadingCartItems = false
+    private var serverTotalPrice: Int? = null
 
     private data class PendingDelete(
         val item: CartItem,
@@ -196,6 +198,7 @@ class CartFragment : Fragment() {
         if (previousQuantity == newQuantity) return
 
         cartItems[index] = cartItems[index].copy(quantity = newQuantity)
+        serverTotalPrice = null
         pendingQuantityUpdates[item.id] = newQuantity
         cartAdapter.submitList(cartItems.toList())
         calculateCount()
@@ -206,6 +209,7 @@ class CartFragment : Fragment() {
         val index = cartItems.indexOfFirst { it.id == item.id }
         if (index != -1) {
             pendingQuantityUpdates.remove(item.id)
+            serverTotalPrice = null
             pendingDelete = PendingDelete(item = cartItems[index], index = index)
             cartItems.removeAt(index)
             cartAdapter.submitList(cartItems.toList())
@@ -239,8 +243,9 @@ class CartFragment : Fragment() {
                         is NetworkState.Success<*> -> {
                             isLoadingCartItems = false
                             renderCartItemsLoading()
-                            @Suppress("UNCHECKED_CAST")
-                            val list = (state.data as? List<CartItem>).orEmpty()
+                            val summary = state.data as? CartSummary
+                            val list = summary?.carts.orEmpty()
+                            serverTotalPrice = summary?.totalPrice
                             cartItems.clear()
                             cartItems.addAll(list)
                             pendingQuantityUpdates.clear()
@@ -398,12 +403,17 @@ class CartFragment : Fragment() {
         val count = cartItems.sumOf { it.quantity }
         binding.tvCartItemsCount.text = getString(R.string.you_have_items_in_cart, count)
 
-        val totalAmount = cartItems.sumOf { item ->
-            val ingredientUnitPrice = item.ingredients.sumOf { it.price }
-            val unitPrice = item.food.price + ingredientUnitPrice
-            unitPrice * item.quantity
+        val shouldUseServerTotal = !isSyncingCart && pendingQuantityUpdates.isEmpty() && pendingDelete == null
+        val totalAmount = if (shouldUseServerTotal && serverTotalPrice != null) {
+            serverTotalPrice!!.toDouble()
+        } else {
+            cartItems.sumOf { item ->
+                val ingredientUnitPrice = item.ingredients.sumOf { it.price }
+                val unitPrice = item.food.price + ingredientUnitPrice
+                unitPrice * item.quantity
+            }.toDouble()
         }
-        binding.tvTotal.text = String.format("$%.2f", totalAmount.toDouble())
+        binding.tvTotal.text = String.format("$%.2f", totalAmount)
     }
 
     override fun onDestroyView() {
