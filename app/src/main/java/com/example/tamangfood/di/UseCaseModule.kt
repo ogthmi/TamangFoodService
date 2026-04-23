@@ -29,6 +29,7 @@ import com.example.tamangfood.domain.usecase.GetCartItemsUseCase
 import com.example.tamangfood.domain.usecase.GetCategoryDetailsUseCase
 import com.example.tamangfood.domain.usecase.GetFoodCommentsUseCase
 import com.example.tamangfood.domain.usecase.GetBestSellerFoodsUseCase
+import com.example.tamangfood.domain.usecase.GetOrdersByStatusUseCase
 import com.example.tamangfood.domain.usecase.GetRecommendedFoodsUseCase
 import com.example.tamangfood.domain.usecase.GetFoodDetailUseCase
 import com.example.tamangfood.domain.usecase.GetFoodsByCategoryUseCase
@@ -223,5 +224,11 @@ object UseCaseModule {
     @Singleton
     fun bindCreateOrderUseCase(repo: OrderRepository): CreateOrderUseCase {
         return CreateOrderUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindGetOrdersByStatusUseCase(repo: OrderRepository): GetOrdersByStatusUseCase {
+        return GetOrdersByStatusUseCase(repo)
     }
 }

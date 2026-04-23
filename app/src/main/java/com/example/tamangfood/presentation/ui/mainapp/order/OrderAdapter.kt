@@ -2,14 +2,12 @@ package com.example.tamangfood.presentation.ui.mainapp.order
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tamangfood.data.model.Food
-import com.example.tamangfood.data.model.Order
+import com.example.tamangfood.domain.model.Food
+import com.example.tamangfood.domain.model.Order
 import com.example.tamangfood.databinding.ItemOrderActiveBinding
 import com.example.tamangfood.databinding.ItemOrderCancelledBinding
 import com.example.tamangfood.databinding.ItemOrderCompletedBinding
@@ -84,7 +82,7 @@ class OrderAdapter(
         private val onItemClick: (Order) -> Unit,
         private val onFoodClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val orderItemAdapter = OrderItemAdapter(onFoodClick)
+        private val orderItemAdapter = OrderItemAdapter(onItemClick = onFoodClick)
 
         init {
             binding.rvOrderItems.apply {
@@ -96,9 +94,11 @@ class OrderAdapter(
         fun bind(order: Order) {
             binding.apply {
                 tvOrderName.text = order.name
-                tvOrderPrice.text = order.price
+                tvOrderPrice.text = "$" + order.price
                 tvOrderDate.text = order.dateTime
                 tvItemCount.text = "${order.itemCount} items"
+                tvTotalPrice.text = "Total price: $${order.price - order.deliveryTax}"
+                tvDeliveryTax.text = "Delivery tax: $${order.deliveryTax}"
 
                 // Bind order items
                 orderItemAdapter.submitList(order.items)
@@ -111,12 +111,18 @@ class OrderAdapter(
 
     class CompletedOrderViewHolder(
         private val binding: ItemOrderCompletedBinding,
-        private val onReviewClick: (Order) -> Unit,
-        private val onOrderAgainClick: (Order) -> Unit,
+        private val onReviewClickForOrder: (Order) -> Unit,
+        private val onOrderAgainForOrder: (Order) -> Unit,
         private val onItemClick: (Order) -> Unit,
         private val onFoodClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val orderItemAdapter = OrderItemAdapter(onFoodClick)
+        private val orderItemAdapter = OrderItemAdapter(
+            onItemClick = onFoodClick,
+            showItemActions = true,
+            onOrderAgainClick = { orderInScope?.let { onOrderAgainForOrder(it) } },
+            onLeaveCommentClick = { orderInScope?.let { onReviewClickForOrder(it) } }
+        )
+        private var orderInScope: Order? = null
 
         init {
             binding.rvOrderItems.apply {
@@ -126,16 +132,17 @@ class OrderAdapter(
         }
 
         fun bind(order: Order) {
+            orderInScope = order
             binding.apply {
+                val totalPrice = order.price - order.deliveryTax
                 tvOrderName.text = order.name
-                tvOrderPrice.text = order.price
+                tvOrderPrice.text = "$" + order.price
                 tvOrderDate.text = order.dateTime
                 tvItemCount.text = "${order.itemCount} items"
+                tvTotalPrice.text = "Total price: $${order.price - order.deliveryTax}"
+                tvDeliveryTax.text = "Delivery tax: $${order.deliveryTax}"
 
-                // Bind order items
                 orderItemAdapter.submitList(order.items)
-                btnLeaveReview.setOnClickListener { onReviewClick(order) }
-                btnOrderAgain.setOnClickListener { onOrderAgainClick(order) }
                 itemView.setOnClickListener { onItemClick(order) }
             }
         }
@@ -146,7 +153,7 @@ class OrderAdapter(
         private val onItemClick: (Order) -> Unit,
         private val onFoodClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val orderItemAdapter = OrderItemAdapter(onFoodClick)
+        private val orderItemAdapter = OrderItemAdapter(onItemClick = onFoodClick)
 
         init {
             binding.rvOrderItems.apply {
@@ -158,7 +165,7 @@ class OrderAdapter(
         fun bind(order: Order) {
             binding.apply {
                 tvOrderName.text = order.name
-                tvOrderPrice.text = order.price
+                tvOrderPrice.text = "$" + order.price
                 tvOrderDate.text = order.dateTime
                 tvItemCount.text = "${order.itemCount} items"
                 tvOrderStatus.text = order.statusText

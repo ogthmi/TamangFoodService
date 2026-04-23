@@ -5,10 +5,12 @@ import com.example.tamangfood.data.model.FailedResponse
 import com.example.tamangfood.data.model.order.CreateOrderRequest
 import com.example.tamangfood.data.model.order.OrderDetailIngredientRequest
 import com.example.tamangfood.data.model.order.OrderDetailRequest
+import com.example.tamangfood.data.model.order.toDomain
 import com.example.tamangfood.domain.model.CartItem
 import com.example.tamangfood.domain.repository.OrderRepository
 import com.example.tamangfood.presentation.utils.HTTP
 import com.example.tamangfood.presentation.utils.NetworkState
+import com.example.tamangfood.presentation.utils.OrderStatus
 import com.google.gson.Gson
 import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
@@ -18,6 +20,30 @@ import kotlinx.coroutines.flow.callbackFlow
 class OrderRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ) : OrderRepository {
+    override suspend fun getOrdersByStatus(
+        status: OrderStatus,
+        userId: Int
+    ): Flow<NetworkState> = callbackFlow {
+        trySend(NetworkState.Loading)
+        try {
+            val response = apiService.getOrdersByStatusAndUserId(
+                status = status.toApiStatus(),
+                userId = userId
+            )
+            if (response.isSuccessful) {
+                val orders = response.body()?.toDomain().orEmpty()
+                trySend(NetworkState.Success(orders))
+            } else {
+                val raw = response.errorBody()?.string()
+                val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+                trySend(NetworkState.Error(err?.message ?: "HTTP Error"))
+            }
+        } catch (e: Exception) {
+            trySend(NetworkState.Error(e.message ?: "Error"))
+        }
+        awaitClose { }
+    }
+
     override suspend fun createOrder(
         addressId: Int,
         deliveryPrice: Long,
@@ -56,6 +82,14 @@ class OrderRepositoryImpl @Inject constructor(
             trySend(NetworkState.Error(e.message ?: "Error"))
         }
         awaitClose { }
+    }
+
+    private fun OrderStatus.toApiStatus(): String {
+        return when (this) {
+            OrderStatus.ACTIVE -> "ACTIVE"
+            OrderStatus.COMPLETED -> "COMPLETED"
+            OrderStatus.CANCELLED -> "CANCELLED"
+        }
     }
 }
 

@@ -52,6 +52,28 @@
         app:layout_constraintTop_toTopOf="@id/tvOrderDate"
         tools:text="5 items" />
 
+    <TextView
+        android:id="@+id/tvTotalPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/active_color"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvItemCount"
+        tools:text="Total price: $20.00" />
+
+    <TextView
+        android:id="@+id/tvDeliveryTax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/active_color"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTotalPrice"
+        tools:text="Delivery tax: $2.00" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOrderItems"
         android:layout_width="match_parent"
@@ -60,7 +82,7 @@
         android:nestedScrollingEnabled="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvOrderDate"
+        app:layout_constraintTop_toBottomOf="@id/tvDeliveryTax"
         tools:listitem="@layout/item_order_product" />
 
     <Button

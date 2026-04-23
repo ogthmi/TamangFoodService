@@ -1,4 +1,4 @@
-package com.example.tamangfood.data.model
+package com.example.tamangfood.domain.model
 
 import androidx.annotation.DrawableRes
 import com.example.tamangfood.presentation.utils.OrderStatus
@@ -6,11 +6,11 @@ import com.example.tamangfood.presentation.utils.OrderStatus
 data class Order(
     val id: Int,
     val name: String,
-    val price: String,
+    val price: Int,
+    val deliveryTax: Int = 0,
     val dateTime: String,
     val itemCount: Int,
     val status: OrderStatus,
-    @DrawableRes val imageRes: Int,
     val items: List<Food> = emptyList(),
     val statusText: String = when (status) {
         OrderStatus.ACTIVE -> "Order placed"

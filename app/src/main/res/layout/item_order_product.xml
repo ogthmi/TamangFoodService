@@ -66,4 +66,50 @@
         app:layout_constraintTop_toBottomOf="@id/tvProductQuantity"
         tools:text="Ingredients: Cheese, Onion" />
 
+    <LinearLayout
+        android:id="@+id/layout_item_actions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@id/tvProductName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvProductIngredients">
+
+        <Button
+            android:id="@+id/btn_item_order_again"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minHeight="36dp"
+            android:paddingHorizontal="8dp"
+            android:text="@string/order_again"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:background="@drawable/button_orange" />
+
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="1dp" />
+
+        <Button
+            android:id="@+id/btn_item_leave_comment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minHeight="36dp"
+            android:paddingHorizontal="8dp"
+            android:text="@string/leave_a_review"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:background="@drawable/button_orange" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
