@@ -183,6 +183,15 @@
         <argument
             android:name="orderId"
             app:argType="integer" />
+        <argument
+            android:name="foodId"
+            app:argType="integer" />
+        <argument
+            android:name="foodName"
+            app:argType="string" />
+        <argument
+            android:name="foodImage"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/orderCancelledSuccessFragment"

@@ -43,4 +43,11 @@ interface FoodRepository {
         page: Int,
         size: Int
     ): FoodPageResult
+
+    suspend fun leaveComment(
+        orderId: Int,
+        foodId: Int,
+        rating: Double,
+        comment: String
+    ): Flow<NetworkState>
 }

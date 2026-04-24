@@ -281,6 +281,16 @@ class FoodDetailFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val submitted = findNavController().currentBackStackEntry
+            ?.savedStateHandle
+            ?.remove<Boolean>("comment_submitted") ?: false
+        if (submitted) {
+            viewModel.loadComments()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

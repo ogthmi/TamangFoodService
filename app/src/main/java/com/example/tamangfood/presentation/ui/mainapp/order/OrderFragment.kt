@@ -59,6 +59,20 @@ class OrderFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        val cancelled = findNavController().currentBackStackEntry
+            ?.savedStateHandle
+            ?.remove<Boolean>("order_cancelled") ?: false
+        if (cancelled) {
+            cachedOrders.remove(OrderStatus.ACTIVE)
+            cachedOrders.remove(OrderStatus.CANCELLED)
+            requestedStatuses.remove(OrderStatus.ACTIVE)
+            requestedStatuses.remove(OrderStatus.CANCELLED)
+            if (selectTab == OrderStatus.ACTIVE) {
+                val userId = AppPreferences.getUserId() ?: -1
+                requestedStatuses.add(OrderStatus.ACTIVE)
+                viewModel.loadOrders(OrderStatus.ACTIVE, userId)
+            }
+        }
         restoreSelectedTabFromBackStack()
     }
 
@@ -127,10 +141,15 @@ class OrderFragment : Fragment() {
                     OrderFragmentDirections.actionOrderFragmentToDeliveryTrackingFragment(order.id)
                 )
             },
-            onReviewClick = { order ->
+            onReviewClick = { order, food ->
                 persistSelectedTabToBackStack()
                 findNavController().navigate(
-                    OrderFragmentDirections.actionOrderFragmentToLeaveReviewFragment(order.id)
+                    OrderFragmentDirections.actionOrderFragmentToLeaveReviewFragment(
+                        order.id,
+                        food.id,
+                        food.name,
+                        food.urlImage ?: ""
+                    )
                 )
             },
             onOrderAgainClick = { order ->

@@ -16,5 +16,7 @@ interface OrderRepository {
         deliveryPrice: Long,
         cartItems: List<CartItem>
     ): Flow<NetworkState>
+
+    suspend fun cancelOrder(orderId: Int): Flow<NetworkState>
 }
 
