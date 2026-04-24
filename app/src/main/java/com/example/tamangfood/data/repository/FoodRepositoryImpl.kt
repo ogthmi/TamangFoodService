@@ -2,6 +2,7 @@ package com.example.tamangfood.data.repository
 
 import com.example.tamangfood.data.api.ApiService
 import com.example.tamangfood.data.model.FailedResponse
+import com.example.tamangfood.data.model.comment.LeaveCommentRequest
 import com.example.tamangfood.data.model.comment.toDomain
 import com.example.tamangfood.data.model.food.FilterFoodRequest
 import com.example.tamangfood.data.model.food.FoodPageResult
@@ -220,5 +221,39 @@ class FoodRepositoryImpl @Inject constructor(
             isLastPage = pageDto.last,
             pageNumber = pageDto.number
         )
+    }
+
+    override suspend fun leaveComment(
+        orderId: Int,
+        foodId: Int,
+        rating: Double,
+        comment: String
+    ): Flow<NetworkState> = callbackFlow {
+        trySend(NetworkState.Loading)
+        try {
+            val response = apiService.leaveComment(
+                LeaveCommentRequest(
+                    orderId = orderId,
+                    foodId = foodId,
+                    rating = rating,
+                    comment = comment
+                )
+            )
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body?.code == HTTP.SUCCESS.status || body?.code == HTTP.CREATED.status) {
+                    trySend(NetworkState.Success(Unit))
+                } else {
+                    trySend(NetworkState.Error(body?.message ?: "Error"))
+                }
+            } else {
+                val raw = response.errorBody()?.string()
+                val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+                trySend(NetworkState.Error(err?.message ?: "HTTP Error"))
+            }
+        } catch (e: Exception) {
+            trySend(NetworkState.Error(e.message ?: "Error"))
+        }
+        awaitClose { }
     }
 }

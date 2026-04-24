@@ -17,6 +17,7 @@ import com.example.tamangfood.domain.usecase.AddAddressUseCase
 import com.example.tamangfood.domain.usecase.AddCartItemUseCase
 import com.example.tamangfood.domain.usecase.AddFoodToFavoriteUseCase
 import com.example.tamangfood.domain.usecase.ChangePasswordUseCase
+import com.example.tamangfood.domain.usecase.CancelOrderUseCase
 import com.example.tamangfood.domain.usecase.CreatePaymentMethodUseCase
 import com.example.tamangfood.domain.usecase.CreatePaymentIntentUseCase
 import com.example.tamangfood.domain.usecase.CreateOrderUseCase
@@ -31,6 +32,7 @@ import com.example.tamangfood.domain.usecase.GetCartItemsUseCase
 import com.example.tamangfood.domain.usecase.GetCategoryDetailsUseCase
 import com.example.tamangfood.domain.usecase.GetFoodCommentsUseCase
 import com.example.tamangfood.domain.usecase.GetBestSellerFoodsUseCase
+import com.example.tamangfood.domain.usecase.LeaveCommentUseCase
 import com.example.tamangfood.domain.usecase.GetFilteredFoodsUseCase
 import com.example.tamangfood.domain.usecase.GetFavoriteFoodsUseCase
 import com.example.tamangfood.domain.usecase.GetOrdersByStatusUseCase
@@ -226,6 +228,12 @@ object UseCaseModule {
 
     @Provides
     @Singleton
+    fun bindLeaveCommentUseCase(repo: FoodRepository): LeaveCommentUseCase {
+        return LeaveCommentUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
     fun bindCreatePaymentMethodUseCase(repo: PaymentRepository): CreatePaymentMethodUseCase {
         return CreatePaymentMethodUseCase(repo)
     }
@@ -258,5 +266,11 @@ object UseCaseModule {
     @Singleton
     fun bindGetOrdersByStatusUseCase(repo: OrderRepository): GetOrdersByStatusUseCase {
         return GetOrdersByStatusUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindCancelOrderUseCase(repo: OrderRepository): CancelOrderUseCase {
+        return CancelOrderUseCase(repo)
     }
 }

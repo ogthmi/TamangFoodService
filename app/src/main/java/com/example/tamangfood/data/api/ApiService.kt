@@ -20,19 +20,22 @@ import com.example.tamangfood.data.model.cart.UpdateCartItemResponse
 import com.example.tamangfood.data.model.category.CategoryDetailsResponse
 import com.example.tamangfood.data.model.category.CategoryResponse
 import com.example.tamangfood.data.model.comment.CommentsByFoodResponse
+import com.example.tamangfood.data.model.comment.LeaveCommentRequest
+import com.example.tamangfood.data.model.comment.LeaveCommentResponse
 import com.example.tamangfood.data.model.food.FavoriteResponse
 import com.example.tamangfood.data.model.food.FilterFoodRequest
 import com.example.tamangfood.data.model.food.FoodDetailResponse
 import com.example.tamangfood.data.model.food.FoodsByCategoryResponse
+import com.example.tamangfood.data.model.order.CancelOrderRequest
 import com.example.tamangfood.data.model.order.CreateOrderRequest
 import com.example.tamangfood.data.model.order.CreateOrderResponse
 import com.example.tamangfood.data.model.order.GetOrderByIdResponse
 import com.example.tamangfood.data.model.order.GetOrdersByStatusResponse
 import com.example.tamangfood.data.model.order.UpdateOrderStatusRequest
 import com.example.tamangfood.data.model.order.UpdateOrderStatusResponse
-import com.example.tamangfood.data.model.payment.CreatePaymentMethodRequest
 import com.example.tamangfood.data.model.payment.CreatePaymentIntentRequest
 import com.example.tamangfood.data.model.payment.CreatePaymentIntentResponse
+import com.example.tamangfood.data.model.payment.CreatePaymentMethodRequest
 import com.example.tamangfood.data.model.payment.CreatePaymentMethodResponse
 import com.example.tamangfood.data.model.payment.GetPaymentMethodsResponse
 import com.example.tamangfood.data.model.recommend.FoodsRecommendResponse
@@ -47,12 +50,12 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.POST
-import retrofit2.http.Part
-import retrofit2.http.Headers
-import retrofit2.http.Path
 import retrofit2.http.PUT
+import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -184,6 +187,11 @@ interface ApiService {
         @Query("sort") sort: String = "createdAt"
     ): Response<CommentsByFoodResponse>
 
+    @POST("api/v1/comments")
+    suspend fun leaveComment(
+        @Body body: LeaveCommentRequest
+    ): Response<LeaveCommentResponse>
+
     //Lấy danh sách food theo bộ lọc
     @POST("api/v1/foods/filter")
     suspend fun searchFoodByFilter(
@@ -197,13 +205,13 @@ interface ApiService {
     @POST("api/v1/foods/{foodId}/likes")
     suspend fun addToFavorite(
         @Path("foodId") foodId: Int,
-    ) : Response<FavoriteResponse>
+    ): Response<FavoriteResponse>
 
     //Xóa food khỏi danh sách yêu thích
     @DELETE("api/v1/foods/{foodId}/likes/remove")
     suspend fun deleteFromFavorite(
         @Path("foodId") foodId: Int,
-    ) : Response<FavoriteResponse>
+    ): Response<FavoriteResponse>
 
     //Lấy danh sách yêu thích
     @GET("api/v1/foods/likes")
@@ -257,17 +265,23 @@ interface ApiService {
         @Body body: CreatePaymentIntentRequest
     ): Response<CreatePaymentIntentResponse>
 
-
     // Tạo đơn hàng
     @POST("api/v1/orders/create-order")
     suspend fun createOrder(
         @Body body: CreateOrderRequest
     ): Response<CreateOrderResponse>
 
+
     // Cập nhật trạng thái đơn hàng
     @POST("api/v1/orders/update-order-status")
     suspend fun updateOrderStatus(
         @Body body: UpdateOrderStatusRequest
+    ): Response<UpdateOrderStatusResponse>
+
+    // Hủy đơn hàng
+    @POST("api/v1/orders/cancel-order")
+    suspend fun cancelOrder(
+        @Body body: CancelOrderRequest
     ): Response<UpdateOrderStatusResponse>
 
     // Lấy đơn hàng theo status

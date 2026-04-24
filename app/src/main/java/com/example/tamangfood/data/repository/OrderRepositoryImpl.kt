@@ -2,6 +2,7 @@ package com.example.tamangfood.data.repository
 
 import com.example.tamangfood.data.api.ApiService
 import com.example.tamangfood.data.model.FailedResponse
+import com.example.tamangfood.data.model.order.CancelOrderRequest
 import com.example.tamangfood.data.model.order.CreateOrderRequest
 import com.example.tamangfood.data.model.order.OrderDetailIngredientRequest
 import com.example.tamangfood.data.model.order.OrderDetailRequest
@@ -90,6 +91,28 @@ class OrderRepositoryImpl @Inject constructor(
             OrderStatus.COMPLETED -> "COMPLETED"
             OrderStatus.CANCELLED -> "CANCELLED"
         }
+    }
+
+    override suspend fun cancelOrder(orderId: Int): Flow<NetworkState> = callbackFlow {
+        trySend(NetworkState.Loading)
+        try {
+            val response = apiService.cancelOrder(CancelOrderRequest(orderId = orderId))
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body?.code == HTTP.SUCCESS.status) {
+                    trySend(NetworkState.Success(Unit))
+                } else {
+                    trySend(NetworkState.Error(body?.message ?: "Error"))
+                }
+            } else {
+                val raw = response.errorBody()?.string()
+                val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+                trySend(NetworkState.Error(err?.message ?: "HTTP Error"))
+            }
+        } catch (e: Exception) {
+            trySend(NetworkState.Error(e.message ?: "Error"))
+        }
+        awaitClose { }
     }
 }
 

@@ -16,7 +16,7 @@ import com.example.tamangfood.presentation.utils.OrderStatus
 class OrderAdapter(
     private val onCancelClick: (Order) -> Unit,
     private val onTrackClick: (Order) -> Unit,
-    private val onReviewClick: (Order) -> Unit,
+    private val onReviewClick: (Order, Food) -> Unit,
     private val onOrderAgainClick: (Order) -> Unit,
     private val onItemClick: (Order) -> Unit,
     private val onFoodClick: (Food) -> Unit
@@ -111,7 +111,7 @@ class OrderAdapter(
 
     class CompletedOrderViewHolder(
         private val binding: ItemOrderCompletedBinding,
-        private val onReviewClickForOrder: (Order) -> Unit,
+        private val onReviewClickForOrder: (Order, Food) -> Unit,
         private val onOrderAgainForOrder: (Order) -> Unit,
         private val onItemClick: (Order) -> Unit,
         private val onFoodClick: (Food) -> Unit
@@ -120,7 +120,7 @@ class OrderAdapter(
             onItemClick = onFoodClick,
             showItemActions = true,
             onOrderAgainClick = { orderInScope?.let { onOrderAgainForOrder(it) } },
-            onLeaveCommentClick = { orderInScope?.let { onReviewClickForOrder(it) } }
+            onLeaveCommentClick = { food -> orderInScope?.let { onReviewClickForOrder(it, food) } }
         )
         private var orderInScope: Order? = null
 
