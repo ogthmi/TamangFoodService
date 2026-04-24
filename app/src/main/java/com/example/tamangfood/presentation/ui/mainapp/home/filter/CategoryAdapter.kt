@@ -69,4 +69,10 @@ class CategoryAdapter(
     fun clearSelection() {
         selectedPositions.clear()
     }
+
+    fun getSelectedItems(): List<FoodCategoryDetail> {
+        return selectedPositions.mapNotNull { pos ->
+            if (pos < currentList.size) currentList[pos] else null
+        }
+    }
 }

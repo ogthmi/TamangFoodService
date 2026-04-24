@@ -31,6 +31,7 @@ import com.example.tamangfood.domain.usecase.GetCartItemsUseCase
 import com.example.tamangfood.domain.usecase.GetCategoryDetailsUseCase
 import com.example.tamangfood.domain.usecase.GetFoodCommentsUseCase
 import com.example.tamangfood.domain.usecase.GetBestSellerFoodsUseCase
+import com.example.tamangfood.domain.usecase.GetFilteredFoodsUseCase
 import com.example.tamangfood.domain.usecase.GetFavoriteFoodsUseCase
 import com.example.tamangfood.domain.usecase.GetOrdersByStatusUseCase
 import com.example.tamangfood.domain.usecase.GetRecommendedFoodsUseCase
@@ -215,6 +216,12 @@ object UseCaseModule {
     @Singleton
     fun bindGetBestSellerFoodsUseCase(repo: FoodRepository): GetBestSellerFoodsUseCase {
         return GetBestSellerFoodsUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun bindGetFilteredFoodsUseCase(repo: FoodRepository): GetFilteredFoodsUseCase {
+        return GetFilteredFoodsUseCase(repo)
     }
 
     @Provides

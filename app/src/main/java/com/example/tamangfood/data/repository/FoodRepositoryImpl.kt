@@ -3,6 +3,7 @@ package com.example.tamangfood.data.repository
 import com.example.tamangfood.data.api.ApiService
 import com.example.tamangfood.data.model.FailedResponse
 import com.example.tamangfood.data.model.comment.toDomain
+import com.example.tamangfood.data.model.food.FilterFoodRequest
 import com.example.tamangfood.data.model.food.FoodPageResult
 import com.example.tamangfood.data.model.food.toDomain
 import com.example.tamangfood.data.model.recommend.toDomain
@@ -174,6 +175,35 @@ class FoodRepositoryImpl @Inject constructor(
         size: Int
     ): FoodPageResult {
         val response = apiService.getFavoriteFoods(page, size)
+        if (!response.isSuccessful) {
+            val raw = response.errorBody()?.string()
+            val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+            throw IOException(err?.message ?: "HTTP Error")
+        }
+        val body = response.body() ?: throw IOException("Empty body")
+        if (body.code != HTTP.SUCCESS.status || body.result == null) {
+            throw IOException(body.message)
+        }
+        val pageDto = body.result
+        val items = pageDto.content.map { it.toDomain() }
+        return FoodPageResult(
+            items = items,
+            isLastPage = pageDto.last,
+            pageNumber = pageDto.number
+        )
+    }
+
+    override suspend fun fetchFilteredFoods(
+        categoryDetailIds: List<Long>,
+        rating: Int,
+        page: Int,
+        size: Int
+    ): FoodPageResult {
+        val response = apiService.searchFoodByFilter(
+            page = page,
+            size = size,
+            body = FilterFoodRequest(categoryDetailIds = categoryDetailIds, rating = rating)
+        )
         if (!response.isSuccessful) {
             val raw = response.errorBody()?.string()
             val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()

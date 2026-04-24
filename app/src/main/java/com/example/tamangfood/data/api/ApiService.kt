@@ -21,6 +21,7 @@ import com.example.tamangfood.data.model.category.CategoryDetailsResponse
 import com.example.tamangfood.data.model.category.CategoryResponse
 import com.example.tamangfood.data.model.comment.CommentsByFoodResponse
 import com.example.tamangfood.data.model.food.FavoriteResponse
+import com.example.tamangfood.data.model.food.FilterFoodRequest
 import com.example.tamangfood.data.model.food.FoodDetailResponse
 import com.example.tamangfood.data.model.food.FoodsByCategoryResponse
 import com.example.tamangfood.data.model.order.CreateOrderRequest
@@ -182,6 +183,15 @@ interface ApiService {
         @Query("size") size: Int,
         @Query("sort") sort: String = "createdAt"
     ): Response<CommentsByFoodResponse>
+
+    //Lấy danh sách food theo bộ lọc
+    @POST("api/v1/foods/filter")
+    suspend fun searchFoodByFilter(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String = "name",
+        @Body body: FilterFoodRequest
+    ): Response<FoodsByCategoryResponse>
 
     //Thêm food vào danh sách yêu thích
     @POST("api/v1/foods/{foodId}/likes")
