@@ -181,6 +181,7 @@
                     app:layout_constraintTop_toBottomOf="@id/progress_bar_details" />
 
                 <Button
+                    android:id="@+id/btn_apply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_md"
@@ -191,6 +192,41 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rvCategories" />
+
+                <ProgressBar
+                    android:id="@+id/progress_filter_results"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:indeterminateTint="@color/active_color"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_apply" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_filter_results"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_apply" />
+
+                <TextView
+                    android:id="@+id/tv_filter_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/menu_food_list_empty"
+                    android:textColor="@color/body_text"
+                    android:textSize="@dimen/text_caption"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_apply" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
