@@ -20,6 +20,7 @@ import com.example.tamangfood.data.model.cart.UpdateCartItemResponse
 import com.example.tamangfood.data.model.category.CategoryDetailsResponse
 import com.example.tamangfood.data.model.category.CategoryResponse
 import com.example.tamangfood.data.model.comment.CommentsByFoodResponse
+import com.example.tamangfood.data.model.food.FavoriteResponse
 import com.example.tamangfood.data.model.food.FoodDetailResponse
 import com.example.tamangfood.data.model.food.FoodsByCategoryResponse
 import com.example.tamangfood.data.model.order.CreateOrderRequest
@@ -181,6 +182,26 @@ interface ApiService {
         @Query("size") size: Int,
         @Query("sort") sort: String = "createdAt"
     ): Response<CommentsByFoodResponse>
+
+    //Thêm food vào danh sách yêu thích
+    @POST("api/v1/foods/{foodId}/likes")
+    suspend fun addToFavorite(
+        @Path("foodId") foodId: Int,
+    ) : Response<FavoriteResponse>
+
+    //Xóa food khỏi danh sách yêu thích
+    @DELETE("api/v1/foods/{foodId}/likes/remove")
+    suspend fun deleteFromFavorite(
+        @Path("foodId") foodId: Int,
+    ) : Response<FavoriteResponse>
+
+    //Lấy danh sách yêu thích
+    @GET("api/v1/foods/likes")
+    suspend fun getFavoriteFoods(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String = "id",
+    ): Response<FoodsByCategoryResponse>
 
     // Thêm food vào cart
     @POST("api/v1/cart-items/add-item")

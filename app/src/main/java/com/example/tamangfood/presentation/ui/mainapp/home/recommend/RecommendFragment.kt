@@ -43,6 +43,7 @@ class RecommendFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         observeRecommendedFoods()
+        observeFavorite()
         setUpClickListeners()
     }
 
@@ -62,7 +63,7 @@ class RecommendFragment : Fragment() {
                     )
                 findNavController().navigate(action)
             },
-            onFavoriteClick = { },
+            onFavoriteClick = { selectedFood -> viewModel.toggleFavorite(selectedFood) },
             onAddToCartClick = { selectedFood ->
                 val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
                 bottomSheet.show(parentFragmentManager, AddToCartBottomSheet.TAG)
@@ -74,6 +75,14 @@ class RecommendFragment : Fragment() {
             adapter = this@RecommendFragment.adapter
             val space = resources.getDimensionPixelSize(R.dimen.space)
             addItemDecoration(GridSpacingItem(2, space))
+        }
+    }
+
+    private fun observeFavorite() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.favoriteState.collect { message ->
+                Utils.showToast(requireContext(), message)
+            }
         }
     }
 

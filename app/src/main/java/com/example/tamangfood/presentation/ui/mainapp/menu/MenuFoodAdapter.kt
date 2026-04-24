@@ -12,7 +12,8 @@ import com.example.tamangfood.presentation.utils.ImageLoader
 
 class MenuFoodAdapter(
     private val onItemClick: (Food) -> Unit,
-    private val onAddToCartClick: (Food) -> Unit
+    private val onAddToCartClick: (Food) -> Unit,
+    private val onFavoriteClick: (Food) -> Unit
 ) : PagingDataAdapter<Food, MenuFoodAdapter.MenuFoodViewHolder>(FoodDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuFoodViewHolder {
@@ -21,7 +22,7 @@ class MenuFoodAdapter(
             parent,
             false
         )
-        return MenuFoodViewHolder(binding, onItemClick, onAddToCartClick)
+        return MenuFoodViewHolder(binding, onItemClick, onFavoriteClick, onAddToCartClick)
     }
 
     override fun onBindViewHolder(holder: MenuFoodViewHolder, position: Int) {
@@ -32,6 +33,7 @@ class MenuFoodAdapter(
     class MenuFoodViewHolder(
         private val binding: ItemMenuFoodCardBinding,
         private val onItemClick: (Food) -> Unit,
+        private val onFavoriteClick: (Food) -> Unit,
         private val onAddToCartClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Food) {
@@ -44,10 +46,10 @@ class MenuFoodAdapter(
             } else {
                 binding.ivFood.setImageResource(R.drawable.ic_launcher_foreground)
             }
-            if(item.hasLiked){
-                binding.ivFavorite.setImageResource(R.drawable.ic_heart)
+            binding.ivFavorite.apply {
+                setImageResource(if (item.hasLiked) R.drawable.ic_heart else R.drawable.ic_heart_outline)
+                setOnClickListener { onFavoriteClick(item) }
             }
-            else binding.ivFavorite.setImageResource(R.drawable.ic_heart_outline)
             binding.root.setOnClickListener { onItemClick(item) }
             binding.btnAddToCart.setOnClickListener { onAddToCartClick(item) }
         }

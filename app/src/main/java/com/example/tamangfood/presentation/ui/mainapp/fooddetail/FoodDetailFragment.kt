@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import com.example.tamangfood.presentation.utils.NetworkState
 import com.example.tamangfood.presentation.utils.Utils
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class FoodDetailFragment : Fragment() {
@@ -54,8 +55,17 @@ class FoodDetailFragment : Fragment() {
         setupFavoriteClick()
         setupClickListeners()
         observeUiState()
+        observeFavorite()
 
         binding.tvFoodDetailError.setOnClickListener { viewModel.reloadDetailAndComments() }
+    }
+
+    private fun observeFavorite() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.favoriteState.collectLatest { message ->
+                Utils.showToast(requireContext(), message)
+            }
+        }
     }
 
     private fun observeUiState() {
@@ -216,10 +226,16 @@ class FoodDetailFragment : Fragment() {
 
     private fun setupFavoriteClick() {
         binding.ivHeart.setOnClickListener {
-            val detail = (viewModel.uiState.value as? FoodDetailUiState.Loaded)?.detail ?: return@setOnClickListener
+            val detail =
+                (viewModel.uiState.value as? FoodDetailUiState.Loaded)?.detail
+                    ?: return@setOnClickListener
+
             val next = !(localFavoriteOverride ?: detail.hasLiked)
+
             localFavoriteOverride = next
             updateHeartIcon(next)
+
+            viewModel.toggleFavorite(detail)
         }
     }
 

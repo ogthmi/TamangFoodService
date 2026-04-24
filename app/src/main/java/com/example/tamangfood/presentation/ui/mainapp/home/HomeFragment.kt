@@ -68,6 +68,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         setupDrawerWidth()
         setupCategoryRecyclerView()
         observeCategories()
+        observeFavorite()
         setupFoodBestSellerRecyclerViews()
         setupFoodRecommendRecyclerViews()
         observeBestSellerFoods()
@@ -98,6 +99,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                             val list = state.data as? List<FoodCategory> ?: emptyList()
                             homeCategoryAdapter.submitList(list)
                         }
+
                         is NetworkState.Error ->
                             Utils.showToast(requireContext(), state.message)
                     }
@@ -117,6 +119,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                             binding.rvBestSeller.isVisible = false
                             binding.tvEmptyBestSeller.isVisible = false
                         }
+
                         is NetworkState.Success<*> -> {
                             binding.progressBestSellerHome.isVisible = false
                             binding.rvBestSeller.isVisible = true
@@ -125,6 +128,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                             bestSellerFoodsFull = fullList
                             applyFoodSearchFilterToLists()
                         }
+
                         is NetworkState.Error -> {
                             binding.progressBestSellerHome.isVisible = false
                             binding.rvBestSeller.isVisible = true
@@ -149,6 +153,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                             binding.rvRecommend.isVisible = false
                             binding.tvEmptyRecommend.isVisible = false
                         }
+
                         is NetworkState.Success<*> -> {
                             binding.progressRecommendHome.isVisible = false
                             binding.rvRecommend.isVisible = true
@@ -157,6 +162,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                             recommendFoodsFull = fullList
                             applyFoodSearchFilterToLists()
                         }
+
                         is NetworkState.Error -> {
                             binding.progressRecommendHome.isVisible = false
                             binding.rvRecommend.isVisible = true
@@ -166,6 +172,14 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun observeFavorite() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeViewModel.favoriteState.collect { message ->
+                Utils.showToast(requireContext(), message)
             }
         }
     }
@@ -202,6 +216,9 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                         selectedFood.id
                     )
                 findNavController().navigate(action)
+            },
+            onFavoriteClick = { food ->
+                homeViewModel.toggleFavorite(food)
             }
         )
         binding.rvRecommend.apply {
@@ -256,8 +273,10 @@ class HomeFragment : androidx.fragment.app.Fragment() {
     private fun applyFoodSearchFilterToLists() {
         val q = binding.etSearch.text?.toString().orEmpty().trim()
         val hasQuery = q.isNotEmpty()
-        val bestFiltered = bestSellerFoodsFull.filterByFoodName(q).take(MAX_HOME_BEST_SELLER_DISPLAY)
-        val recommendFiltered = recommendFoodsFull.filterByFoodName(q).take(MAX_HOME_RECOMMEND_DISPLAY)
+        val bestFiltered =
+            bestSellerFoodsFull.filterByFoodName(q).take(MAX_HOME_BEST_SELLER_DISPLAY)
+        val recommendFiltered =
+            recommendFoodsFull.filterByFoodName(q).take(MAX_HOME_RECOMMEND_DISPLAY)
         foodBestSellerAdapter.submitList(bestFiltered)
         foodRecommendAdapter.submitList(recommendFiltered)
         updateHomeFoodEmptyUi(

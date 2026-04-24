@@ -12,6 +12,7 @@ import com.example.tamangfood.presentation.utils.ImageLoader
 
 class FoodRecommendAdapter(
     private val onItemClick: (Food) -> Unit,
+    private val onFavoriteClick: (Food) -> Unit
 ) : ListAdapter<Food, FoodRecommendAdapter.FoodRecommendViewHolder>(FoodRecommendDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodRecommendViewHolder {
@@ -20,7 +21,7 @@ class FoodRecommendAdapter(
             parent,
             false
         )
-        return FoodRecommendViewHolder(binding, onItemClick)
+        return FoodRecommendViewHolder(binding, onItemClick, onFavoriteClick)
     }
 
     override fun onBindViewHolder(holder: FoodRecommendViewHolder, position: Int) {
@@ -29,7 +30,8 @@ class FoodRecommendAdapter(
 
     class FoodRecommendViewHolder(
         private val binding: ItemFoodRecommendCardBinding,
-        private val onItemClick: (Food) -> Unit
+        private val onItemClick: (Food) -> Unit,
+        private val onFavoriteClick: (Food) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(food: Food) {
@@ -40,9 +42,12 @@ class FoodRecommendAdapter(
             } else {
                 binding.ivFood.setImageResource(R.drawable.ic_launcher_foreground)
             }
-            binding.ivFavorite.setImageResource(
-                if (food.hasLiked) R.drawable.ic_heart else R.drawable.ic_heart_outline
-            )
+            binding.ivFavorite.apply {
+                setImageResource(
+                    if (food.hasLiked) R.drawable.ic_heart else R.drawable.ic_heart_outline
+                )
+                setOnClickListener { onFavoriteClick(food) }
+            }
             binding.root.setOnClickListener { onItemClick(food) }
         }
     }

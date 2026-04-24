@@ -52,7 +52,17 @@ class MenuFragment : Fragment() {
         setupRecyclerView()
         observeMenuFoodLoadAndEmpty()
         observeCategories()
+        observeFavorite()
         observePagingFoods()
+    }
+
+    private fun observeFavorite() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.favoriteState.collectLatest { message ->
+                Utils.showToast(requireContext(), message)
+                menuFoodAdapter.refresh()
+            }
+        }
     }
 
     private fun observeCategories() {
@@ -136,6 +146,9 @@ class MenuFragment : Fragment() {
                         selectedFood.id
                     )
                 findNavController().navigate(action)
+            },
+            onFavoriteClick = { selectedFood ->
+                viewModel.toggleFavorite(selectedFood)
             },
             onAddToCartClick = { selectedFood ->
                 val bottomSheet = AddToCartBottomSheet.newInstance(selectedFood)
