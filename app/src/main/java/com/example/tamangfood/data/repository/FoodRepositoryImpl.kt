@@ -1,0 +1,259 @@
+package com.example.tamangfood.data.repository
+
+import com.example.tamangfood.data.api.ApiService
+import com.example.tamangfood.data.model.FailedResponse
+import com.example.tamangfood.data.model.comment.LeaveCommentRequest
+import com.example.tamangfood.data.model.comment.toDomain
+import com.example.tamangfood.data.model.food.FilterFoodRequest
+import com.example.tamangfood.data.model.food.FoodPageResult
+import com.example.tamangfood.data.model.food.toDomain
+import com.example.tamangfood.data.model.recommend.toDomain
+import com.example.tamangfood.domain.model.Food
+import com.example.tamangfood.domain.model.FoodComment
+import com.example.tamangfood.domain.repository.FoodRepository
+import com.example.tamangfood.presentation.utils.HTTP
+import com.example.tamangfood.presentation.utils.NetworkState
+import com.google.gson.Gson
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import java.io.IOException
+import javax.inject.Inject
+
+class FoodRepositoryImpl @Inject constructor(
+    private val apiService: ApiService
+) : FoodRepository {
+
+    override suspend fun getFoodsByCategory(
+        categoryId: Int,
+        page: Int,
+        size: Int
+    ): Flow<NetworkState> = callbackFlow {
+        trySend(NetworkState.Loading)
+        try {
+            val result = fetchFoodsPage(categoryId, page, size)
+            trySend(NetworkState.Success(result))
+        } catch (e: Exception) {
+            trySend(NetworkState.Error(e.message ?: "Error"))
+        }
+        awaitClose { }
+    }
+
+    override suspend fun fetchFoodsPage(
+        categoryId: Int,
+        page: Int,
+        size: Int
+    ): FoodPageResult {
+        val response = apiService.getFoodsByCategory(categoryId, page, size)
+        if (!response.isSuccessful) {
+            val raw = response.errorBody()?.string()
+            val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+            throw IOException(err?.message ?: "HTTP Error")
+        }
+        val body = response.body() ?: throw IOException("Empty body")
+        if (body.code != HTTP.SUCCESS.status || body.result == null) {
+            throw IOException(body.message)
+        }
+        val pageDto = body.result
+        val items = pageDto.content.map { it.toDomain() }
+        return FoodPageResult(
+            items = items,
+            isLastPage = pageDto.last,
+            pageNumber = pageDto.number
+        )
+    }
+
+    override suspend fun getFoodDetail(foodId: Int): Flow<NetworkState> = callbackFlow {
+        trySend(NetworkState.Loading)
+        try {
+            val response = apiService.getFoodDetail(foodId)
+            if (!response.isSuccessful) {
+                val raw = response.errorBody()?.string()
+                val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+                throw IOException(err?.message ?: "HTTP Error")
+            }
+            val body = response.body() ?: throw IOException("Empty body")
+            if (body.code != HTTP.SUCCESS.status || body.result == null) {
+                throw IOException(body.message)
+            }
+            trySend(NetworkState.Success(body.result.toDomain()))
+        } catch (e: Exception) {
+            trySend(NetworkState.Error(e.message ?: "Error"))
+        }
+        awaitClose { }
+    }
+
+    override suspend fun fetchFoodComments(
+        foodId: Int,
+        page: Int,
+        size: Int
+    ): List<FoodComment> {
+        val response = apiService.getCommentsByFood(foodId, page, size)
+        if (!response.isSuccessful) {
+            val raw = response.errorBody()?.string()
+            val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+            throw IOException(err?.message ?: "HTTP Error")
+        }
+        val body = response.body() ?: throw IOException("Empty body")
+        if (body.code != HTTP.SUCCESS.status || body.result == null) {
+            throw IOException(body.message)
+        }
+        return body.result.content.map { it.toDomain() }
+    }
+
+    override suspend fun fetchRecommendedFoods(): List<Food> {
+        val response = apiService.getRecommendedFoods()
+        if (!response.isSuccessful) {
+            val raw = response.errorBody()?.string()
+            val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+            throw IOException(err?.message ?: "HTTP Error")
+        }
+        val body = response.body() ?: throw IOException("Empty body")
+        if (body.code != HTTP.SUCCESS.status || body.result == null) {
+            throw IOException(body.message)
+        }
+        return body.result.orEmpty().map { it.toDomain() }
+    }
+
+    override suspend fun fetchBestSellerFoods(): List<Food> {
+        val response = apiService.getBestSellerFoods()
+        if (!response.isSuccessful) {
+            val raw = response.errorBody()?.string()
+            val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+            throw IOException(err?.message ?: "HTTP Error")
+        }
+        val body = response.body() ?: throw IOException("Empty body")
+        if (body.code != HTTP.SUCCESS.status || body.result == null) {
+            throw IOException(body.message)
+        }
+        return body.result.orEmpty().map { it.toDomain() }
+    }
+
+    override suspend fun addToFavorite(foodId: Int): Flow<NetworkState> = callbackFlow {
+        trySend(NetworkState.Loading)
+
+        val response = apiService.addToFavorite(foodId)
+        if (response.isSuccessful){
+            val body = response.body()
+            if (body?.code == HTTP.SUCCESS.status){
+                trySend(NetworkState.Success(body.message))
+            }
+            else {
+                trySend(NetworkState.Error(body?.message ?: "Error"))
+            }
+        }
+        else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, FailedResponse::class.java)
+            trySend(NetworkState.Error(errorResponse?.message ?: "HTTP Error"))
+        }
+        awaitClose {  }
+    }
+
+    override suspend fun deleteFromFavorite(foodId: Int): Flow<NetworkState> = callbackFlow {
+        trySend(NetworkState.Loading)
+
+        val response = apiService.deleteFromFavorite(foodId)
+        if (response.isSuccessful){
+            val body = response.body()
+            if (body?.code == HTTP.SUCCESS.status){
+                trySend(NetworkState.Success(body.message))
+            }
+            else {
+                trySend(NetworkState.Error(body?.message ?: "Error"))
+            }
+        }
+        else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, FailedResponse::class.java)
+            trySend(NetworkState.Error(errorResponse?.message ?: "HTTP Error"))
+        }
+        awaitClose {  }
+    }
+
+    override suspend fun fetchFavoriteFoods(
+        page: Int,
+        size: Int
+    ): FoodPageResult {
+        val response = apiService.getFavoriteFoods(page, size)
+        if (!response.isSuccessful) {
+            val raw = response.errorBody()?.string()
+            val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+            throw IOException(err?.message ?: "HTTP Error")
+        }
+        val body = response.body() ?: throw IOException("Empty body")
+        if (body.code != HTTP.SUCCESS.status || body.result == null) {
+            throw IOException(body.message)
+        }
+        val pageDto = body.result
+        val items = pageDto.content.map { it.toDomain() }
+        return FoodPageResult(
+            items = items,
+            isLastPage = pageDto.last,
+            pageNumber = pageDto.number
+        )
+    }
+
+    override suspend fun fetchFilteredFoods(
+        categoryDetailIds: List<Long>,
+        rating: Int,
+        page: Int,
+        size: Int
+    ): FoodPageResult {
+        val response = apiService.searchFoodByFilter(
+            page = page,
+            size = size,
+            body = FilterFoodRequest(categoryDetailIds = categoryDetailIds, rating = rating)
+        )
+        if (!response.isSuccessful) {
+            val raw = response.errorBody()?.string()
+            val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+            throw IOException(err?.message ?: "HTTP Error")
+        }
+        val body = response.body() ?: throw IOException("Empty body")
+        if (body.code != HTTP.SUCCESS.status || body.result == null) {
+            throw IOException(body.message)
+        }
+        val pageDto = body.result
+        val items = pageDto.content.map { it.toDomain() }
+        return FoodPageResult(
+            items = items,
+            isLastPage = pageDto.last,
+            pageNumber = pageDto.number
+        )
+    }
+
+    override suspend fun leaveComment(
+        orderId: Int,
+        foodId: Int,
+        rating: Double,
+        comment: String
+    ): Flow<NetworkState> = callbackFlow {
+        trySend(NetworkState.Loading)
+        try {
+            val response = apiService.leaveComment(
+                LeaveCommentRequest(
+                    orderId = orderId,
+                    foodId = foodId,
+                    rating = rating,
+                    comment = comment
+                )
+            )
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body?.code == HTTP.SUCCESS.status || body?.code == HTTP.CREATED.status) {
+                    trySend(NetworkState.Success(Unit))
+                } else {
+                    trySend(NetworkState.Error(body?.message ?: "Error"))
+                }
+            } else {
+                val raw = response.errorBody()?.string()
+                val err = runCatching { Gson().fromJson(raw, FailedResponse::class.java) }.getOrNull()
+                trySend(NetworkState.Error(err?.message ?: "HTTP Error"))
+            }
+        } catch (e: Exception) {
+            trySend(NetworkState.Error(e.message ?: "Error"))
+        }
+        awaitClose { }
+    }
+}

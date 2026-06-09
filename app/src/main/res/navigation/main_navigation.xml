@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_filterFragment"
+            app:destination="@id/filterFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_updateMyProfileFragment"
+            app:destination="@id/updateMyProfileFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_deliveryAddressFragment"
+            app:destination="@id/deliveryAddressFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_paymentMethodsFragment"
+            app:destination="@id/paymentMethodsFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_bestSellerFragment"
+            app:destination="@id/bestSellerFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_recommendFragment"
+            app:destination="@id/recommendFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_orderFragment"
+            app:destination="@id/orderFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_confirmOrderFragment"
+            app:destination="@id/confirmOrderFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_foodDetailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.filter.FilterFragment"
+        android:label="fragment_filter"
+        tools:layout="@layout/fragment_filter">
+        <action
+            android:id="@+id/action_filterFragment_to_foodDeailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/foodDetailFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.fooddetail.FoodDetailFragment"
+        android:label="fragment_food_detail"
+        tools:layout="@layout/fragment_food_detail">
+        <argument
+            android:name="foodId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bestSellerFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.bestseller.BestSellerFragment"
+        android:label="fragment_best_seller"
+        tools:layout="@layout/fragment_best_seller">
+        <action
+            android:id="@+id/action_bestSellerFragment_to_food_Detail_Fragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.favorite.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_foodDeailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.menu.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu">
+
+        <action
+            android:id="@+id/action_menuFragment_to_foodDetailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.help.HelpFragment"
+        android:label="fragment_help"
+        tools:layout="@layout/fragment_help" />
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.order.OrderFragment"
+        android:label="fragment_order"
+        tools:layout="@layout/fragment_order">
+        <action
+            android:id="@+id/action_orderFragment_to_foodDetailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_orderFragment_to_cancelOrderFragment"
+            app:destination="@id/cancelOrderFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_orderFragment_to_leaveReviewFragment"
+            app:destination="@id/leaveReviewFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <action
+            android:id="@+id/action_orderFragment_to_deliveryTrackingFragment"
+            app:destination="@id/deliveryTrackingFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+        <argument
+            android:name="isFromDrawer"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/deliveryTrackingFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.order.tracking.DeliveryTrackingFragment"
+        android:label="fragment_delivery_tracking"
+        tools:layout="@layout/fragment_delivery_tracking">
+        <argument
+            android:name="orderId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/cancelOrderFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.order.cancel.CancelOrderFragment"
+        android:label="fragment_cancel_order"
+        tools:layout="@layout/fragment_cancel_order">
+        <argument
+            android:name="orderId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_cancelOrderFragment_to_orderCancelledSuccessFragment"
+            app:destination="@id/orderCancelledSuccessFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/leaveReviewFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.order.review.LeaveReviewFragment"
+        android:label="fragment_leave_review"
+        tools:layout="@layout/fragment_leave_review">
+        <argument
+            android:name="orderId"
+            app:argType="integer" />
+        <argument
+            android:name="foodId"
+            app:argType="integer" />
+        <argument
+            android:name="foodName"
+            app:argType="string" />
+        <argument
+            android:name="foodImage"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderCancelledSuccessFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.order.cancel.OrderCancelledSuccessFragment"
+        android:label="fragment_order_cancelled_success"
+        tools:layout="@layout/fragment_order_cancelled_success">
+        <argument
+            android:name="isFromCancelOrder"
+            app:argType="boolean" />
+        <argument
+            android:name="isFromPlaceOrder"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_orderCancelledSuccessFragment_to_deliveryTrackingFragment"
+            app:destination="@id/deliveryTrackingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateMyProfileFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.updateprofile.UpdateMyProfileFragment"
+        android:label="fragment_update_profile"
+        tools:layout="@layout/fragment_update_my_profile" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingFragment_to_homeFragment"
+            app:destination="@id/homeFragment"/>
+        <action
+            android:id="@+id/action_settingsFragment_to_passwordSettingFragment"
+            app:destination="@id/passwordSettingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordSettingFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.settings.password.PasswordSettingFragment"
+        android:label="fragment_password_setting"
+        tools:layout="@layout/fragment_password_setting" >
+        <action
+            android:id="@+id/action_passwordSettingFragment_to_ForgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.example.tamangfood.presentation.ui.authentication.forgotpassword.ForgotPasswordFragment"
+        tools:layout="@layout/fragment_forgot_password">
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_resetEmailSentFragment"
+            app:destination="@id/resetEmailSentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resetEmailSentFragment"
+        android:name="com.example.tamangfood.presentation.ui.authentication.forgotpassword.ResetEmailSentFragment"
+        tools:layout="@layout/fragment_email_sent" >
+        <action
+            android:id="@+id/action_resetEmailSentFrament_to_resetEmailSuccessFragment"
+            app:destination="@id/resetPasswordSuccessFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/resetPasswordSuccessFragment"
+        android:name="com.example.tamangfood.presentation.ui.authentication.forgotpassword.ResetPasswordSuccessFragment"
+        tools:layout="@layout/fragment_reset_password_success">
+        <argument
+            android:name="isFromMainApp"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_resetPasswordSuccessFragment_to_settingFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/deliveryAddressFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.address.DeliveryAddressFragment"
+        android:label="fragment_delivery_address"
+        tools:layout="@layout/fragment_delivery_address">
+        <action
+            android:id="@+id/action_deliveryAddressFragment_to_addNewAddressFragment"
+            app:destination="@id/addNewAddressFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/paymentMethodsFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.payment.PaymentMethodsFragment"
+        android:label="fragment_payment_methods"
+        tools:layout="@layout/fragment_payment_methods">
+        <action
+            android:id="@+id/action_paymentMethodsFragment_to_addCardFragment"
+            app:destination="@id/addCardFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addCardFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.payment.add.AddCardFragment"
+        android:label="fragment_add_card"
+        tools:layout="@layout/fragment_add_card" />
+    <fragment
+        android:id="@+id/addNewAddressFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.profile_menu.address.addnew.AddNewAddressFragment"
+        android:label="fragment_add_new_address"
+        tools:layout="@layout/fragment_add_new_address">
+        <argument
+            android:name="detail"
+            app:argType="boolean" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/recommendFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.recommend.RecommendFragment"
+        android:label="fragment_recommend"
+        tools:layout="@layout/fragment_recommend">
+        <action
+            android:id="@+id/action_recommendFragment_to_foodDetailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmOrderFragment"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder.ConfirmOrderFragment"
+        android:label="ConfirmOrderFragment">
+        <action
+            android:id="@+id/action_confirmOrderFragment_to_foodDetailFragment"
+            app:destination="@id/foodDetailFragment"
+            app:enterAnim="@anim/slide_right"
+            app:exitAnim="@anim/slide_left" />
+
+        <action
+            android:id="@+id/action_confirmOrderFragment_to_orderCancelledSuccessFragment"
+            app:destination="@id/orderCancelledSuccessFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/addressSelectionBottomSheet"
+        android:name="com.example.tamangfood.presentation.ui.mainapp.home.cart.confirmorder.address.AddressSelectionBottomSheet"
+        android:label="AddressSelectionBottomSheet" />
+</navigation>

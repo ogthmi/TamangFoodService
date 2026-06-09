@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="moss_green">#22A45D</color>
+    <color name="main_color">#010F07</color>
+    <color name="body_text">#868686</color>
+    <color name="inactive_text">#80868686</color>
+    <color name="active_color">#EEA734</color>
+    <color name="fingerprint_icon">#FFB88C</color>
+    <color name="orange_base">#E95322</color>
+    <color name="accent_color">#F8B64C</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="unselected">#FFDECF</color>
+    <color name="tab_unselected">#F3E9B5</color>
+</resources>

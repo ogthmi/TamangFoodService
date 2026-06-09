@@ -1,0 +1,236 @@
+<resources>
+    <string name="app_name">Tamang Food</string>
+    <string name="app_full_name">Tamang\nFoodService</string>
+    <string name="set_your_fingerprint">Set Your Fingerprint</string>
+    <string name="fingerprint_description">Enable biometric authentication for faster and safer login. Biometric data is stored on the device and is not shared with the app.</string>
+    <string name="skip">Skip</string>
+    <string name="continue_text">Continue</string>
+    <string name="back">Back</string>
+    <string name="setup">Setup</string>
+    <string name="search">Search</string>
+    <string name="rise_and_shine_it_s_breakfast_time">Rise and shine! It\'s breakfast time</string>
+    <string name="good_day">Good Day!</string>
+    <string name="snacks">Snacks</string>
+    <string name="meal">Meal</string>
+    <string name="vegan">Vegan</string>
+    <string name="dessert">Dessert</string>
+    <string name="drinks">Drinks</string>
+    <string name="best_seller">Best Seller</string>
+    <string name="best_seller_subtitle">Discover our most popular dishes!</string>
+    <string name="view_all">View all</string>
+    <string name="recommend">Recommend</string>
+    <string name="home_no_items_hint">No dishes available.</string>
+    <string name="home">Home</string>
+    <string name="menu">Menu</string>
+    <string name="menu_food_list_empty">There are no foods in this category.</string>
+    <string name="menu_food_search_empty">No dishes match your search.</string>
+    <string name="food_detail_load_error">Could not load dish details. Tap to retry.</string>
+    <string name="food_detail_out_of_stock">This dish is currently out of stock.</string>
+    <string name="food_total_bought">Total purchased: %d</string>
+    <string name="favorite">Favorite</string>
+    <string name="favorite_subtitle">It\'s time to buy your favorite dish.</string>
+
+    <string name="note_for_restaurant">Note for restaurant</string>
+    <string name="order">Order</string>
+    <string name="help">Help</string>
+    <string name="my_orders">My Orders</string>
+    <string name="my_profile">My Profile</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="payment_methods">Payment Methods</string>
+    <string name="cvc">CVC</string>
+    <string name="settings">Settings</string>
+    <string name="log_out">Log Out</string>
+    <string name="notification_setting">Notification Setting</string>
+    <string name="password_setting">Password Setting</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="delete_account_dialog_title">Delete account?</string>
+    <string name="delete_account_dialog_message">This will permanently remove your account and data on the server. You cannot undo this action.</string>
+    <string name="delete_account_confirm">Delete</string>
+    <string name="delete_account_cancel">Cancel</string>
+    <string name="delete_account_success">Account deleted</string>
+    <string name="delete_account_invalid_user">Could not determine your user id. Please sign in again.</string>
+    <string name="current_password">Current Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="change_password">Change Password</string>
+    <string name="get_started">Get Started</string>
+    <string name="food_name">Food Name</string>
+    <string name="available_quantity">Available quantity: %d</string>
+
+    <string name="update_profile">Update Profile</string>
+
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</string>
+
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_screen_title">Welcome to Tamang Food Services</string>
+    <string name="sign_in_screen_subtitle">
+        Enter your phone number and email address to sign in. Enjoy your food. :)
+    </string>
+
+    <string name="confirm_log_out">Are you sure you want to log out?</string>
+
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_up_screen_title">Create new account</string>
+    <string name="sign_up_screen_subtitle">
+        Enter your information for sign up.
+    </string>
+    <string name="sign_up_agree_policy">
+        By Signing up you agree to our Terms Conditions &amp; Privacy Policy.
+    </string>
+
+    <string name="label_email_address">Email Address</string>
+    <string name="hint_email">Email</string>
+
+    <string name="label_password">Password</string>
+    <string name="hint_password">Password</string>
+
+    <string name="label_full_name">Full Name</string>
+    <string name="hint_full_name">Full Name</string>
+
+    <string name="label_phone_number">Phone Number</string>
+    <string name="hint_phone_number">Phone Number</string>
+
+    <string name="label_dob">Date Of Birth</string>
+    <string name="hint_date">DD/MM/YYYY</string>
+
+    <string name="forgot_password_header">Forgot Password</string>
+    <string name="forgot_password_subtitle">
+        Enter your email address and we will send you a reset instructions.
+    </string>
+
+    <string name="reset_password">Reset password</string>
+    <string name="reset_email_title">Reset your password</string>
+    <string name="reset_email_subtitle">We have sent an OTP code to your email. Please check your mail box.</string>
+    <string name="reset_password_instruction">Follow these instructions below to reset your password</string>
+    <string name="reset_password_successfully">Reset password successfully</string>
+    <string name="reset_password_successfully_subtitle">Your password has ben reset successfully. Sign in again to access.</string>
+    <string name="otp_code">OTP Code</string>
+    <string name="return_to_sign_in">Return to sign in</string>
+
+    <string name="email_sent">Email sent</string>
+    <string name="re_send">Resend</string>
+
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="create_account">Create a new one</string>
+
+    <string name="already_have_account">Already have account?</string>
+    <string name="add_new_address">Add New Address</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="apply">Apply</string>
+    <string name="select_location">Select Location</string>
+    <string name="enter_address_name">Enter address name</string>
+    <string name="location_permission_required">Location permission is required to select address</string>
+    <string name="address_name">Address name</string>
+    <string name="search_location">Search location...</string>
+    <string name="location_not_found">Location not found. Please try another search term.</string>
+    <string name="current_location">Current Location</string>
+    <string name="delete">Delete</string>
+    <string name="or">Or</string>
+    
+    <!-- Order related strings -->
+    <string name="active">Active</string>
+    <string name="completed">Completed</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="cancel_order">Cancel Order</string>
+    <string name="track_driver">Track Driver</string>
+    <string name="leave_a_review">Leave a Review</string>
+    <string name="order_again">Order Again</string>
+    <string name="no_orders">You don\'t have any orders at this time</string>
+    
+    <!-- Cancel Order strings -->
+    <string name="cancel_order_description">Please let us know why you want to cancel this order.
+Your feedback helps us improve our service and provide a better experience next time.</string>
+    <string name="cancel_reason_1">I ordered by mistake</string>
+    <string name="cancel_reason_2">The delivery time is too long</string>
+    <string name="cancel_reason_3">I found a better price elsewhere</string>
+    <string name="cancel_reason_4">The restaurant is too far away</string>
+    <string name="cancel_reason_5">I changed my mind</string>
+    <string name="others">Others</string>
+    <string name="others_reason_hint">Others reason…</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    
+    <!-- Order Cancelled Success strings -->
+    <string name="order_cancelled_title">¡Order Cancelled!</string>
+    <string name="order_cancelled_message">Your order has been successfully cancelled</string>
+    <string name="place_order_title">¡Order Confirmed!</string>
+    <string name="place_order_message">Your order has been placed succesfully</string>
+    <string name="support_message">If you have any question reach directly to our customer support</string>
+    <string name="track_my_order">Track my order</string>
+    
+    <!-- Leave Review strings -->
+    <string name="review_from_customer">Review from customer</string>
+    <string name="food_reviews_empty">No reviews yet.</string>
+    <string name="review_prompt">We\'d love to know what you think of your dish.</string>
+    <string name="leave_us_your_comment">Leave us your comment!</string>
+    <string name="write_review_hint">Write Review…</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="recommend_subtitle">Discover the dishes recommended by the chef.</string>
+
+    <!-- Cart strings -->
+    <string name="cart">Cart</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="your_cart_is_empty">Your cart is empty</string>
+    <string name="want_to_add_something">Want To Add Something?</string>
+    <string name="you_have_items_in_cart">You have %d items in the cart</string>
+    <string name="cart_item_ingredients">Ingredients: %1$s</string>
+    <string name="cart_item_delete_success">Removed item from cart.</string>
+    <string name="update_cart">Update cart</string>
+    <string name="cart_updated_success">Cart updated successfully.</string>
+    <string name="cart_no_pending_changes">No cart changes to update.</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="tax_and_fees">Tax and Fees</string>
+    <string name="delivery">Delivery</string>
+    <string name="total">Total</string>
+    <string name="checkout">Checkout</string>
+    <string name="confirm_order">Confirm Order</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="edit">Edit</string>
+    <string name="place_order">Place Order</string>
+    <string name="select_address">Select Address</string>
+    <string name="estimated_distance">Estimated Distance</string>
+    <string name="estimated_time">Estimated Time</string>
+
+    <string name="filter">Filter</string>
+    <string name="categories">Categories</string>
+    <string name="sort_by">Sort by</string>
+    <string name="top_rated">Top Rated</string>
+
+    <string name="add_ingredients">Add on ingredients</string>
+    <string name="add_new_card">Add New Card</string>
+    <string name="add_card">Add Card</string>
+    <string name="please_enter_card_details">Please enter valid card details</string>
+
+    <!-- Payment -->
+    <string name="payment_method">Payment Method</string>
+    <string name="cash">Cash</string>
+    <string name="credit_card">Credit Card</string>
+    <string name="choose_card">Choose card</string>
+    <string name="pay_now">Pay Now</string>
+    <string name="payment">Payment</string>
+    <string name="delivery_time">Delivery Time</string>
+    <string name="estimated_delivery">Estimated Delivery</string>
+    <string name="mins_format">%d mins</string>
+    <string name="sample_tracking_address">778 Locust View Drive Oakland, CA</string>
+    <string name="remaining_distance">Remaining distance</string>
+    <string name="distance_km_format">%.1f km</string>
+    <string name="order_status">Order status</string>
+    <string name="timeline_accepted">Your order has been accepted</string>
+    <string name="timeline_preparing">The restaurant is preparing your order</string>
+    <string name="timeline_on_way">The delivery is on his way</string>
+    <string name="timeline_delivered">Your order has been delivered</string>
+    <string name="timeline_min_2">2 min</string>
+    <string name="timeline_min_5">5 min</string>
+    <string name="timeline_min_10">10 min</string>
+    <string name="timeline_min_8">8 min</string>
+    <string name="return_home">Back to Home</string>
+    <string name="track_order">Track Order</string>
+    <string name="map_point_pickup">Pickup</string>
+    <string name="map_point_dropoff">Drop-off</string>
+    <string name="map_driver">Driver</string>
+    <string name="no_delivery_address_found">No delivery address found</string>
+
+</resources>

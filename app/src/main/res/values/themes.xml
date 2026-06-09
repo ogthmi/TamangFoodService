@@ -1,0 +1,44 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.TamangFood" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:fontFamily">@font/open_sans_medium</item>
+        <item name="fontFamily">@font/open_sans_medium</item>
+        <item name="alertDialogTheme">@style/TamangAlertDialogTheme</item>
+    </style>
+
+    <style name="Theme.TamangFood" parent="Base.Theme.TamangFood" />
+
+    <style name="CircleImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="OvalImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">30%</item>
+    </style>
+
+    <style name="MyTabText" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="TamangAlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/bg_alert_dialog</item>
+        <item name="android:textColorPrimary">@color/main_color</item>
+        <item name="android:textColor">@color/main_color</item>
+        <item name="buttonBarPositiveButtonStyle">@style/TamangAlertDialogPositiveButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/TamangAlertDialogNegativeButton</item>
+    </style>
+
+    <style name="TamangAlertDialogPositiveButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/orange_base</item>
+    </style>
+
+    <style name="TamangAlertDialogNegativeButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/body_text</item>
+    </style>
+
+    <!-- res/values/themes.xml -->
+    <style name="StripeMaterialOverlay" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- có thể customize màu nếu cần -->
+    </style>
+</resources>
